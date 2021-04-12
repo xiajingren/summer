@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VueCliMiddleware;
 
 namespace Summer.Web
 {
@@ -26,7 +28,7 @@ namespace Summer.Web
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/build";
+                configuration.RootPath = "ClientApp/dist";
             });
         }
 
@@ -61,11 +63,19 @@ namespace Summer.Web
             {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
+                if (!env.IsDevelopment()) return;
+                var launchMode = Environment.GetEnvironmentVariable("LAUNCH_MODE");
+                switch (launchMode)
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    case "Server":
+                        spa.UseProxyToSpaDevelopmentServer("http://localhost:9528");
+                        break;
+                    case "ServerClient":
+                        spa.UseVueCli(npmScript: "serve", port: 9528); // optional port
+                        break;
                 }
             });
+
         }
     }
 }
