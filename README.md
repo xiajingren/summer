@@ -1,2 +1,2 @@
 # summer
-my asp.net core project template
+my asp.net core template project
