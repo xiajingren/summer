@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Summer.App.Db;
 
 namespace Summer.App.DbMigrator
 {
@@ -6,7 +9,16 @@ namespace Summer.App.DbMigrator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            CreateHostBuilder(args).Build().Run();
         }
+
+        static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddHostedService<DbMigrateService>()
+                        .AddSummerDbContext(hostContext.Configuration.GetConnectionString("Default"))
+                        .AddSingleton<DbInitializer>();
+                });
     }
 }

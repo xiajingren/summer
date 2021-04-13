@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Summer.Core.Common;
+using Summer.Core.Swagger;
 using VueCliMiddleware;
 
 namespace Summer.Web
@@ -30,6 +32,11 @@ namespace Summer.Web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddSummerCore(options =>
+            {
+                options.UseSwagger();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +56,13 @@ namespace Summer.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            //todo:
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 

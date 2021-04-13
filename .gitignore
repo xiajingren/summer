@@ -8,3 +8,7 @@
 /src/Summer.App.Contracts/obj
 /src/Summer.App.DbMigrator/obj
 /src/Summer.Core/obj
+/src/Summer.App/bin/Debug/netstandard2.1
+/src/Summer.App.Contracts/bin/Debug/netstandard2.1
+/src/Summer.App.DbMigrator/bin/Debug/net5.0
+/src/Summer.Core/bin/Debug/netstandard2.1
