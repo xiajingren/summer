@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Summer.Web", "Summer.Web\Summer.Web.csproj", "{50A564C2-8FAE-4C3E-B26C-9D6F95BB631B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.App", "Summer.App\Summer.App.csproj", "{05C34BAD-7937-44A9-880E-EB983D4C5EF2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.Web", "Summer.Web\Summer.Web.csproj", "{63C90A2E-2B96-4234-9BC4-5E84D1C488A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.App.Contracts", "Summer.App.Contracts\Summer.App.Contracts.csproj", "{5753CA51-C23E-480D-AC96-6394D9D6D43D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.Core", "Summer.Core\Summer.Core.csproj", "{0E2B4EEE-E331-4FB0-A61C-8850C7E3946B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Summer.App.DbMigrator", "Summer.App.DbMigrator\Summer.App.DbMigrator.csproj", "{71D3D529-DCE9-4CD5-91BC-5F80E8D83973}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{50A564C2-8FAE-4C3E-B26C-9D6F95BB631B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50A564C2-8FAE-4C3E-B26C-9D6F95BB631B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50A564C2-8FAE-4C3E-B26C-9D6F95BB631B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50A564C2-8FAE-4C3E-B26C-9D6F95BB631B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05C34BAD-7937-44A9-880E-EB983D4C5EF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C34BAD-7937-44A9-880E-EB983D4C5EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05C34BAD-7937-44A9-880E-EB983D4C5EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C34BAD-7937-44A9-880E-EB983D4C5EF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C90A2E-2B96-4234-9BC4-5E84D1C488A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C90A2E-2B96-4234-9BC4-5E84D1C488A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C90A2E-2B96-4234-9BC4-5E84D1C488A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C90A2E-2B96-4234-9BC4-5E84D1C488A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5753CA51-C23E-480D-AC96-6394D9D6D43D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5753CA51-C23E-480D-AC96-6394D9D6D43D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5753CA51-C23E-480D-AC96-6394D9D6D43D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5753CA51-C23E-480D-AC96-6394D9D6D43D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E2B4EEE-E331-4FB0-A61C-8850C7E3946B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E2B4EEE-E331-4FB0-A61C-8850C7E3946B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E2B4EEE-E331-4FB0-A61C-8850C7E3946B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E2B4EEE-E331-4FB0-A61C-8850C7E3946B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71D3D529-DCE9-4CD5-91BC-5F80E8D83973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71D3D529-DCE9-4CD5-91BC-5F80E8D83973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71D3D529-DCE9-4CD5-91BC-5F80E8D83973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71D3D529-DCE9-4CD5-91BC-5F80E8D83973}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

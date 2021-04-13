@@ -4,3 +4,7 @@
 
 /src/Summer/.vs/Summer/v16
 /src/.vs
+/src/Summer.App/obj
+/src/Summer.App.Contracts/obj
+/src/Summer.App.DbMigrator/obj
+/src/Summer.Core/obj
