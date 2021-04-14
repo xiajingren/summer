@@ -8,5 +8,7 @@ namespace Summer.Core.Common
         /// 生产环境禁用swagger
         /// </summary>
         public bool DisableSwaggerInProd { get; set; } = true;
+
+        public string ConnectionString { get; set; }
     }
 }
