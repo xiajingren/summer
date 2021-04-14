@@ -4,11 +4,9 @@ namespace Summer.Core.Common
 {
     public class SummerOptions
     {
-        internal IServiceCollection Services { get; }
-
-        public SummerOptions(IServiceCollection services)
-        {
-            Services = services;
-        }
+        /// <summary>
+        /// 生产环境禁用swagger
+        /// </summary>
+        public bool DisableSwaggerInProd { get; set; } = true;
     }
 }
