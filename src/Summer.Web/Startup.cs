@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Summer.Core.Common;
+using Summer.Core;
+using Summer.Core.DI;
 
 namespace Summer.Web
 {

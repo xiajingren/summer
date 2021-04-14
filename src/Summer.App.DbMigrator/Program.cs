@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Summer.App.Db;
+using Summer.App.DI;
 
 namespace Summer.App.DbMigrator
 {

@@ -7,15 +7,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using VueCliMiddleware;
 
-namespace Summer.Core.Common
+namespace Summer.Core
 {
     public static class SummerApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseSummer(this IApplicationBuilder app)
         {
             var summerOptions = app.ApplicationServices.GetRequiredService<IOptions<SummerOptions>>().Value;
-
-            var configuration = app.ApplicationServices.GetRequiredService<IConfiguration>();
 
             var env = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
 
@@ -44,6 +42,10 @@ namespace Summer.Core.Common
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
