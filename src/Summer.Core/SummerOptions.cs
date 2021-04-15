@@ -1,4 +1,6 @@
-﻿namespace Summer.Core
+﻿using System.Collections.Generic;
+
+namespace Summer.Core
 {
     public class SummerOptions
     {
@@ -7,7 +9,7 @@
         /// </summary>
         public bool DisableSwaggerInProd { get; set; } = true;
 
-        public string ConnectionString { get; set; }
+        public Dictionary<string, string> ConnectionStrings { get; set; }
 
         public JwtOptions JwtOptions { get; set; }
     }
@@ -19,5 +21,4 @@
         public string Audience { get; set; }
         public int ExpireSeconds { get; set; }
     }
-
 }

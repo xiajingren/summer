@@ -26,14 +26,11 @@ namespace Summer.Core.DI
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(c =>
-            {
-                c.RootPath = "ClientApp/dist";
-            });
+            services.AddSpaStaticFiles(c => { c.RootPath = "ClientApp/dist"; });
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Summer API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Summer API", Version = "v1"});
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetEntryAssembly()?.GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -52,11 +49,15 @@ namespace Summer.Core.DI
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
-                        new OpenApiSecurityScheme{
-                            Reference = new OpenApiReference {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"}
-                        },new string[] { }
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
                     }
                 });
             });
@@ -69,13 +70,14 @@ namespace Summer.Core.DI
                     {
                         ValidIssuer = summerOptions.JwtOptions.Issuer,
                         ValidAudience = summerOptions.JwtOptions.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(summerOptions.JwtOptions.SecurityKey)),
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(summerOptions.JwtOptions.SecurityKey)),
                     };
                 });
 
             services.AddSingleton<IJwtTokenHelper, JwtTokenHelper>();
 
-            services.AddSummerDbContext(summerOptions.ConnectionString);
+            services.AddSummerDbContext(summerOptions.ConnectionStrings["Default"]);
             services.AddSummerService();
 
             return services;

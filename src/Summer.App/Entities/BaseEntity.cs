@@ -6,6 +6,13 @@ namespace Summer.App.Entities
 {
     internal class BaseEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        public DateTime CreateTime { get; set; }
+
+        public BaseEntity()
+        {
+            Id = Guid.NewGuid();
+            CreateTime = DateTime.Now;
+        }
     }
 }
