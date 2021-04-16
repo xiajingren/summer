@@ -4,17 +4,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Summer.App.DI;
+using Summer.App.Extensions;
+using Summer.Core.Jwt;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Summer.Core.Jwt;
 
-namespace Summer.Core.DI
+namespace Summer.Core.Extensions
 {
-    public static class SummerServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddSummer(this IServiceCollection services)
         {

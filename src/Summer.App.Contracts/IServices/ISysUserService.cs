@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Summer.App.Contracts.Dtos;
+﻿using Summer.App.Contracts.Dtos;
 
 namespace Summer.App.Contracts.IServices
 {

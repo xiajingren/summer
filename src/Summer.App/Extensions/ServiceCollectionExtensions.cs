@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Summer.App.Db;
 using Summer.App.Services;
 
-namespace Summer.App.DI
+namespace Summer.App.Extensions
 {
-    public static class AppServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddSummerDbContext(this IServiceCollection services, string connectionString)
         {

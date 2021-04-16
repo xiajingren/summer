@@ -7,7 +7,7 @@ using Summer.App.Contracts.IServices;
 
 namespace Summer.App.Services
 {
-    public class BaseService : IBaseService
+    internal class BaseService : IBaseService
     {
         internal SummerDbContext SummerDbContext { get; }
         internal IServiceProvider ServiceProvider { get; }

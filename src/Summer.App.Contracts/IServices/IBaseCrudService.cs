@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using Summer.App.Contracts.Dtos;
+using System;
 using System.Threading.Tasks;
-using Summer.App.Contracts.Dtos;
 
 namespace Summer.App.Contracts.IServices
 {

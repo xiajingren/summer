@@ -6,9 +6,9 @@ using Microsoft.Extensions.Options;
 using System;
 using VueCliMiddleware;
 
-namespace Summer.Core
+namespace Summer.Core.Extensions
 {
-    public static class SummerApplicationBuilderExtensions
+    public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseSummer(this IApplicationBuilder app)
         {
