@@ -1,26 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Summer.App.Contracts.Dtos;
 using Summer.App.Contracts.IServices;
-using Summer.App.Db;
+using Summer.App.Entities;
+using System;
 
 namespace Summer.App.Services
 {
-    public class SysUserService : BaseService, ISysUserService
+    internal class SysUserService : BaseCrudService<SysUser, BasePagedReqDto, SysUserDto, SysUserDto, SysUserDto>, ISysUserService
     {
-        private readonly ILogger<SysUserService> _logger;
-
-        public SysUserService(ILogger<SysUserService> logger, IServiceProvider serviceProvider) : base(serviceProvider)
+        public SysUserService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            _logger = logger;
+
         }
 
-        public Task Hello()
-        {
-            _logger.LogInformation("Hello!!!");
-            return Task.CompletedTask;
-        }
     }
 }

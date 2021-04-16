@@ -15,17 +15,22 @@ namespace Summer.App.DI
             return services.AddDbContext<SummerDbContext>(options => options.UseSqlite(connectionString));
         }
 
+        public static IServiceCollection AddAutoMapper(this IServiceCollection services)
+        {
+            return services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        }
+
         public static IServiceCollection AddSummerService(this IServiceCollection services)
         {
             var types = Assembly.GetExecutingAssembly()
-                ?.DefinedTypes.Where(p => p.IsAssignableTo(typeof(BaseService))).ToList();
+                ?.DefinedTypes.Where(p => p.IsAssignableTo(typeof(BaseService)) && !p.Name.StartsWith("Base")).ToList();
 
             foreach (var type in types)
             {
-                var topType = type.ImplementedInterfaces.FirstOrDefault(p => p.Name.EndsWith("Service"))?.GetTypeInfo();
-                if (topType == null) continue;
+                var serviceType = type.ImplementedInterfaces.FirstOrDefault(p => !p.Name.StartsWith("IBase") && p.Name.EndsWith("Service"))?.GetTypeInfo();
+                if (serviceType == null) continue;
 
-                services.TryAddScoped(topType, type);
+                services.TryAddScoped(serviceType, type);
             }
 
             return services;

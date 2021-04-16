@@ -78,6 +78,7 @@ namespace Summer.Core.DI
             services.AddSingleton<IJwtTokenHelper, JwtTokenHelper>();
 
             services.AddSummerDbContext(summerOptions.ConnectionStrings["Default"]);
+            services.AddAutoMapper();
             services.AddSummerService();
 
             return services;
