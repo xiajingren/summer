@@ -52,6 +52,7 @@ namespace Summer.Web.Areas.Sys.Controllers
         [HttpGet("[action]")]
         public async Task<BaseDto<SysUserDto>> Mine()
         {
+            //todo:当前登录用户 服务
             var id = User?.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
             if (id == null) return null;
 

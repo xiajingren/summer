@@ -29,6 +29,7 @@ namespace Summer.Web.Controllers
                 return BaseDto<JwtToken>.CreateFailInstance(null, result.Message);
             }
 
+            //todo:
             var token = _jwtTokenHelper.CreateJwtToken(new JwtUser() { Id = result.Data.Id.Value, });
             return BaseDto<JwtToken>.CreateOkInstance(token);
         }
