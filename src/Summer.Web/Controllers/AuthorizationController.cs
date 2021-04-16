@@ -3,6 +3,7 @@ using Summer.App.Contracts.Dtos;
 using Summer.Core.Jwt;
 using System;
 using System.Threading.Tasks;
+using Summer.App.Contracts.IServices;
 
 namespace Summer.Web.Controllers
 {
@@ -11,17 +12,26 @@ namespace Summer.Web.Controllers
     public class AuthorizationController : ControllerBase
     {
         private readonly IJwtTokenHelper _jwtTokenHelper;
+        private readonly ISysUserService _sysUserService;
 
-        public AuthorizationController(IJwtTokenHelper jwtTokenHelper)
+        public AuthorizationController(IJwtTokenHelper jwtTokenHelper, ISysUserService sysUserService)
         {
             _jwtTokenHelper = jwtTokenHelper;
+            _sysUserService = sysUserService;
         }
 
-        [HttpPost]
-        public Task<BaseDto<JwtToken>> Token(SysUserDto value)
+        [HttpPost("[action]")]
+        public async Task<BaseDto<JwtToken>> Token(LoginDto value)
         {
-            var token = _jwtTokenHelper.CreateJwtToken(new JwtUser() { Id = Guid.NewGuid() });
-            return Task.FromResult(BaseDto<JwtToken>.CreateOkInstance(token));
+            var result = await _sysUserService.Login(value);
+            if (result.Code == 0)
+            {
+                return BaseDto<JwtToken>.CreateFailInstance(null, result.Message);
+            }
+
+            var token = _jwtTokenHelper.CreateJwtToken(new JwtUser() { Id = result.Data.Id.Value, });
+            return BaseDto<JwtToken>.CreateOkInstance(token);
         }
+
     }
 }

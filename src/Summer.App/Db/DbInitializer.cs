@@ -25,10 +25,10 @@ namespace Summer.App.Db
 
             var sysUsers = new SysUser[]
             {
-                new SysUser() {UserName = "admin", Password = "123456"},
+                new SysUser() {UserName = "admin", Password = "123456", Name = "小黑"},
             };
             await _summerDbContext.SysUsers.AddRangeAsync(sysUsers);
-            
+
             await _summerDbContext.SaveChangesAsync();
         }
     }

@@ -9,7 +9,7 @@ using Summer.App.Db;
 namespace Summer.App.Migrations
 {
     [DbContext(typeof(SummerDbContext))]
-    [Migration("20210415145718_InitialCreate")]
+    [Migration("20210416091016_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,9 @@ namespace Summer.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")

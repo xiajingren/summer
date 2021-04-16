@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using Summer.App.Contracts.Dtos;
 using Summer.App.Contracts.IServices;
@@ -46,6 +47,17 @@ namespace Summer.Web.Areas.Sys.Controllers
         public async Task<BaseDto<SysUserDto>> Delete(Guid id)
         {
             return await _sysUserService.Delete(id);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<BaseDto<SysUserDto>> Mine()
+        {
+            var id = User?.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+            if (id == null) return null;
+
+            var userId = Guid.Parse(id);
+
+            return await _sysUserService.Get(userId);
         }
 
     }

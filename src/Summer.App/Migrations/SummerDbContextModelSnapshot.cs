@@ -25,6 +25,9 @@ namespace Summer.App.Migrations
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Password")
                         .HasColumnType("TEXT");
 
