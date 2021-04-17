@@ -1,7 +1,10 @@
-﻿namespace Summer.WebTools.Tools.Generator
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Summer.WebTools.Tools.Generator
 {
     public interface IProjectGenerator
     {
-        public byte[] MakeProject(MakeProjectOptions options);
+        public Task<byte[]> MakeProject(ProjectModel projectModel);
     }
 }

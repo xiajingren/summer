@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Summer.WebTools.Tools.Generator;
 
 namespace Summer.WebTools.Controllers
@@ -18,10 +19,11 @@ namespace Summer.WebTools.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Make(MakeProjectOptions value)
+        //[HttpPost]
+        public async Task<IActionResult> Make(ProjectModel value)
         {
-            return File(_projectGenerator.MakeProject(value), "application/octet-stream", value.ProjectName + ".zip");
+            return File(await _projectGenerator.MakeProject(value), "application/octet-stream",
+                value.ProjectName + ".zip");
         }
     }
 }
