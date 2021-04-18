@@ -29,7 +29,6 @@ namespace Summer.WebTools.Tools.Generator
                 {
                     await using (var zipOutputStream = new ZipOutputStream(fileStream))
                     {
-                        zipOutputStream.SetLevel(3);
                         ZipEntry sourceEntry;
                         while ((sourceEntry = zipInputStream.GetNextEntry()) != null)
                         {
@@ -55,6 +54,7 @@ namespace Summer.WebTools.Tools.Generator
 
                             var streamWriter = new StreamWriter(zipOutputStream);
                             await streamWriter.WriteAsync(entryModel.Content);
+                            await streamWriter.FlushAsync();
                         }
                     }
                 }
