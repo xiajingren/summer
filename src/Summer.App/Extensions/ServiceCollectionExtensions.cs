@@ -22,8 +22,10 @@ namespace Summer.App.Extensions
 
         public static IServiceCollection AddSummerService(this IServiceCollection services)
         {
+            //var types = Assembly.GetExecutingAssembly()
+            //    ?.DefinedTypes.Where(p => p.IsAssignableTo(typeof(BaseService)) && !p.Name.StartsWith("Base")).ToList();
             var types = Assembly.GetExecutingAssembly()
-                ?.DefinedTypes.Where(p => p.IsAssignableTo(typeof(BaseService)) && !p.Name.StartsWith("Base")).ToList();
+                ?.DefinedTypes.Where(p => !p.Name.StartsWith("Base") && p.Name.EndsWith("Service")).ToList();
 
             foreach (var type in types)
             {

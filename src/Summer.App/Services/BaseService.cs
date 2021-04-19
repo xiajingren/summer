@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Summer.App.Db;
 using System;
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Summer.App.Contracts.IServices;
