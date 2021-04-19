@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Summer.App.Services
 {
-    internal class SysUserService : BaseCrudService<SysUser, BasePagedReqDto, SysUserDto, SysUserDto, SysUserDto>, ISysUserService
+    internal class SysUserService : BaseCrudService<SysUser, SysUserDto>, ISysUserService
     {
         public SysUserService(IServiceProvider serviceProvider) : base(serviceProvider)
         {

@@ -4,6 +4,19 @@ using System.Threading.Tasks;
 
 namespace Summer.App.Contracts.IServices
 {
+    public interface IBaseCrudService<TDto> : IBaseCrudService<BasePagedReqDto, TDto, TDto, TDto>
+        where TDto : class
+    {
+
+    }
+
+    public interface IBaseCrudService<in TPagedReqDto, TDto> : IBaseCrudService<TPagedReqDto, TDto, TDto, TDto>
+        where TPagedReqDto : BasePagedReqDto
+        where TDto : class
+    {
+
+    }
+
     public interface IBaseCrudService<in TPagedReqDto, in TCreateDto, in TUpdateDto, TDto> : IBaseService
         where TPagedReqDto : BasePagedReqDto
         where TCreateDto : class

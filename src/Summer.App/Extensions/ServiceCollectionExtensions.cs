@@ -27,7 +27,7 @@ namespace Summer.App.Extensions
 
             foreach (var type in types)
             {
-                var serviceType = type.ImplementedInterfaces.FirstOrDefault(p => !p.Name.StartsWith("IBase") && p.Name.EndsWith("Service"))?.GetTypeInfo();
+                var serviceType = type.ImplementedInterfaces.FirstOrDefault(p => p.Name == $"I{type.Name}")?.GetTypeInfo();
                 if (serviceType == null) continue;
 
                 services.TryAddScoped(serviceType, type);

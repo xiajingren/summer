@@ -9,17 +9,15 @@ namespace Summer.App.Services
 {
     internal class BaseService : IBaseService
     {
-        internal SummerDbContext SummerDbContext { get; }
         internal IServiceProvider ServiceProvider { get; }
-        internal ILogger Logger { get; }
-        internal IMapper Mapper { get; }
+
+        internal SummerDbContext SummerDbContext => ServiceProvider.GetRequiredService<SummerDbContext>();
+        internal ILogger Logger => ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(GetType());
+        internal IMapper Mapper => ServiceProvider.GetRequiredService<IMapper>();
 
         public BaseService(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
-            SummerDbContext = serviceProvider.GetRequiredService<SummerDbContext>();
-            Logger = serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(GetType());
-            Mapper = serviceProvider.GetRequiredService<IMapper>();
         }
     }
 }

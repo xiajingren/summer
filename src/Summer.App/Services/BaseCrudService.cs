@@ -10,6 +10,27 @@ using Summer.App.Contracts.IServices;
 
 namespace Summer.App.Services
 {
+    internal class BaseCrudService<TEntity, TDto> : BaseCrudService<TEntity, BasePagedReqDto, TDto, TDto, TDto>
+        where TEntity : BaseEntity
+        where TDto : class
+    {
+        public BaseCrudService(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+
+        }
+    }
+
+    internal class BaseCrudService<TEntity, TPagedReqDto, TDto> : BaseCrudService<TEntity, TPagedReqDto, TDto, TDto, TDto>
+        where TEntity : BaseEntity
+        where TPagedReqDto : BasePagedReqDto
+        where TDto : class
+    {
+        public BaseCrudService(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+
+        }
+    }
+
     internal class BaseCrudService<TEntity, TPagedReqDto, TCreateDto, TUpdateDto, TDto> : BaseService, IBaseCrudService<TPagedReqDto, TCreateDto, TUpdateDto, TDto>
         where TEntity : BaseEntity
         where TPagedReqDto : BasePagedReqDto
