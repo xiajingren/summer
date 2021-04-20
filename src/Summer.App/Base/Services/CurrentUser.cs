@@ -2,10 +2,10 @@
 using System.Security.Claims;
 using System.Security.Principal;
 using Microsoft.Extensions.DependencyInjection;
-using Summer.App.Contracts.Dtos;
-using Summer.App.Contracts.IServices;
+using Summer.App.Contracts.Base.Dtos;
+using Summer.App.Contracts.Base.IServices;
 
-namespace Summer.App.Services
+namespace Summer.App.Base.Services
 {
     internal class CurrentUser : ICurrentUser
     {

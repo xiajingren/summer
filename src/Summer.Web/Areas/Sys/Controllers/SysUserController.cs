@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
-using Summer.App.Contracts.Dtos;
-using Summer.App.Contracts.IServices;
 using System.Threading.Tasks;
+using Summer.App.Contracts.Base.Dtos;
+using Summer.App.Contracts.Business.Dtos;
+using Summer.App.Contracts.Business.IServices;
 
 namespace Summer.Web.Areas.Sys.Controllers
 {

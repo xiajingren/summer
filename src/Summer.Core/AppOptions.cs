@@ -2,7 +2,7 @@
 
 namespace Summer.Core
 {
-    public class SummerOptions
+    public class AppOptions
     {
         /// <summary>
         /// 生产环境禁用swagger

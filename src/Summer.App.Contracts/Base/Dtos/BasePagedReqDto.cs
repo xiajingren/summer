@@ -1,4 +1,4 @@
-﻿namespace Summer.App.Contracts.Dtos
+﻿namespace Summer.App.Contracts.Base.Dtos
 {
     public class BasePagedReqDto
     {

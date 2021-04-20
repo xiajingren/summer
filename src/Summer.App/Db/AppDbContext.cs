@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Summer.App.Entities;
+using Summer.App.Business.Entities;
 
 namespace Summer.App.Db
 {
-    internal class SummerDbContext : DbContext
+    internal class AppDbContext : DbContext
     {
-        public SummerDbContext(DbContextOptions<SummerDbContext> options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
 

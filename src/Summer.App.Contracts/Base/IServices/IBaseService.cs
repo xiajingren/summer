@@ -1,4 +1,4 @@
-﻿namespace Summer.App.Contracts.IServices
+﻿namespace Summer.App.Contracts.Base.IServices
 {
     public interface IBaseService
     {

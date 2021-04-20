@@ -8,7 +8,7 @@ using Summer.App.Db;
 
 namespace Summer.App.Migrations
 {
-    [DbContext(typeof(SummerDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20210416091016_InitialCreate")]
     partial class InitialCreate
     {

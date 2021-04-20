@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Summer.App.Db;
-using Summer.App.Services;
+using System.Linq;
+using System.Reflection;
 
 namespace Summer.App.Extensions
 {
@@ -12,7 +11,7 @@ namespace Summer.App.Extensions
     {
         public static IServiceCollection AddSummerDbContext(this IServiceCollection services, string connectionString)
         {
-            return services.AddDbContext<SummerDbContext>(options => options.UseSqlite(connectionString));
+            return services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
         }
 
         public static IServiceCollection AddAutoMapper(this IServiceCollection services)

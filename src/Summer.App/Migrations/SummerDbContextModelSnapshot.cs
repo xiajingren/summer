@@ -7,7 +7,7 @@ using Summer.App.Db;
 
 namespace Summer.App.Migrations
 {
-    [DbContext(typeof(SummerDbContext))]
+    [DbContext(typeof(AppDbContext))]
     partial class SummerDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

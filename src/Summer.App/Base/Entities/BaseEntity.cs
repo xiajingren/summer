@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Summer.App.Entities
+namespace Summer.App.Base.Entities
 {
     internal class BaseEntity
     {

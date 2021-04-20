@@ -2,34 +2,34 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Summer.App.Entities;
+using Summer.App.Business.Entities;
 
 namespace Summer.App.Db
 {
     public class DbInitializer
     {
-        private readonly SummerDbContext _summerDbContext;
+        private readonly AppDbContext _appDbContext;
 
         public DbInitializer(IServiceProvider serviceProvider)
         {
-            _summerDbContext = serviceProvider.GetRequiredService<SummerDbContext>();
+            _appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
         }
 
         public async Task Initialize()
         {
-            await _summerDbContext.Database.MigrateAsync();
+            await _appDbContext.Database.MigrateAsync();
 
             //todo: 初始化种子数据
-            if (await _summerDbContext.SysUsers.AnyAsync())
+            if (await _appDbContext.SysUsers.AnyAsync())
                 return;
 
             var sysUsers = new SysUser[]
             {
                 new SysUser() {UserName = "admin", Password = "123456", Name = "小黑"},
             };
-            await _summerDbContext.SysUsers.AddRangeAsync(sysUsers);
+            await _appDbContext.SysUsers.AddRangeAsync(sysUsers);
 
-            await _summerDbContext.SaveChangesAsync();
+            await _appDbContext.SaveChangesAsync();
         }
     }
 }

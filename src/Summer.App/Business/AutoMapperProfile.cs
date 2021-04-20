@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Summer.App.Contracts.Dtos;
-using Summer.App.Entities;
+using Summer.App.Business.Entities;
+using Summer.App.Contracts.Business.Dtos;
 
-namespace Summer.App
+namespace Summer.App.Business
 {
     public class AutoMapperProfile : Profile
     {

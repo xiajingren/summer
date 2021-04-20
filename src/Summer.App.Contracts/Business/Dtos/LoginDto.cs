@@ -1,4 +1,4 @@
-﻿namespace Summer.App.Contracts.Dtos
+﻿namespace Summer.App.Contracts.Business.Dtos
 {
     public class LoginDto
     {

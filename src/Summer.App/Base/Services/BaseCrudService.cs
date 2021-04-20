@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Summer.App.Contracts.Dtos;
-using Summer.App.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Summer.App.Contracts.IServices;
+using Microsoft.EntityFrameworkCore;
+using Summer.App.Base.Entities;
+using Summer.App.Business.Entities;
+using Summer.App.Contracts.Base.Dtos;
+using Summer.App.Contracts.Base.IServices;
 
-namespace Summer.App.Services
+namespace Summer.App.Base.Services
 {
     internal class BaseCrudService<TEntity, TDto> : BaseCrudService<TEntity, BasePagedReqDto, TDto, TDto, TDto>
         where TEntity : BaseEntity
@@ -55,7 +56,7 @@ namespace Summer.App.Services
 
         public virtual async Task<BaseDto<BasePagedDto<TDto>>> Get(TPagedReqDto value)
         {
-            var models = SummerDbContext.Set<TEntity>().Where(GetQueryWhere(value));
+            var models = AppDbContext.Set<TEntity>().Where(GetQueryWhere(value));
 
             var include = GetInclude();
             if (include != null)
@@ -76,7 +77,7 @@ namespace Summer.App.Services
 
         public virtual async Task<BaseDto<TDto>> Get(Guid id)
         {
-            var models = SummerDbContext.Set<TEntity>().AsNoTracking();
+            var models = AppDbContext.Set<TEntity>().AsNoTracking();
 
             var include = GetInclude();
             if (include != null)
@@ -92,29 +93,29 @@ namespace Summer.App.Services
         public virtual async Task<BaseDto<TDto>> Create(TCreateDto value)
         {
             var model = Mapper.Map<TEntity>(value);
-            await SummerDbContext.Set<TEntity>().AddAsync(model);
+            await AppDbContext.Set<TEntity>().AddAsync(model);
 
-            return await SummerDbContext.SaveChangesAsync() > 0
+            return await AppDbContext.SaveChangesAsync() > 0
                 ? BaseDto<TDto>.CreateOkInstance(Mapper.Map<TDto>(model))
                 : BaseDto<TDto>.CreateFailInstance(null);
         }
 
         public virtual async Task<BaseDto<TDto>> Update(Guid id, TUpdateDto value)
         {
-            var model = await SummerDbContext.Set<TEntity>().SingleOrDefaultAsync(p => p.Id == id);
+            var model = await AppDbContext.Set<TEntity>().SingleOrDefaultAsync(p => p.Id == id);
             model = Mapper.Map(value, model);
 
-            return await SummerDbContext.SaveChangesAsync() > 0
+            return await AppDbContext.SaveChangesAsync() > 0
                 ? BaseDto<TDto>.CreateOkInstance(Mapper.Map<TDto>(model))
                 : BaseDto<TDto>.CreateFailInstance(null);
         }
 
         public virtual async Task<BaseDto<TDto>> Delete(Guid id)
         {
-            var model = await SummerDbContext.Set<TEntity>().SingleOrDefaultAsync(p => p.Id == id);
-            SummerDbContext.Set<TEntity>().Remove(model);
+            var model = await AppDbContext.Set<TEntity>().SingleOrDefaultAsync(p => p.Id == id);
+            AppDbContext.Set<TEntity>().Remove(model);
 
-            return await SummerDbContext.SaveChangesAsync() > 0
+            return await AppDbContext.SaveChangesAsync() > 0
                 ? BaseDto<TDto>.CreateOkInstance(Mapper.Map<TDto>(model))
                 : BaseDto<TDto>.CreateFailInstance(null);
         }

@@ -1,8 +1,8 @@
-﻿using Summer.App.Contracts.Dtos;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Summer.App.Contracts.Base.Dtos;
 
-namespace Summer.App.Contracts.IServices
+namespace Summer.App.Contracts.Base.IServices
 {
     public interface IBaseCrudService<TDto> : IBaseCrudService<BasePagedReqDto, TDto, TDto, TDto>
         where TDto : class

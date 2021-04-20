@@ -1,7 +1,7 @@
-﻿using Summer.App.Contracts.Dtos;
-using System;
+﻿using System;
+using Summer.App.Contracts.Base.Dtos;
 
-namespace Summer.App.Contracts.IServices
+namespace Summer.App.Contracts.Base.IServices
 {
     /// <summary>
     /// 当前登录用户

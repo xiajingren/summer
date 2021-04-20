@@ -19,8 +19,8 @@ namespace Summer.Core.Extensions
         {
             var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
 
-            var summerOptions = services.Configure<SummerOptions>(configuration.GetSection("SummerOptions"))
-                .BuildServiceProvider().GetRequiredService<IOptions<SummerOptions>>().Value;
+            var appOptions = services.Configure<AppOptions>(configuration.GetSection(nameof(AppOptions)))
+                .BuildServiceProvider().GetRequiredService<IOptions<AppOptions>>().Value;
 
             services.AddControllersWithViews();
 
@@ -29,7 +29,7 @@ namespace Summer.Core.Extensions
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Summer API", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Summer API", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetEntryAssembly()?.GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -67,16 +67,16 @@ namespace Summer.Core.Extensions
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = summerOptions.JwtOptions.Issuer,
-                        ValidAudience = summerOptions.JwtOptions.Audience,
+                        ValidIssuer = appOptions.JwtOptions.Issuer,
+                        ValidAudience = appOptions.JwtOptions.Audience,
                         IssuerSigningKey =
-                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(summerOptions.JwtOptions.SecurityKey)),
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appOptions.JwtOptions.SecurityKey)),
                     };
                 });
 
             services.AddSingleton<IJwtTokenHelper, JwtTokenHelper>();
 
-            services.AddSummerDbContext(summerOptions.ConnectionStrings["Default"]);
+            services.AddSummerDbContext(appOptions.ConnectionStrings["Default"]);
             services.AddAutoMapper();
             services.AddSummerService();
 

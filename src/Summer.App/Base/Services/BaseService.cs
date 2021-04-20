@@ -1,18 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Summer.App.Db;
-using System;
-using System.Security.Claims;
+﻿using System;
 using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Summer.App.Contracts.IServices;
+using Summer.App.Contracts.Base.IServices;
+using Summer.App.Db;
 
-namespace Summer.App.Services
+namespace Summer.App.Base.Services
 {
     internal class BaseService : IBaseService
     {
         internal IServiceProvider ServiceProvider { get; }
 
-        internal SummerDbContext SummerDbContext => ServiceProvider.GetRequiredService<SummerDbContext>();
+        internal AppDbContext AppDbContext => ServiceProvider.GetRequiredService<AppDbContext>();
         internal ILogger Logger => ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(GetType());
         internal IMapper Mapper => ServiceProvider.GetRequiredService<IMapper>();
 

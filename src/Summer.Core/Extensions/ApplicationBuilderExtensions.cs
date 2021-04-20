@@ -12,7 +12,7 @@ namespace Summer.Core.Extensions
     {
         public static IApplicationBuilder UseSummer(this IApplicationBuilder app)
         {
-            var summerOptions = app.ApplicationServices.GetRequiredService<IOptions<SummerOptions>>().Value;
+            var summerOptions = app.ApplicationServices.GetRequiredService<IOptions<AppOptions>>().Value;
 
             var env = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
 

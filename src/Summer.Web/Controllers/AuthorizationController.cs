@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Summer.App.Contracts.Dtos;
 using Summer.Core.Jwt;
 using System;
 using System.Threading.Tasks;
-using Summer.App.Contracts.IServices;
+using Summer.App.Contracts.Base.Dtos;
+using Summer.App.Contracts.Business.Dtos;
+using Summer.App.Contracts.Business.IServices;
 
 namespace Summer.Web.Controllers
 {

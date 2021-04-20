@@ -1,11 +1,13 @@
-﻿using Summer.App.Contracts.Dtos;
-using Summer.App.Contracts.IServices;
-using Summer.App.Entities;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Summer.App.Base.Services;
+using Summer.App.Business.Entities;
+using Summer.App.Contracts.Base.Dtos;
+using Summer.App.Contracts.Business.Dtos;
+using Summer.App.Contracts.Business.IServices;
 
-namespace Summer.App.Services
+namespace Summer.App.Business.Services
 {
     internal class SysUserService : BaseCrudService<SysUser, SysUserDto>, ISysUserService
     {
@@ -16,7 +18,7 @@ namespace Summer.App.Services
 
         public async Task<BaseDto<SysUserDto>> Login(LoginDto value)
         {
-            var model = await SummerDbContext.SysUsers
+            var model = await AppDbContext.SysUsers
                 .SingleOrDefaultAsync(p => p.UserName == value.UserName && p.Password == value.Password);
 
             if (model == null)
