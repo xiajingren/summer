@@ -25,7 +25,7 @@ namespace Summer.App.Db
 
             var sysUsers = new SysUser[]
             {
-                new SysUser() {UserName = "admin", Password = "123456", Name = "小黑"},
+                new SysUser() {Account = "admin", Password = "123456", Name = "小黑"},
             };
             await _appDbContext.SysUsers.AddRangeAsync(sysUsers);
 

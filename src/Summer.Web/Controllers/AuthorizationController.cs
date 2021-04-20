@@ -12,12 +12,12 @@ namespace Summer.Web.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        private readonly IJwtTokenService _jwtTokenHelper;
+        private readonly IJwtTokenService _jwtTokenService;
         private readonly ISysUserService _sysUserService;
 
-        public AuthorizationController(IJwtTokenService jwtTokenHelper, ISysUserService sysUserService)
+        public AuthorizationController(IJwtTokenService jwtTokenService, ISysUserService sysUserService)
         {
-            _jwtTokenHelper = jwtTokenHelper;
+            _jwtTokenService = jwtTokenService;
             _sysUserService = sysUserService;
         }
 
@@ -31,9 +31,8 @@ namespace Summer.Web.Controllers
             }
 
             //todo:
-            var token = _jwtTokenHelper.CreateJwtToken(new CurrentUserDto() { Id = result.Data.Id.Value, });
+            var token = _jwtTokenService.CreateJwtToken(new CurrentUserDto() {Id = result.Data.Id.Value,});
             return BaseDto<TokenDto>.CreateOkInstance(token);
         }
-
     }
 }

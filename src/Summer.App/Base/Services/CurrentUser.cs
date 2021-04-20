@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Security.Principal;
 using Microsoft.Extensions.DependencyInjection;
+using Summer.App.Contracts.Base.Consts;
 using Summer.App.Contracts.Base.Dtos;
 using Summer.App.Contracts.Base.IServices;
 
@@ -23,8 +24,8 @@ namespace Summer.App.Base.Services
         {
             get
             {
-                var id = ClaimsPrincipal?.FindFirst("id");
-                return id == null ? (Guid?)null : Guid.Parse(id.ToString());
+                var id = ClaimsPrincipal?.FindFirst(AppClaimTypes.Id);
+                return id == null ? (Guid?) null : Guid.Parse(id.ToString());
             }
         }
 
@@ -32,6 +33,5 @@ namespace Summer.App.Base.Services
         {
             throw new NotImplementedException();
         }
-
     }
 }

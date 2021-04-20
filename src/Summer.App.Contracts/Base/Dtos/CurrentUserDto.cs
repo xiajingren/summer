@@ -5,5 +5,7 @@ namespace Summer.App.Contracts.Base.Dtos
     public class CurrentUserDto
     {
         public Guid Id { get; set; }
+
+        public string Account { get; set; }
     }
 }

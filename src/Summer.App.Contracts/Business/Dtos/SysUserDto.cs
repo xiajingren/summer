@@ -8,7 +8,7 @@ namespace Summer.App.Contracts.Business.Dtos
 
         public DateTime CreateTime { get; set; }
 
-        public string UserName { get; set; }
+        public string Account { get; set; }
 
         public string Password { get; set; }
 

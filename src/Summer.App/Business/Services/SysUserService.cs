@@ -19,7 +19,7 @@ namespace Summer.App.Business.Services
         public async Task<BaseDto<SysUserDto>> Login(LoginDto value)
         {
             var model = await AppDbContext.SysUsers
-                .SingleOrDefaultAsync(p => p.UserName == value.UserName && p.Password == value.Password);
+                .SingleOrDefaultAsync(p => p.Account == value.Account && p.Password == value.Password);
 
             if (model == null)
             {
