@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Summer.Core
+namespace Summer.App.Contracts
 {
     public class AppOptions
     {
