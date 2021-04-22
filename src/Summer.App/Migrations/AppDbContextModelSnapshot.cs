@@ -8,7 +8,7 @@ using Summer.App.Db;
 namespace Summer.App.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class SummerDbContextModelSnapshot : ModelSnapshot
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -16,10 +16,13 @@ namespace Summer.App.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.5");
 
-            modelBuilder.Entity("Summer.App.Entities.SysUser", b =>
+            modelBuilder.Entity("Summer.App.Business.Entities.SysUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Account")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreateTime")
@@ -29,9 +32,6 @@ namespace Summer.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

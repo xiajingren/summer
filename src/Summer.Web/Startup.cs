@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using VueCliMiddleware;
 
 namespace Summer.Web
@@ -46,7 +47,7 @@ namespace Summer.Web
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
-                    Description = "在下框中输入请求头中需要添加Jwt授权Token：Bearer Token",
+                    Description = "鍦ㄤ笅妗嗕腑杈撳叆璇锋眰澶翠腑闇�瑕佹坊鍔燡wt鎺堟潈Token锛欱earer Token",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
@@ -84,6 +85,8 @@ namespace Summer.Web
                     };
                 });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
             services.AddSummerDbContext(appOptions.ConnectionStrings["Default"]);
             services.AddAutoMapper();
             services.AddSummerService();

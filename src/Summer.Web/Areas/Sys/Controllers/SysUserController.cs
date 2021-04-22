@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Summer.App.Contracts.Base.Dtos;
+using Summer.App.Contracts.Base.IServices;
 using Summer.App.Contracts.Business.Dtos;
 using Summer.App.Contracts.Business.IServices;
 
@@ -14,10 +15,12 @@ namespace Summer.Web.Areas.Sys.Controllers
     public class SysUserController : ControllerBase
     {
         private readonly ISysUserService _sysUserService;
+        private readonly ICurrentUserService _currentUserService;
 
-        public SysUserController(ISysUserService sysUserService)
+        public SysUserController(ISysUserService sysUserService, ICurrentUserService currentUserService)
         {
             _sysUserService = sysUserService;
+            _currentUserService = currentUserService;
         }
 
         [HttpGet]
@@ -53,14 +56,7 @@ namespace Summer.Web.Areas.Sys.Controllers
         [HttpGet("[action]")]
         public async Task<BaseDto<SysUserDto>> Mine()
         {
-            //todo:当前登录用户 服务
-            var id = User?.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
-            if (id == null) return null;
-
-            var userId = Guid.Parse(id);
-
-            return await _sysUserService.Get(userId);
+            return await _currentUserService.Get();
         }
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using Summer.App.Contracts.Base.Dtos;
 using Summer.App.Contracts.Base.IServices;
@@ -31,7 +30,7 @@ namespace Summer.Web.Controllers
             }
 
             //todo:
-            var token = _jwtTokenService.CreateJwtToken(new CurrentUserDto() {Id = result.Data.Id.Value,});
+            var token = _jwtTokenService.CreateJwtToken(result.Data);
             return BaseDto<TokenDto>.CreateOkInstance(token);
         }
     }

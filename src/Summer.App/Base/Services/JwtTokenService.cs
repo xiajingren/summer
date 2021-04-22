@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Summer.App.Contracts.Base.Consts;
+using Summer.App.Contracts.Business.Dtos;
 
 namespace Summer.App.Base.Services
 {
@@ -20,13 +21,13 @@ namespace Summer.App.Base.Services
             _appOptions = appOptions;
         }
 
-        public TokenDto CreateJwtToken(CurrentUserDto currentUserDto)
+        public TokenDto CreateJwtToken(SysUserDto userDto)
         {
             //创建用户身份标识，可按需要添加更多信息
             var claims = new Claim[]
             {
-                new Claim(AppClaimTypes.Id, currentUserDto.Id.ToString()),
-                new Claim(AppClaimTypes.Account, currentUserDto.Account),
+                new Claim(AppClaimTypes.Id, userDto.Id.ToString()),
+                new Claim(AppClaimTypes.Account, userDto.Account),
                 
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, $"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}"),

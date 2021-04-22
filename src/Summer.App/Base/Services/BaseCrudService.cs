@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Summer.App.Base.Entities;
-using Summer.App.Business.Entities;
 using Summer.App.Contracts.Base.Dtos;
 using Summer.App.Contracts.Base.IServices;
 

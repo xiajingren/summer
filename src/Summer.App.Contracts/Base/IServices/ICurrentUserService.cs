@@ -1,17 +1,14 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using Summer.App.Contracts.Base.Dtos;
+using Summer.App.Contracts.Business.Dtos;
 
 namespace Summer.App.Contracts.Base.IServices
 {
     /// <summary>
     /// 当前登录用户
     /// </summary>
-    public interface ICurrentUser
+    public interface ICurrentUserService
     {
-        public bool IsLogin { get; }
-
-        public Guid? Id { get; }
-
-        CurrentUserDto ToDto();
+        Task<BaseDto<SysUserDto>> Get();
     }
 }
