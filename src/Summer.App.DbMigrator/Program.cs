@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Summer.App.Contracts.Core;
 using Summer.App.Db;
-using Summer.App.Extensions;
 
 namespace Summer.App.DbMigrator
 {
@@ -17,8 +17,11 @@ namespace Summer.App.DbMigrator
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    var appOptions = hostContext.Configuration.GetSection(nameof(AppOptions)).Get<AppOptions>();
+                    services.AddSingleton(appOptions);
+
                     services.AddHostedService<DbMigrateService>()
-                        .AddSummerDbContext()
+                        .AddSummer()
                         .AddSingleton<DbInitializer>();
                 });
     }

@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using Summer.App.Contracts.Base.Consts;
 using Summer.App.Contracts.Business.Dtos;
+using Summer.App.Contracts.Core;
 
 namespace Summer.App.Base.Services
 {

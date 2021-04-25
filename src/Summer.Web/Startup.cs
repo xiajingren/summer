@@ -6,13 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Summer.App.Contracts;
-using Summer.App.Extensions;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Summer.App.Contracts.Core;
 using VueCliMiddleware;
 
 namespace Summer.Web
@@ -87,9 +86,7 @@ namespace Summer.Web
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
-            services.AddSummerDbContext();
-            services.AddAutoMapper();
-            services.AddSummerService();
+            services.AddSummer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
