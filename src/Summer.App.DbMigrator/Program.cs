@@ -18,7 +18,7 @@ namespace Summer.App.DbMigrator
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<DbMigrateService>()
-                        .AddSummerDbContext(hostContext.Configuration.GetConnectionString("Default"))
+                        .AddSummerDbContext()
                         .AddSingleton<DbInitializer>();
                 });
     }

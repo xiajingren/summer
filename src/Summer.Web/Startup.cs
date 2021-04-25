@@ -87,7 +87,7 @@ namespace Summer.Web
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
-            services.AddSummerDbContext(appOptions.ConnectionStrings["Default"]);
+            services.AddSummerDbContext();
             services.AddAutoMapper();
             services.AddSummerService();
         }

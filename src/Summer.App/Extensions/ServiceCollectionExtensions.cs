@@ -4,14 +4,18 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Summer.App.Db;
 using System.Linq;
 using System.Reflection;
+using Summer.App.Contracts;
 
 namespace Summer.App.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddSummerDbContext(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddSummerDbContext(this IServiceCollection services)
         {
-            return services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
+            var appOptions = services.BuildServiceProvider().GetRequiredService<AppOptions>();
+            
+            return services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite(appOptions.ConnectionStrings["Default"]));
         }
 
         public static IServiceCollection AddAutoMapper(this IServiceCollection services)
@@ -28,7 +32,8 @@ namespace Summer.App.Extensions
 
             foreach (var type in types)
             {
-                var serviceType = type.ImplementedInterfaces.FirstOrDefault(p => p.Name == $"I{type.Name}")?.GetTypeInfo();
+                var serviceType = type.ImplementedInterfaces.FirstOrDefault(p => p.Name == $"I{type.Name}")
+                    ?.GetTypeInfo();
                 if (serviceType == null) continue;
 
                 services.TryAddScoped(serviceType, type);
@@ -36,6 +41,5 @@ namespace Summer.App.Extensions
 
             return services;
         }
-
     }
 }
