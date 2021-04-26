@@ -13,7 +13,6 @@ namespace Summer.App.Business.Services
     {
         public SysUserService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-
         }
 
         public async Task<BaseDto<SysUserDto>> Login(LoginDto value)
@@ -21,13 +20,9 @@ namespace Summer.App.Business.Services
             var model = await AppDbContext.SysUsers
                 .SingleOrDefaultAsync(p => p.Account == value.Account && p.Password == value.Password);
 
-            if (model == null)
-            {
-                return BaseDto<SysUserDto>.CreateFailInstance(null, "登录失败，用户名或密码错误");
-            }
-
-            return BaseDto<SysUserDto>.CreateOkInstance(Mapper.Map<SysUserDto>(model));
+            return model == null
+                ? Fail<SysUserDto>(null, "登录失败，用户名或密码错误")
+                : Ok(Mapper.Map<SysUserDto>(model));
         }
-
     }
 }

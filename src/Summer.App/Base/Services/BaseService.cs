@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Summer.App.Contracts.Base.Dtos;
 using Summer.App.Contracts.Base.IServices;
 using Summer.App.Db;
 
@@ -18,6 +20,16 @@ namespace Summer.App.Base.Services
         public BaseService(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
+        }
+
+        public virtual BaseDto<TDto> Ok<TDto>(TDto dto, string message = "操作成功") where TDto : class
+        {
+            return BaseDto<TDto>.CreateOkInstance(dto, message);
+        }
+
+        public virtual BaseDto<TDto> Fail<TDto>(TDto dto, string message = "操作失败") where TDto : class
+        {
+            return BaseDto<TDto>.CreateFailInstance(dto, message);
         }
     }
 }

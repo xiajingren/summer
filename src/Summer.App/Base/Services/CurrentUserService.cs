@@ -38,8 +38,8 @@ namespace Summer.App.Base.Services
         {
             var user = await GetEntity();
             return user == null
-                ? BaseDto<SysUserDto>.CreateFailInstance(null)
-                : BaseDto<SysUserDto>.CreateOkInstance(Mapper.Map<SysUserDto>(user));
+                ? Fail<SysUserDto>(null)
+                : Ok(Mapper.Map<SysUserDto>(user));
         }
     }
 }

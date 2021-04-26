@@ -16,22 +16,22 @@ namespace Summer.App.Base.Services
     {
         public BaseCrudService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-
         }
     }
 
-    internal class BaseCrudService<TEntity, TPagedReqDto, TDto> : BaseCrudService<TEntity, TPagedReqDto, TDto, TDto, TDto>
+    internal class
+        BaseCrudService<TEntity, TPagedReqDto, TDto> : BaseCrudService<TEntity, TPagedReqDto, TDto, TDto, TDto>
         where TEntity : BaseEntity
         where TPagedReqDto : BasePagedReqDto
         where TDto : class
     {
         public BaseCrudService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-
         }
     }
 
-    internal class BaseCrudService<TEntity, TPagedReqDto, TCreateDto, TUpdateDto, TDto> : BaseService, IBaseCrudService<TPagedReqDto, TCreateDto, TUpdateDto, TDto>
+    internal class BaseCrudService<TEntity, TPagedReqDto, TCreateDto, TUpdateDto, TDto> : BaseService,
+        IBaseCrudService<TPagedReqDto, TCreateDto, TUpdateDto, TDto>
         where TEntity : BaseEntity
         where TPagedReqDto : BasePagedReqDto
         where TCreateDto : class
@@ -40,53 +40,41 @@ namespace Summer.App.Base.Services
     {
         public BaseCrudService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-
         }
 
-        public virtual Expression<Func<TEntity, bool>> GetQueryWhere(BasePagedReqDto value)
+        /// <summary>
+        /// 用作 条件过滤，导航属性Include ...
+        /// </summary>
+        /// <param name="pagedReqDto"></param>
+        /// <returns></returns>
+        public virtual IQueryable<TEntity> GetQueryable(TPagedReqDto pagedReqDto = null)
         {
-            return p => true;
+            return AppDbContext.Set<TEntity>().AsQueryable();
         }
 
-        public virtual string[] GetInclude()
+        public virtual async Task<BaseDto<BasePagedDto<TDto>>> Get(TPagedReqDto pagedReqDto)
         {
-            return null;
-        }
+            var models = GetQueryable(pagedReqDto);
 
-        public virtual async Task<BaseDto<BasePagedDto<TDto>>> Get(TPagedReqDto value)
-        {
-            var models = AppDbContext.Set<TEntity>().Where(GetQueryWhere(value));
+            var pagedDto = new BasePagedDto<TDto> {Total = models.Count()};
 
-            var include = GetInclude();
-            if (include != null)
-            {
-                models = include.Aggregate(models, (current, s) => current.Include(s));
-            }
-
-            var pagedDto = new BasePagedDto<TDto> { Total = models.Count() };
-
-            models = models.OrderByDescending(p => p.CreateTime).Skip((value.PageIndex - 1) * value.PageSize)
-                .Take(value.PageSize);
+            models = models.OrderByDescending(p => p.CreateTime)
+                .Skip((pagedReqDto.PageIndex - 1) * pagedReqDto.PageSize)
+                .Take(pagedReqDto.PageSize);
             var data = await models.ToListAsync();
 
             pagedDto.List = Mapper.Map<IEnumerable<TDto>>(data);
 
-            return BaseDto<BasePagedDto<TDto>>.CreateOkInstance(pagedDto);
+            return Ok(pagedDto);
         }
 
         public virtual async Task<BaseDto<TDto>> Get(Guid id)
         {
-            var models = AppDbContext.Set<TEntity>().AsNoTracking();
-
-            var include = GetInclude();
-            if (include != null)
-            {
-                models = include.Aggregate(models, (current, s) => current.Include(s));
-            }
+            var models = GetQueryable();
 
             var model = await models.SingleOrDefaultAsync(p => p.Id == id);
 
-            return BaseDto<TDto>.CreateOkInstance(Mapper.Map<TDto>(model));
+            return Ok(Mapper.Map<TDto>(model));
         }
 
         public virtual async Task<BaseDto<TDto>> Create(TCreateDto value)
@@ -95,29 +83,28 @@ namespace Summer.App.Base.Services
             await AppDbContext.Set<TEntity>().AddAsync(model);
 
             return await AppDbContext.SaveChangesAsync() > 0
-                ? BaseDto<TDto>.CreateOkInstance(Mapper.Map<TDto>(model))
-                : BaseDto<TDto>.CreateFailInstance(null);
+                ? Ok(Mapper.Map<TDto>(model))
+                : Fail<TDto>(null);
         }
 
         public virtual async Task<BaseDto<TDto>> Update(Guid id, TUpdateDto value)
         {
-            var model = await AppDbContext.Set<TEntity>().SingleOrDefaultAsync(p => p.Id == id);
+            var model = await GetQueryable().SingleOrDefaultAsync(p => p.Id == id);
             model = Mapper.Map(value, model);
 
             return await AppDbContext.SaveChangesAsync() > 0
-                ? BaseDto<TDto>.CreateOkInstance(Mapper.Map<TDto>(model))
-                : BaseDto<TDto>.CreateFailInstance(null);
+                ? Ok(Mapper.Map<TDto>(model))
+                : Fail<TDto>(null);
         }
 
         public virtual async Task<BaseDto<TDto>> Delete(Guid id)
         {
-            var model = await AppDbContext.Set<TEntity>().SingleOrDefaultAsync(p => p.Id == id);
+            var model = await GetQueryable().SingleOrDefaultAsync(p => p.Id == id);
             AppDbContext.Set<TEntity>().Remove(model);
 
             return await AppDbContext.SaveChangesAsync() > 0
-                ? BaseDto<TDto>.CreateOkInstance(Mapper.Map<TDto>(model))
-                : BaseDto<TDto>.CreateFailInstance(null);
+                ? Ok(Mapper.Map<TDto>(model))
+                : Fail<TDto>(null);
         }
-
     }
 }
