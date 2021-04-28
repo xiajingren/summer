@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Summer.App.Base.Entities;
@@ -49,7 +48,7 @@ namespace Summer.App.Base.Services
         /// <returns></returns>
         public virtual IQueryable<TEntity> GetQueryable(TPagedReqDto pagedReqDto = null)
         {
-            return AppDbContext.Set<TEntity>().AsQueryable();
+            return AppDbContext.Set<TEntity>().AsNoTracking();
         }
 
         public virtual async Task<BaseDto<BasePagedDto<TDto>>> Get(TPagedReqDto pagedReqDto)
