@@ -16,11 +16,6 @@ namespace Summer.App.Db
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<SysUser>(b =>
-            {
-                b.ToTable("SysUsers");
-            });
         }
 
     }

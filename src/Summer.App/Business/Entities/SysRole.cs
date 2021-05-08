@@ -5,18 +5,10 @@ using Summer.App.Base.Entities;
 namespace Summer.App.Business.Entities
 {
     /// <summary>
-    /// 用户
+    /// 角色
     /// </summary>
-    internal class SysUser : BaseEntity
+    internal class SysRole : BaseEntity
     {
-        [Required]
-        [StringLength(20)]
-        public string Account { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Password { get; set; }
-
         [Required]
         [StringLength(20)]
         public string Name { get; set; }
@@ -24,6 +16,6 @@ namespace Summer.App.Business.Entities
         [Required]
         public bool IsStatic { get; set; }
 
-        public ICollection<SysRole> SysRoles { get; set; }
+        public ICollection<SysUser> SysUsers { get; set; }
     }
 }
