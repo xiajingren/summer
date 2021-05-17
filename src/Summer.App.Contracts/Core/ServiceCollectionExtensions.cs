@@ -19,6 +19,8 @@ namespace Summer.App.Contracts.Core
             var types = Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Summer.App.dll"))
                 .GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IAppStartup))).ToArray();
 
+            services = services.AddSingleton<AppPermission>();
+
             foreach (var type in types)
             {
                 var appStartup = Activator.CreateInstance(type) as IAppStartup;
