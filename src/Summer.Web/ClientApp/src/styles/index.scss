@@ -63,3 +63,10 @@ div:focus {
 .app-container {
   padding: 20px;
 }
+
+.filter-container{
+  margin: 10px 0;
+  .filter-item{
+    margin: 0 5px;
+  }
+}

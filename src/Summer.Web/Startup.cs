@@ -84,8 +84,8 @@ namespace Summer.Web
                     };
                 });
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddSummer();
         }
 

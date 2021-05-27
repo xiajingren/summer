@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Summer.App.Db;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Summer.App.Contracts.Core;
 
 
@@ -35,7 +37,16 @@ namespace Summer.App.Core
                 services.TryAddScoped(serviceType, type);
             }
 
+            services.AddHttpContextAccessor();
+            services.AddSingleton<DbInitializer>();
+
             return services;
+        }
+
+        public async Task Start(IServiceProvider serviceProvider)
+        {
+            var dbInitializer = serviceProvider.GetRequiredService<DbInitializer>();
+            await dbInitializer.Initialize();
         }
     }
 }

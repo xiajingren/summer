@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Summer.App.Business.Entities;
@@ -17,7 +18,10 @@ namespace Summer.App.Db
 
         public async Task Initialize()
         {
-            await _appDbContext.Database.MigrateAsync();
+            if ((await _appDbContext.Database.GetPendingMigrationsAsync()).Any())
+            {
+                await _appDbContext.Database.MigrateAsync();
+            }
 
             //todo: 初始化种子数据
             if (await _appDbContext.SysUsers.AnyAsync())
