@@ -24,37 +24,37 @@ namespace Summer.Web.Areas.Sys.Controllers
         }
 
         [HttpGet]
-        public async Task<BaseDto<BasePagedDto<SysUserDto>>> Get([FromQuery] BasePagedReqDto value)
+        public async Task<OutputDto<PagedOutputDto<SysUserDto>>> Get([FromQuery] PagedInputDto value)
         {
             return await _sysUserService.Get(value);
         }
 
         [HttpGet("{id}")]
-        public async Task<BaseDto<SysUserDto>> Get(Guid id)
+        public async Task<OutputDto<SysUserDto>> Get(Guid id)
         {
             return await _sysUserService.Get(id);
         }
 
         [HttpPost]
-        public async Task<BaseDto<SysUserDto>> Post([FromBody] SysUserDto value)
+        public async Task<OutputDto<SysUserDto>> Post([FromBody] SysUserDto value)
         {
             return await _sysUserService.Create(value);
         }
 
         [HttpPut("{id}")]
-        public async Task<BaseDto<SysUserDto>> Put(Guid id, [FromBody] SysUserDto value)
+        public async Task<OutputDto<SysUserDto>> Put(Guid id, [FromBody] SysUserDto value)
         {
             return await _sysUserService.Update(id, value);
         }
 
         [HttpDelete("{id}")]
-        public async Task<BaseDto<SysUserDto>> Delete(Guid id)
+        public async Task<OutputDto<SysUserDto>> Delete(Guid id)
         {
             return await _sysUserService.Delete(id);
         }
 
         [HttpGet("[action]")]
-        public async Task<BaseDto<SysUserDto>> Mine()
+        public async Task<OutputDto<SysUserDto>> Mine()
         {
             return await _currentUserService.Get();
         }

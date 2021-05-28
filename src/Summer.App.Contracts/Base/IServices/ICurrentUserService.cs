@@ -9,6 +9,6 @@ namespace Summer.App.Contracts.Base.IServices
     /// </summary>
     public interface ICurrentUserService
     {
-        Task<BaseDto<SysUserDto>> Get();
+        Task<OutputDto<SysUserDto>> Get();
     }
 }

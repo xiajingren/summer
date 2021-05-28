@@ -9,7 +9,7 @@ using Summer.App.Contracts.Base.IServices;
 
 namespace Summer.App.Base.Services
 {
-    internal class BaseCrudService<TEntity, TDto> : BaseCrudService<TEntity, BasePagedReqDto, TDto, TDto, TDto>
+    internal class BaseCrudService<TEntity, TDto> : BaseCrudService<TEntity, PagedInputDto, TDto, TDto, TDto>
         where TEntity : BaseEntity
         where TDto : class
     {
@@ -19,9 +19,9 @@ namespace Summer.App.Base.Services
     }
 
     internal class
-        BaseCrudService<TEntity, TPagedReqDto, TDto> : BaseCrudService<TEntity, TPagedReqDto, TDto, TDto, TDto>
+        BaseCrudService<TEntity, TPagedInputDto, TDto> : BaseCrudService<TEntity, TPagedInputDto, TDto, TDto, TDto>
         where TEntity : BaseEntity
-        where TPagedReqDto : BasePagedReqDto
+        where TPagedInputDto : PagedInputDto
         where TDto : class
     {
         public BaseCrudService(IServiceProvider serviceProvider) : base(serviceProvider)
@@ -29,10 +29,10 @@ namespace Summer.App.Base.Services
         }
     }
 
-    internal class BaseCrudService<TEntity, TPagedReqDto, TCreateDto, TUpdateDto, TDto> : BaseService,
-        IBaseCrudService<TPagedReqDto, TCreateDto, TUpdateDto, TDto>
+    internal class BaseCrudService<TEntity, TPagedInputDto, TCreateDto, TUpdateDto, TDto> : BaseService,
+        IBaseCrudService<TPagedInputDto, TCreateDto, TUpdateDto, TDto>
         where TEntity : BaseEntity
-        where TPagedReqDto : BasePagedReqDto
+        where TPagedInputDto : PagedInputDto
         where TCreateDto : class
         where TUpdateDto : class
         where TDto : class
@@ -46,28 +46,28 @@ namespace Summer.App.Base.Services
         /// </summary>
         /// <param name="pagedReqDto"></param>
         /// <returns></returns>
-        public virtual IQueryable<TEntity> GetQueryable(TPagedReqDto pagedReqDto = null)
+        public virtual IQueryable<TEntity> GetQueryable(TPagedInputDto pagedReqDto = null)
         {
             return AppDbContext.Set<TEntity>().AsNoTracking();
         }
 
-        public virtual async Task<BaseDto<BasePagedDto<TDto>>> Get(TPagedReqDto pagedReqDto)
+        public virtual async Task<OutputDto<PagedOutputDto<TDto>>> Get(TPagedInputDto pagedReqDto)
         {
             var models = GetQueryable(pagedReqDto);
 
-            var pagedDto = new BasePagedDto<TDto> {Total = models.Count()};
+            var pagedDto = new PagedOutputDto<TDto> { Total = models.Count() };
 
             models = models.OrderByDescending(p => p.CreateTime)
                 .Skip((pagedReqDto.PageIndex - 1) * pagedReqDto.PageSize)
                 .Take(pagedReqDto.PageSize);
             var data = await models.ToListAsync();
 
-            pagedDto.List = Mapper.Map<IEnumerable<TDto>>(data);
+            pagedDto.List = Mapper.Map<List<TDto>>(data);
 
             return Ok(pagedDto);
         }
 
-        public virtual async Task<BaseDto<TDto>> Get(Guid id)
+        public virtual async Task<OutputDto<TDto>> Get(Guid id)
         {
             var models = GetQueryable();
 
@@ -76,7 +76,7 @@ namespace Summer.App.Base.Services
             return Ok(Mapper.Map<TDto>(model));
         }
 
-        public virtual async Task<BaseDto<TDto>> Create(TCreateDto value)
+        public virtual async Task<OutputDto<TDto>> Create(TCreateDto value)
         {
             var model = Mapper.Map<TEntity>(value);
             await AppDbContext.Set<TEntity>().AddAsync(model);
@@ -86,7 +86,7 @@ namespace Summer.App.Base.Services
                 : Fail<TDto>(null);
         }
 
-        public virtual async Task<BaseDto<TDto>> Update(Guid id, TUpdateDto value)
+        public virtual async Task<OutputDto<TDto>> Update(Guid id, TUpdateDto value)
         {
             var model = await GetQueryable().SingleOrDefaultAsync(p => p.Id == id);
             model = Mapper.Map(value, model);
@@ -96,7 +96,7 @@ namespace Summer.App.Base.Services
                 : Fail<TDto>(null);
         }
 
-        public virtual async Task<BaseDto<TDto>> Delete(Guid id)
+        public virtual async Task<OutputDto<TDto>> Delete(Guid id)
         {
             var model = await GetQueryable().SingleOrDefaultAsync(p => p.Id == id);
             AppDbContext.Set<TEntity>().Remove(model);

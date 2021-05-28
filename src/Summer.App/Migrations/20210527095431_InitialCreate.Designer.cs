@@ -9,7 +9,7 @@ using Summer.App.Db;
 namespace Summer.App.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210527053624_InitialCreate")]
+    [Migration("20210527095431_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,31 @@ namespace Summer.App.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.5");
+
+            modelBuilder.Entity("Summer.App.Business.Entities.SysPermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PermissionEntityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PermissionKey")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PermissionType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SysPermissions");
+                });
 
             modelBuilder.Entity("Summer.App.Business.Entities.SysRole", b =>
                 {
@@ -37,7 +62,7 @@ namespace Summer.App.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SysRole");
+                    b.ToTable("SysRoles");
                 });
 
             modelBuilder.Entity("Summer.App.Business.Entities.SysUser", b =>
@@ -70,6 +95,34 @@ namespace Summer.App.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SysUsers");
+                });
+
+            modelBuilder.Entity("Summer.App.Business.Entities.UploadFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("Content")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UploadFiles");
                 });
 
             modelBuilder.Entity("SysRoleSysUser", b =>

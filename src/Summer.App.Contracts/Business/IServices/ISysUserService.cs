@@ -7,6 +7,6 @@ namespace Summer.App.Contracts.Business.IServices
 {
     public interface ISysUserService : IBaseCrudService<SysUserDto>
     {
-        Task<BaseDto<SysUserDto>> Login(LoginDto value);
+        Task<OutputDto<SysUserDto>> Login(LoginDto value);
     }
 }

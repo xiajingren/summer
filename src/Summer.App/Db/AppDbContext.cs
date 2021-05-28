@@ -12,6 +12,9 @@ namespace Summer.App.Db
         }
 
         public DbSet<SysUser> SysUsers { get; set; }
+        public DbSet<SysRole> SysRoles { get; set; }
+        public DbSet<SysPermission> SysPermissions { get; set; }
+        public DbSet<UploadFile> UploadFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

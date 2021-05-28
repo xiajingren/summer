@@ -1,18 +1,18 @@
 ﻿namespace Summer.App.Contracts.Base.Dtos
 {
-    public class BaseDto<T>
+    public class OutputDto<T>
     {
-        public static BaseDto<T> CreateOkInstance(T data, string message = "操作成功")
+        public static OutputDto<T> CreateOkInstance(T data, string message = "操作成功")
         {
-            return new BaseDto<T>(1, message, data);
+            return new OutputDto<T>(1, message, data);
         }
 
-        public static BaseDto<T> CreateFailInstance(T data, string message = "操作失败")
+        public static OutputDto<T> CreateFailInstance(T data, string message = "操作失败")
         {
-            return new BaseDto<T>(0, message, data);
+            return new OutputDto<T>(0, message, data);
         }
 
-        protected BaseDto(int code, string message, T data)
+        protected OutputDto(int code, string message, T data)
         {
             Code = code;
             Message = message;

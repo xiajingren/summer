@@ -34,7 +34,7 @@ namespace Summer.App.Base.Services
             return await AppDbContext.SysUsers.SingleOrDefaultAsync(p => p.Id == userId);
         }
 
-        public async Task<BaseDto<SysUserDto>> Get()
+        public async Task<OutputDto<SysUserDto>> Get()
         {
             var user = await GetEntity();
             return user == null

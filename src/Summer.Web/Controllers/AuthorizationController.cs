@@ -21,17 +21,17 @@ namespace Summer.Web.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<BaseDto<TokenDto>> Token(LoginDto value)
+        public async Task<OutputDto<TokenDto>> Token(LoginDto value)
         {
             var result = await _sysUserService.Login(value);
             if (result.Code == 0)
             {
-                return BaseDto<TokenDto>.CreateFailInstance(null, result.Message);
+                return OutputDto<TokenDto>.CreateFailInstance(null, result.Message);
             }
 
             //todo:
             var token = _jwtTokenService.CreateJwtToken(result.Data);
-            return BaseDto<TokenDto>.CreateOkInstance(token);
+            return OutputDto<TokenDto>.CreateOkInstance(token);
         }
     }
 }

@@ -8,7 +8,22 @@ namespace Summer.App.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "SysRole",
+                name: "SysPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PermissionKey = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    PermissionType = table.Column<int>(type: "INTEGER", nullable: false),
+                    PermissionEntityId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SysPermissions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SysRoles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -18,7 +33,7 @@ namespace Summer.App.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysRole", x => x.Id);
+                    table.PrimaryKey("PK_SysRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,6 +53,21 @@ namespace Summer.App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UploadFiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FileName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    ContentType = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Content = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UploadFiles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SysRoleSysUser",
                 columns: table => new
                 {
@@ -48,9 +78,9 @@ namespace Summer.App.Migrations
                 {
                     table.PrimaryKey("PK_SysRoleSysUser", x => new { x.SysRolesId, x.SysUsersId });
                     table.ForeignKey(
-                        name: "FK_SysRoleSysUser_SysRole_SysRolesId",
+                        name: "FK_SysRoleSysUser_SysRoles_SysRolesId",
                         column: x => x.SysRolesId,
-                        principalTable: "SysRole",
+                        principalTable: "SysRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -70,10 +100,16 @@ namespace Summer.App.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "SysPermissions");
+
+            migrationBuilder.DropTable(
                 name: "SysRoleSysUser");
 
             migrationBuilder.DropTable(
-                name: "SysRole");
+                name: "UploadFiles");
+
+            migrationBuilder.DropTable(
+                name: "SysRoles");
 
             migrationBuilder.DropTable(
                 name: "SysUsers");

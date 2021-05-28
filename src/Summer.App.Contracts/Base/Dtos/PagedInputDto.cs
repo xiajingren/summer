@@ -1,6 +1,6 @@
 ﻿namespace Summer.App.Contracts.Base.Dtos
 {
-    public class BasePagedReqDto
+    public class PagedInputDto
     {
         public int PageIndex { get; set; }
 
@@ -8,7 +8,7 @@
 
         public string Query { get; set; }
 
-        public BasePagedReqDto()
+        public PagedInputDto()
         {
             PageIndex = 1;
             PageSize = 10;

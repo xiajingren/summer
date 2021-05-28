@@ -8,7 +8,7 @@ namespace Summer.App.Business.Entities
     /// <summary>
     /// 权限
     /// </summary>
-    internal class SysPermissions : BaseEntity
+    internal class SysPermission : BaseEntity
     {
         /// <summary>
         /// 权限Key

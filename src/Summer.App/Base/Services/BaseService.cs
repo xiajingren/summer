@@ -22,14 +22,14 @@ namespace Summer.App.Base.Services
             ServiceProvider = serviceProvider;
         }
 
-        public virtual BaseDto<TDto> Ok<TDto>(TDto dto, string message = "操作成功") where TDto : class
+        public virtual OutputDto<TDto> Ok<TDto>(TDto dto, string message = "操作成功") where TDto : class
         {
-            return BaseDto<TDto>.CreateOkInstance(dto, message);
+            return OutputDto<TDto>.CreateOkInstance(dto, message);
         }
 
-        public virtual BaseDto<TDto> Fail<TDto>(TDto dto, string message = "操作失败") where TDto : class
+        public virtual OutputDto<TDto> Fail<TDto>(TDto dto, string message = "操作失败") where TDto : class
         {
-            return BaseDto<TDto>.CreateFailInstance(dto, message);
+            return OutputDto<TDto>.CreateFailInstance(dto, message);
         }
     }
 }

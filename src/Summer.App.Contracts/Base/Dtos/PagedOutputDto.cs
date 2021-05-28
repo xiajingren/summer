@@ -2,10 +2,10 @@
 
 namespace Summer.App.Contracts.Base.Dtos
 {
-    public class BasePagedDto<T>
+    public class PagedOutputDto<T>
     {
         public int Total { get; set; }
 
-        public IEnumerable<T> List { get; set; }
+        public List<T> List { get; set; }
     }
 }

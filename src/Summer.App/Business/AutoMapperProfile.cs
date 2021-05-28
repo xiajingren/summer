@@ -8,8 +8,14 @@ namespace Summer.App.Business
     {
         public AutoMapperProfile()
         {
-            CreateMap<SysUserDto, SysUser>();
             CreateMap<SysUser, SysUserDto>();
+            CreateMap<SysUserDto, SysUser>();
+
+            CreateMap<UploadFile, UploadFileDto>();
+            CreateMap<UploadFileDto, UploadFile>();
+
+            CreateMap<UploadFile, UploadFileOutputDto>();
+            CreateMap<UploadFileOutputDto, UploadFile>();
         }
     }
 }
