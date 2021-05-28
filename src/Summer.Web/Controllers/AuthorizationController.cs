@@ -13,11 +13,13 @@ namespace Summer.Web.Controllers
     {
         private readonly IJwtTokenService _jwtTokenService;
         private readonly ISysUserService _sysUserService;
+        private readonly ICurrentUserService _currentUserService;
 
-        public AuthorizationController(IJwtTokenService jwtTokenService, ISysUserService sysUserService)
+        public AuthorizationController(IJwtTokenService jwtTokenService, ISysUserService sysUserService, ICurrentUserService currentUserService)
         {
             _jwtTokenService = jwtTokenService;
             _sysUserService = sysUserService;
+            _currentUserService = currentUserService;
         }
 
         [HttpPost("[action]")]
@@ -33,5 +35,12 @@ namespace Summer.Web.Controllers
             var token = _jwtTokenService.CreateJwtToken(result.Data);
             return OutputDto<TokenDto>.CreateOkInstance(token);
         }
+
+        [HttpGet("[action]")]
+        public async Task<OutputDto<SysUserDto>> UserInfo()
+        {
+            return await _currentUserService.Get();
+        }
+
     }
 }

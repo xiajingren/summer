@@ -103,7 +103,7 @@
         <el-form-item label="头像" prop="avatar">
           <el-upload
             class="avatar-uploader"
-            action="http://videoapi.gtibee.com:7700/Tools/UploadFile"
+            action="/api/Sys/UploadFile"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -177,8 +177,10 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      if (res.Code === 1) {
-        this.temp.avatar = "http://videoapi.gtibee.com:7700" + res.Data[0];
+      console.log(res)
+      if (res.code === 1) {
+        this.temp.avatar = res.data.fileUrl;
+        console.log(this.temp.avatar)
       } else {
         this.temp.avatar = "";
       }
@@ -214,7 +216,7 @@ export default {
         account: "",
         password: "",
         name: "",
-        avatar: "",
+        avatar: ""
       };
     },
     handleCreate() {

@@ -15,12 +15,10 @@ namespace Summer.Web.Areas.Sys.Controllers
     public class SysUserController : ControllerBase
     {
         private readonly ISysUserService _sysUserService;
-        private readonly ICurrentUserService _currentUserService;
-
+        
         public SysUserController(ISysUserService sysUserService, ICurrentUserService currentUserService)
         {
             _sysUserService = sysUserService;
-            _currentUserService = currentUserService;
         }
 
         [HttpGet]
@@ -36,13 +34,13 @@ namespace Summer.Web.Areas.Sys.Controllers
         }
 
         [HttpPost]
-        public async Task<OutputDto<SysUserDto>> Post([FromBody] SysUserDto value)
+        public async Task<OutputDto<SysUserDto>> Post(SysUserDto value)
         {
             return await _sysUserService.Create(value);
         }
 
         [HttpPut("{id}")]
-        public async Task<OutputDto<SysUserDto>> Put(Guid id, [FromBody] SysUserDto value)
+        public async Task<OutputDto<SysUserDto>> Put(Guid id, SysUserDto value)
         {
             return await _sysUserService.Update(id, value);
         }
@@ -53,10 +51,5 @@ namespace Summer.Web.Areas.Sys.Controllers
             return await _sysUserService.Delete(id);
         }
 
-        [HttpGet("[action]")]
-        public async Task<OutputDto<SysUserDto>> Mine()
-        {
-            return await _currentUserService.Get();
-        }
     }
 }

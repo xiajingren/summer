@@ -10,7 +10,7 @@ export function login(data) {
 
 export function getInfo() {
   return request({
-    url: "/sys/sysUser/mine",
+    url: "/authorization/userinfo",
     method: "get"
   });
 }
