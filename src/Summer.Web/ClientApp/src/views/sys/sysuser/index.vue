@@ -50,7 +50,7 @@
       <el-table-column label="头像" prop="avatar" align="center">
         <template slot-scope="{ row }">
           <!-- <span class="link-type">{{ row.avatar }}</span> -->
-          <img v-if="row.avatar" :src="row.avatar" height="20" />
+          <img v-if="row.avatar" :src="row.avatar.fileUrl" height="20" />
         </template>
       </el-table-column>
       <el-table-column
@@ -108,7 +108,11 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <img v-if="temp.avatar" :src="temp.avatar" class="avatar" />
+            <img
+              v-if="temp.avatar && temp.avatar.fileUrl"
+              :src="temp.avatar.fileUrl"
+              style="max-width:100%"
+            />
             <i
               v-else
               class="el-icon-plus avatar-uploader-icon"
@@ -150,7 +154,7 @@ export default {
         PageSize: 20,
         Query: ""
       },
-      temp: {},
+      temp: null,
       dialogFormVisible: false,
       dialogStatus: "",
       textMap: {
@@ -174,15 +178,15 @@ export default {
   },
   created() {
     this.getList();
+    this.resetTemp();
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      console.log(res)
+      console.log(res);
       if (res.code === 1) {
-        this.temp.avatar = res.data.fileUrl;
-        console.log(this.temp.avatar)
+        this.temp.avatar = res.data;
       } else {
-        this.temp.avatar = "";
+        this.temp.avatar = { fileUrl: "" };
       }
       //this.temp.avatar = URL.createObjectURL(file.raw);
     },
@@ -216,7 +220,7 @@ export default {
         account: "",
         password: "",
         name: "",
-        avatar: ""
+        avatar: { fileUrl: "" }
       };
     },
     handleCreate() {

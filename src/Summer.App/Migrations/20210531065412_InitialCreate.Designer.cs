@@ -9,7 +9,7 @@ using Summer.App.Db;
 namespace Summer.App.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210527095431_InitialCreate")]
+    [Migration("20210531065412_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,6 +76,9 @@ namespace Summer.App.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("AvatarId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("TEXT");
 
@@ -93,6 +96,8 @@ namespace Summer.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AvatarId");
 
                     b.ToTable("SysUsers");
                 });
@@ -138,6 +143,15 @@ namespace Summer.App.Migrations
                     b.HasIndex("SysUsersId");
 
                     b.ToTable("SysRoleSysUser");
+                });
+
+            modelBuilder.Entity("Summer.App.Business.Entities.SysUser", b =>
+                {
+                    b.HasOne("Summer.App.Business.Entities.UploadFile", "Avatar")
+                        .WithMany()
+                        .HasForeignKey("AvatarId");
+
+                    b.Navigation("Avatar");
                 });
 
             modelBuilder.Entity("SysRoleSysUser", b =>

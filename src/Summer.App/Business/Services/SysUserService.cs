@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Summer.App.Base.Services;
@@ -13,6 +14,19 @@ namespace Summer.App.Business.Services
     {
         public SysUserService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
+        }
+
+        public override IQueryable<SysUser> GetQueryable(PagedInputDto pagedInputDto = null)
+        {
+            var query = base.GetQueryable(pagedInputDto);
+            query = query.Include(p => p.Avatar);
+
+            if (!string.IsNullOrEmpty(pagedInputDto?.Query))
+            {
+                query = query.Where(p => p.Name.Contains(pagedInputDto.Query) || p.Account.Contains(pagedInputDto.Query));
+            }
+
+            return query;
         }
 
         public async Task<OutputDto<SysUserDto>> Login(LoginDto value)

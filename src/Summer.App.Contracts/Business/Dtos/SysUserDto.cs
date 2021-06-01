@@ -13,5 +13,9 @@ namespace Summer.App.Contracts.Business.Dtos
         public string Password { get; set; }
 
         public string Name { get; set; }
+
+        public Guid? AvatarId { get; set; }
+
+        public UploadFileOutputDto Avatar { get; set; }
     }
 }

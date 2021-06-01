@@ -37,22 +37,6 @@ namespace Summer.App.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SysUsers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Account = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    Password = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    IsStatic = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SysUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UploadFiles",
                 columns: table => new
                 {
@@ -65,6 +49,29 @@ namespace Summer.App.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UploadFiles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SysUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Account = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    Password = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    IsStatic = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AvatarId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SysUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SysUsers_UploadFiles_AvatarId",
+                        column: x => x.AvatarId,
+                        principalTable: "UploadFiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,6 +102,11 @@ namespace Summer.App.Migrations
                 name: "IX_SysRoleSysUser_SysUsersId",
                 table: "SysRoleSysUser",
                 column: "SysUsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SysUsers_AvatarId",
+                table: "SysUsers",
+                column: "AvatarId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -106,13 +118,13 @@ namespace Summer.App.Migrations
                 name: "SysRoleSysUser");
 
             migrationBuilder.DropTable(
-                name: "UploadFiles");
-
-            migrationBuilder.DropTable(
                 name: "SysRoles");
 
             migrationBuilder.DropTable(
                 name: "SysUsers");
+
+            migrationBuilder.DropTable(
+                name: "UploadFiles");
         }
     }
 }

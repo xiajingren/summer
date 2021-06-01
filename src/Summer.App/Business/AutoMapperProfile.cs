@@ -9,7 +9,9 @@ namespace Summer.App.Business
         public AutoMapperProfile()
         {
             CreateMap<SysUser, SysUserDto>();
-            CreateMap<SysUserDto, SysUser>();
+            CreateMap<SysUserDto, SysUser>()
+                .ForMember(p => p.AvatarId, p => p.MapFrom(x => x.Avatar.Id))
+                .ForMember(p => p.Avatar, p => p.Ignore());
 
             CreateMap<UploadFile, UploadFileDto>();
             CreateMap<UploadFileDto, UploadFile>();

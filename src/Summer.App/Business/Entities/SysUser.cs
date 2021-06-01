@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Summer.App.Base.Entities;
 
@@ -25,5 +26,8 @@ namespace Summer.App.Business.Entities
         public bool IsStatic { get; set; }
 
         public ICollection<SysRole> SysRoles { get; set; }
+
+        public Guid? AvatarId { get; set; }
+        public UploadFile Avatar { get; set; }
     }
 }

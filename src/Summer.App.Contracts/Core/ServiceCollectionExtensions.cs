@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Summer.App.Contracts.Core
@@ -11,6 +12,8 @@ namespace Summer.App.Contracts.Core
         public static IServiceCollection AddSummer(this IServiceCollection services)
         {
             // todo: 
+            var httpContextAccessor = services.BuildServiceProvider().GetRequiredService<IHttpContextAccessor>();
+            AppGlobal.Configure(httpContextAccessor);
 
             // var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
             //         a.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IAppStartup))))

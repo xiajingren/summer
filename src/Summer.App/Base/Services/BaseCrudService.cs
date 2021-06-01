@@ -44,22 +44,22 @@ namespace Summer.App.Base.Services
         /// <summary>
         /// 用作 条件过滤，导航属性Include ...
         /// </summary>
-        /// <param name="pagedReqDto"></param>
+        /// <param name="pagedInputDto"></param>
         /// <returns></returns>
-        public virtual IQueryable<TEntity> GetQueryable(TPagedInputDto pagedReqDto = null)
+        public virtual IQueryable<TEntity> GetQueryable(TPagedInputDto pagedInputDto = null)
         {
             return AppDbContext.Set<TEntity>().AsNoTracking();
         }
 
-        public virtual async Task<OutputDto<PagedOutputDto<TDto>>> Get(TPagedInputDto pagedReqDto)
+        public virtual async Task<OutputDto<PagedOutputDto<TDto>>> Get(TPagedInputDto pagedInputDto)
         {
-            var models = GetQueryable(pagedReqDto);
+            var models = GetQueryable(pagedInputDto);
 
             var pagedDto = new PagedOutputDto<TDto> { Total = models.Count() };
 
             models = models.OrderByDescending(p => p.CreateTime)
-                .Skip((pagedReqDto.PageIndex - 1) * pagedReqDto.PageSize)
-                .Take(pagedReqDto.PageSize);
+                .Skip((pagedInputDto.PageIndex - 1) * pagedInputDto.PageSize)
+                .Take(pagedInputDto.PageSize);
             var data = await models.ToListAsync();
 
             pagedDto.List = Mapper.Map<List<TDto>>(data);
@@ -79,10 +79,12 @@ namespace Summer.App.Base.Services
         public virtual async Task<OutputDto<TDto>> Create(TCreateDto value)
         {
             var model = Mapper.Map<TEntity>(value);
-            await AppDbContext.Set<TEntity>().AddAsync(model);
+
+            var entry = AppDbContext.Entry<TEntity>(model);
+            entry.State = EntityState.Added;
 
             return await AppDbContext.SaveChangesAsync() > 0
-                ? Ok(Mapper.Map<TDto>(model))
+                ? Ok(Mapper.Map<TDto>(entry.Entity))
                 : Fail<TDto>(null);
         }
 
@@ -91,18 +93,23 @@ namespace Summer.App.Base.Services
             var model = await GetQueryable().SingleOrDefaultAsync(p => p.Id == id);
             model = Mapper.Map(value, model);
 
+            var entry = AppDbContext.Entry<TEntity>(model);
+            entry.State = EntityState.Modified;
+            
             return await AppDbContext.SaveChangesAsync() > 0
-                ? Ok(Mapper.Map<TDto>(model))
+                ? Ok(Mapper.Map<TDto>(entry.Entity))
                 : Fail<TDto>(null);
         }
 
         public virtual async Task<OutputDto<TDto>> Delete(Guid id)
         {
             var model = await GetQueryable().SingleOrDefaultAsync(p => p.Id == id);
-            AppDbContext.Set<TEntity>().Remove(model);
+
+            var entry = AppDbContext.Entry<TEntity>(model);
+            entry.State = EntityState.Deleted;
 
             return await AppDbContext.SaveChangesAsync() > 0
-                ? Ok(Mapper.Map<TDto>(model))
+                ? Ok(Mapper.Map<TDto>(entry.Entity))
                 : Fail<TDto>(null);
         }
     }
