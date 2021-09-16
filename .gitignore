@@ -2,19 +2,14 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/src/Summer/.vs/Summer/v16
-/src/.vs
-/src/Summer.App/obj
-/src/Summer.App.Contracts/obj
-/src/Summer.App.DbMigrator/obj
-/src/Summer.Core/obj
-/src/Summer.App/bin/Debug/netstandard2.1
-/src/Summer.App.Contracts/bin/Debug/netstandard2.1
-/src/Summer.App.DbMigrator/bin/Debug/net5.0
-/src/Summer.Core/bin/Debug/netstandard2.1
-/.vs/Summer/v16
-/src/Summer.App.Contracts/bin/Debug/net5.0
-/src/Summer.Core/bin/Debug/net5.0
-/.vs/Summer/config
-/src/Summer.App/bin/Debug/net5.0
-/.vs/Summer/DesignTimeBuild
+/.vs
+/src/Summer.Application/obj
+/src/Summer.Domain/obj
+/src/Summer.Infrastructure/obj
+/src/Summer.Web/obj
+/src/Summer.WebTools/obj
+/src/Summer.Application/bin
+/src/Summer.Domain/bin
+/src/Summer.Infrastructure/bin
+/src/Summer.Web/bin
+/src/Summer.WebTools/bin
