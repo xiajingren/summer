@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
+using Summer.Infrastructure;
 using VueCliMiddleware;
 
 namespace Summer.Web
@@ -30,7 +31,7 @@ namespace Summer.Web
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Summer API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Summer API", Version = "v1"});
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly()?.GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -62,7 +63,9 @@ namespace Summer.Web
                 });
             });
 
-            services.AddHttpContextAccessor();
+            //services.AddHttpContextAccessor();
+
+            NativeInjectorBootStrapper.RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,10 +87,7 @@ namespace Summer.Web
             app.UseSpaStaticFiles();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Summer API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Summer API V1"); });
 
             app.UseRouting();
 
@@ -118,6 +118,8 @@ namespace Summer.Web
                         break;
                 }
             });
+
+            NativeInjectorBootStrapper.ConfigureApplication(app);
         }
     }
 }
