@@ -13,7 +13,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Summer.Domain\Summer.Domain.csproj" />
-    <ProjectReference Include="..\Summer.Infrastructure\Summer.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+    <Folder Include="Services\" />
+    <Folder Include="AutoMapper\" />
   </ItemGroup>
   
 </Project>

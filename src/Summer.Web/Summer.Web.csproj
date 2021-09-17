@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Summer.Application\Summer.Application.csproj" />
+    <ProjectReference Include="..\Summer.Infrastructure\Summer.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
