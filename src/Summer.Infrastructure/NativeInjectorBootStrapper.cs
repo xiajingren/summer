@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Summer.Domain.Identity;
 using Summer.Infrastructure.Identity;
 using Summer.Infrastructure.IdentityServer;
 using Summer.Infrastructure.SeedWork;
@@ -29,10 +30,10 @@ namespace Summer.Infrastructure
         private static void AddIdentity(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite("summer.db",
+                options.UseSqlite("Data Source=Summer.db",
                     sqlOptions => { sqlOptions.MigrationsAssembly(MigrationsAssembly); }));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
         }
@@ -41,20 +42,25 @@ namespace Summer.Infrastructure
         {
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddAspNetIdentity<IdentityUser>()
+                .AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlite("summer.db",
+                    options.ConfigureDbContext = builder => builder.UseSqlite("Data Source=Summer.db",
                         sqlOptions => { sqlOptions.MigrationsAssembly(MigrationsAssembly); });
                 }).AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlite("summer.db",
+                    options.ConfigureDbContext = builder => builder.UseSqlite("Data Source=Summer.db",
                         sqlOptions => { sqlOptions.MigrationsAssembly(MigrationsAssembly); });
+
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30;
                 });
         }
 
         private static void AddDbContextSeed(IServiceCollection services)
         {
+            services.AddScoped<IDbContextSeed, PersistedGrantDbContextSeed>();
             services.AddScoped<IDbContextSeed, ConfigurationDbContextSeed>();
             services.AddScoped<IDbContextSeed, ApplicationDbContextSeed>();
         }

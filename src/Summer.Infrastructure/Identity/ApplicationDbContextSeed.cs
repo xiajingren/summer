@@ -13,7 +13,6 @@ namespace Summer.Infrastructure.Identity
     {
         private readonly ApplicationDbContext _context;
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
-
         public ApplicationDbContextSeed(ApplicationDbContext context)
         {
             _context = context;

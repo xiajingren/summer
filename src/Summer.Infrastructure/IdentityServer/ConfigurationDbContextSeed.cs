@@ -94,23 +94,25 @@ namespace Summer.Infrastructure.IdentityServer
                 // interactive ASP.NET Core MVC client
                 new Client
                 {
-                    ClientId = "mvc",
-                    ClientSecrets = {new Secret("secret".Sha256())},
+                    ClientId = "web client",
+                    ClientName = "Web Client",
 
                     AllowedGrantTypes = GrantTypes.Code,
+                    ClientSecrets = { new Secret("web client secret".Sha256()) },
 
-                    // where to redirect to after login
-                    RedirectUris = {"https://localhost:5002/signin-oidc"},
+                    RedirectUris = { "http://localhost:5001/signin-oidc" },
+                    FrontChannelLogoutUri = "http://localhost:5001/signout-oidc",
+                    PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc" },
 
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = {"https://localhost:5002/signout-callback-oidc"},
-
-                    AllowedScopes = new List<string>
-                    {
+                    AllowedScopes = new [] {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "api1"
-                    }
+                    },
+                    AllowAccessTokensViaBrowser = true,
+
+                    RequireConsent = true,//是否显示同意界面
+                    AllowRememberConsent = false,//是否记住同意选项
                 }
             };
         }

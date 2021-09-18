@@ -63,8 +63,6 @@ namespace Summer.Web
                 });
             });
 
-            //services.AddHttpContextAccessor();
-
             NativeInjectorBootStrapper.RegisterServices(services);
         }
 
@@ -91,9 +89,11 @@ namespace Summer.Web
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
+
+            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints =>
             {
