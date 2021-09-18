@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.WebTools", "src\Summ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Summer.Infrastructure", "src\Summer.Infrastructure\Summer.Infrastructure.csproj", "{7124186B-A8FA-4466-B0E3-1021BB5394C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Summer.WebHost.React", "src\Summer.WebHost.React\Summer.WebHost.React.csproj", "{5F3A11E8-F083-4F08-BE2A-0741F6A753AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{7124186B-A8FA-4466-B0E3-1021BB5394C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7124186B-A8FA-4466-B0E3-1021BB5394C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7124186B-A8FA-4466-B0E3-1021BB5394C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3A11E8-F083-4F08-BE2A-0741F6A753AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3A11E8-F083-4F08-BE2A-0741F6A753AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3A11E8-F083-4F08-BE2A-0741F6A753AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3A11E8-F083-4F08-BE2A-0741F6A753AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{5753CA51-C23E-480D-AC96-6394D9D6D43D} = {81F2515A-A469-4D5E-AB58-F8E8565976A9}
 		{64689C7E-0835-47DE-B535-9602021EDB8D} = {81F2515A-A469-4D5E-AB58-F8E8565976A9}
 		{7124186B-A8FA-4466-B0E3-1021BB5394C3} = {81F2515A-A469-4D5E-AB58-F8E8565976A9}
+		{5F3A11E8-F083-4F08-BE2A-0741F6A753AA} = {81F2515A-A469-4D5E-AB58-F8E8565976A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {36765969-E396-4771-ABAC-E9933EFC0B83}
