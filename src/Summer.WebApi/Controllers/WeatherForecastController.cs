@@ -6,9 +6,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Summer.WebApi.Controllers
 {
-    /// <summary>
-    /// aaa
-    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -24,11 +21,7 @@ namespace Summer.WebApi.Controllers
         {
             _logger = logger;
         }
-
-        /// <summary>
-        /// test
-        /// </summary>
-        /// <returns></returns>
+        
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
