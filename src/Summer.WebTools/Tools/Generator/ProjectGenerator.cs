@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 
@@ -13,7 +12,7 @@ namespace Summer.WebTools.Tools.Generator
 
         public ProjectGenerator()
         {
-            _makeProjectSteps = new List<IMakeProjectStep>()
+            _makeProjectSteps = new List<IMakeProjectStep>
             {
                 new RenameStep()
             };
@@ -21,7 +20,7 @@ namespace Summer.WebTools.Tools.Generator
 
         public async Task<byte[]> MakeProject(ProjectModel projectModel)
         {
-            var tempFilePath = Path.Combine(AppContext.BaseDirectory, "Temp", Guid.NewGuid().ToString() + ".zip");
+            var tempFilePath = Path.Combine(AppContext.BaseDirectory, "Temp", Guid.NewGuid() + ".zip");
 
             await using (var zipInputStream = new ZipInputStream(File.OpenRead(projectModel.TemplateFilePath)))
             {
@@ -35,7 +34,7 @@ namespace Summer.WebTools.Tools.Generator
                             var streamReader = new StreamReader(zipInputStream);
                             var content = await streamReader.ReadToEndAsync();
 
-                            var entryModel = new EntryModel()
+                            var entryModel = new EntryModel
                                 {Name = sourceEntry.Name, Content = content, IsFile = sourceEntry.IsFile};
 
                             //todo:处理文件内容

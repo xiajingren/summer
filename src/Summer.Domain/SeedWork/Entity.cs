@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MediatR;
 
 namespace Summer.Domain.SeedWork
 {
     public abstract class Entity
     {
-        public virtual int Id { get; protected set; }
-
         private List<INotification> _domainEvents;
+        public virtual int Id { get; protected set; }
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)

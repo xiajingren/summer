@@ -4,13 +4,15 @@
 
 /.vs
 /src/Summer.Application/obj
-/src/Summer.Domain/obj
-/src/Summer.Infrastructure/obj
-/src/Summer.Web/obj
-/src/Summer.WebTools/obj
 /src/Summer.Application/bin
+/src/Summer.Domain/obj
 /src/Summer.Domain/bin
-/src/Summer.Infrastructure/bin
-/src/Summer.Web/bin
+/src/Summer.Infra.Bootstrapper/obj
+/src/Summer.Infra.Bootstrapper/bin
+/src/Summer.Infra.Data.EFCore/obj
+/src/Summer.Infra.Data.EFCore/bin
+/src/Summer.WebApi/obj
+/src/Summer.WebApi/bin
+/src/Summer.WebTools/obj
 /src/Summer.WebTools/bin
 /.idea

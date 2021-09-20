@@ -1,5 +1,3 @@
-using System;
-
 namespace Summer.WebTools.Models
 {
     public class ErrorViewModel
