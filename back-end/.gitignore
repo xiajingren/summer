@@ -13,6 +13,8 @@
 /src/Summer.Infra.Data/bin
 /src/Summer.Infra.Identity/obj
 /src/Summer.Infra.Identity/bin
+/src/Summer.Infra.Shard/obj
+/src/Summer.Infra.Shard/bin
 /src/Summer.WebApi/obj
 /src/Summer.WebApi/bin
 /src/Summer.WebTools/obj

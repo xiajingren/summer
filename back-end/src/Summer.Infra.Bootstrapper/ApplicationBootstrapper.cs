@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Summer.Infra.Bootstrapper.Options;
@@ -27,6 +28,8 @@ namespace Summer.Infra.Bootstrapper
 
             AddIdentity(services, configuration);
 
+            AddJwtAuthentication(services, configuration);
+            
             AddSwagger(services);
 
             AddDbContextSeed(services);

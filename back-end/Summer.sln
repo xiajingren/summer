@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.WebApi", "src\Summer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Summer.Infra.Identity", "src\Summer.Infra.Identity\Summer.Infra.Identity.csproj", "{F3D69EEC-88CF-4FA0-A85A-8DEB8269C90D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Summer.Shared", "src\Summer.Shared\Summer.Shared.csproj", "{CCC359C0-0197-4871-9DFD-8E6BDE25A1B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{F3D69EEC-88CF-4FA0-A85A-8DEB8269C90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3D69EEC-88CF-4FA0-A85A-8DEB8269C90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3D69EEC-88CF-4FA0-A85A-8DEB8269C90D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC359C0-0197-4871-9DFD-8E6BDE25A1B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC359C0-0197-4871-9DFD-8E6BDE25A1B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC359C0-0197-4871-9DFD-8E6BDE25A1B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC359C0-0197-4871-9DFD-8E6BDE25A1B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{D6FE31D2-5C5C-4079-9D8F-7D9C98586BE0} = {81F2515A-A469-4D5E-AB58-F8E8565976A9}
 		{908EE12D-7EAC-4D54-8EDD-5361479C67C4} = {81F2515A-A469-4D5E-AB58-F8E8565976A9}
 		{F3D69EEC-88CF-4FA0-A85A-8DEB8269C90D} = {81F2515A-A469-4D5E-AB58-F8E8565976A9}
+		{CCC359C0-0197-4871-9DFD-8E6BDE25A1B1} = {81F2515A-A469-4D5E-AB58-F8E8565976A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {36765969-E396-4771-ABAC-E9933EFC0B83}
