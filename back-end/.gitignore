@@ -9,8 +9,10 @@
 /src/Summer.Domain/bin
 /src/Summer.Infra.Bootstrapper/obj
 /src/Summer.Infra.Bootstrapper/bin
-/src/Summer.Infra.Data.EFCore/obj
-/src/Summer.Infra.Data.EFCore/bin
+/src/Summer.Infra.Data/obj
+/src/Summer.Infra.Data/bin
+/src/Summer.Infra.Identity/obj
+/src/Summer.Infra.Identity/bin
 /src/Summer.WebApi/obj
 /src/Summer.WebApi/bin
 /src/Summer.WebTools/obj

@@ -5,13 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10" />
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\Summer.Infra.Identity\Summer.Infra.Identity.csproj" />
       <ProjectReference Include="..\Summer.Application\Summer.Application.csproj" />
-      <ProjectReference Include="..\Summer.Infra.Data.EFCore\Summer.Infra.Data.EFCore.csproj" />
+      <ProjectReference Include="..\Summer.Infra.Data\Summer.Infra.Data.csproj" />
     </ItemGroup>
 
 </Project>
