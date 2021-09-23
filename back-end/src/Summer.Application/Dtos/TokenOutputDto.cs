@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Summer.Infra.Identity.Dtos
+namespace Summer.Application.Dtos
 {
     public class TokenOutputDto
     {

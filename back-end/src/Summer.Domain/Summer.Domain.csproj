@@ -7,13 +7,16 @@
   <ItemGroup>
     <Folder Include="Aggregates\" />
     <Folder Include="Commands\" />
+    <Folder Include="Identity\Queries" />
+    <Folder Include="Identity\Validations" />
     <Folder Include="Queries\" />
     <Folder Include="Validations\" />
     <Folder Include="EventHandlers\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="AspNetCore.Identity.Stores" Version="1.0.3" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

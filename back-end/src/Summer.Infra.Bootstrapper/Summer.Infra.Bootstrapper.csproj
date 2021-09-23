@@ -11,7 +11,6 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\Summer.Infra.Identity\Summer.Infra.Identity.csproj" />
       <ProjectReference Include="..\Summer.Application\Summer.Application.csproj" />
       <ProjectReference Include="..\Summer.Infra.Data\Summer.Infra.Data.csproj" />
     </ItemGroup>

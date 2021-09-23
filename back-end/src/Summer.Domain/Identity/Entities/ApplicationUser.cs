@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Summer.Infra.Identity.Models
+namespace Summer.Domain.Identity.Entities
 {
     public class ApplicationUser : IdentityUser
     {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Summer.Infra.Identity.Dtos;
-using Summer.Infra.Identity.Services;
+using Summer.Application.Dtos;
+using Summer.Application.Services;
 
 namespace Summer.WebApi.Controllers
 {
@@ -16,6 +16,7 @@ namespace Summer.WebApi.Controllers
             _identityService = identityService;
         }
 
+        [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterInputDto input)
         {
             var output = await _identityService.Register(input);
@@ -26,6 +27,5 @@ namespace Summer.WebApi.Controllers
 
             return Ok(output);
         }
-
     }
 }

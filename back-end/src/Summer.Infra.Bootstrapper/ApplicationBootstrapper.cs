@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,13 +10,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Summer.Application.Services;
+using Summer.Domain.Identity.Entities;
 using Summer.Infra.Bootstrapper.Options;
+using Summer.Infra.Data;
 using Summer.Infra.Data.SeedWork;
-using Summer.Infra.Identity;
-using Summer.Infra.Identity.Models;
 
 namespace Summer.Infra.Bootstrapper
 {
@@ -29,10 +30,12 @@ namespace Summer.Infra.Bootstrapper
             AddIdentity(services, configuration);
 
             AddJwtAuthentication(services, configuration);
-            
+
             AddSwagger(services);
 
             AddDbContextSeed(services);
+
+            services.AddMediatR(typeof(ApplicationUser).GetTypeInfo().Assembly);
         }
 
         public static void ConfigureApplication(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,13 +65,14 @@ namespace Summer.Infra.Bootstrapper
 
         private static void AddJwtAuthentication(IServiceCollection services, IConfiguration configuration)
         {
-            var jwtOptions = configuration.Get<JwtOptions>();
-            services.Configure<JwtOptions>(configuration);
+            var jwtConfig = configuration.GetSection(nameof(JwtOptions));
+            var jwtOptions = jwtConfig.Get<JwtOptions>();
+            services.Configure<JwtOptions>(jwtConfig);
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = jwtOptions.Issuer,
-                ValidAudience = jwtOptions.Audience,
+                ValidateIssuer = false,
+                ValidateAudience = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecurityKey)),
             };
@@ -104,6 +108,8 @@ namespace Summer.Infra.Bootstrapper
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Stores.MaxLengthForKeys = 36;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IIdentityService, IdentityService>();
         }
 
         #endregion

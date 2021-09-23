@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Summer.Infra.Identity.Dtos;
+using Summer.Application.Dtos;
 using Summer.Shared.Dtos;
 
-namespace Summer.Infra.Identity.Services
+namespace Summer.Application.Services
 {
     public interface IIdentityService
     {

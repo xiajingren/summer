@@ -1,4 +1,4 @@
-﻿namespace Summer.Infra.Identity.Dtos
+﻿namespace Summer.Application.Dtos
 {
     public class RegisterInputDto
     {
