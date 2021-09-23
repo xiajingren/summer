@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Summer.Infra.Identity.Results
+namespace Summer.Infra.Identity.Dtos
 {
-    public class AuthenticationResult
+    public class TokenOutputDto
     {
         [JsonPropertyName("access_token")] public string AccessToken { get; set; }
 

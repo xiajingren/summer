@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Summer.Infra.Identity.Models;
-using Summer.Infra.Identity.Results;
+using Summer.Infra.Identity.Dtos;
 using Summer.Shared.Dtos;
 
 namespace Summer.Infra.Identity.Services
@@ -15,17 +17,30 @@ namespace Summer.Infra.Identity.Services
             _userManager = userManager;
         }
 
-        public Task<OutputDto<AuthenticationResult>> Login(string username, string password)
+        public Task<OutputDto<TokenOutputDto>> Login(string username, string password)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<OutputDto<AuthenticationResult>> Register(string username, string password)
+        public async Task<OutputDto<TokenOutputDto>> Register(RegisterInputDto input)
         {
-            throw new System.NotImplementedException();
+            var existingUser = await _userManager.FindByNameAsync(input.UserName);
+            if (existingUser != null)
+            {
+                return new OutputDto<TokenOutputDto>(new List<string>() { "username already exists" });
+            }
+
+            var newUser = new ApplicationUser() { UserName = input.UserName };
+            var isCreated = await _userManager.CreateAsync(newUser, input.Password);
+            if (!isCreated.Succeeded)
+            {
+                return new OutputDto<TokenOutputDto>(isCreated.Errors.Select(p => p.Description));
+            }
+
+            return new OutputDto<TokenOutputDto>(new TokenOutputDto());
         }
 
-        public Task<OutputDto<AuthenticationResult>> RefreshToken(string token, string refreshToken)
+        public Task<OutputDto<TokenOutputDto>> RefreshToken(string token, string refreshToken)
         {
             throw new System.NotImplementedException();
         }
