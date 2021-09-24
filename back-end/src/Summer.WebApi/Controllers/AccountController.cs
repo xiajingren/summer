@@ -16,7 +16,7 @@ namespace Summer.WebApi.Controllers
             _identityService = identityService;
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterInputDto input)
         {
             var output = await _identityService.Register(input);
@@ -25,7 +25,7 @@ namespace Summer.WebApi.Controllers
                 return BadRequest(output.Errors);
             }
 
-            return Ok(output);
+            return Ok(output.Data);
         }
     }
 }

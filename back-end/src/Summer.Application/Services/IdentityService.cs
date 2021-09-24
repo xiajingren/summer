@@ -8,9 +8,9 @@ namespace Summer.Application.Services
 {
     public class IdentityService : IIdentityService
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
 
-        public IdentityService(Mediator mediator)
+        public IdentityService(IMediator mediator)
         {
             _mediator = mediator;
         }

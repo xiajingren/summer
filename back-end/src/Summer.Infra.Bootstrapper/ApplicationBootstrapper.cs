@@ -14,9 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Summer.Application.Services;
 using Summer.Domain.Identity.Entities;
+using Summer.Infra.Bootstrapper.DataSeeds;
 using Summer.Infra.Bootstrapper.Options;
 using Summer.Infra.Data;
-using Summer.Infra.Data.SeedWork;
 
 namespace Summer.Infra.Bootstrapper
 {
@@ -26,6 +26,7 @@ namespace Summer.Infra.Bootstrapper
         {
             services.AddControllers();
             //services.AddSpaStaticFiles(c => { c.RootPath = "ClientApp/dist"; });
+            services.AddMediatR(typeof(ApplicationUser).GetTypeInfo().Assembly);
 
             AddIdentity(services, configuration);
 
@@ -34,8 +35,6 @@ namespace Summer.Infra.Bootstrapper
             AddSwagger(services);
 
             AddDbContextSeed(services);
-
-            services.AddMediatR(typeof(ApplicationUser).GetTypeInfo().Assembly);
         }
 
         public static void ConfigureApplication(IApplicationBuilder app, IWebHostEnvironment env)
@@ -164,6 +163,7 @@ namespace Summer.Infra.Bootstrapper
 
         private static void AddDbContextSeed(IServiceCollection services)
         {
+            services.AddScoped<IDbContextSeed, ApplicationDbContextSeed>();
         }
 
         private static void DbContextSeed(IApplicationBuilder app)
