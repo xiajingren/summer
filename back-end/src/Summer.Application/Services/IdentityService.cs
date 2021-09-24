@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MediatR;
-using Summer.Application.Dtos;
+using Summer.Application.Requests;
+using Summer.Application.Responses;
 using Summer.Domain.Identity.Commands;
 using Summer.Shared.Dtos;
 
@@ -15,18 +16,18 @@ namespace Summer.Application.Services
             _mediator = mediator;
         }
 
-        public Task<OutputDto<TokenOutputDto>> Login(string username, string password)
+        public Task<OutputDto<TokenResponse>> Login(string username, string password)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<OutputDto<TokenOutputDto>> Register(RegisterInputDto input)
+        public async Task<OutputDto<TokenResponse>> Register(RegisterRequest input)
         {
             var result = await _mediator.Send(new RegisterCommand(input.UserName, input.Password));
-            return new OutputDto<TokenOutputDto>(new TokenOutputDto());
+            return new OutputDto<TokenResponse>(new TokenResponse());
         }
 
-        public Task<OutputDto<TokenOutputDto>> RefreshToken(string token, string refreshToken)
+        public Task<OutputDto<TokenResponse>> RefreshToken(string token, string refreshToken)
         {
             throw new System.NotImplementedException();
         }

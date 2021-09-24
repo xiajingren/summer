@@ -1,6 +1,6 @@
-﻿namespace Summer.Application.Dtos
+﻿namespace Summer.Application.Requests
 {
-    public class RegisterInputDto
+    public class RegisterRequest
     {
         public string UserName { get; set; }
 

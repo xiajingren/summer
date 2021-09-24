@@ -1,15 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Summer.Application.Dtos;
+using Summer.Application.Requests;
+using Summer.Application.Responses;
 using Summer.Shared.Dtos;
 
 namespace Summer.Application.Services
 {
     public interface IIdentityService
     {
-        Task<OutputDto<TokenOutputDto>> Login(string username, string password);
+        Task<OutputDto<TokenResponse>> Login(string username, string password);
 
-        Task<OutputDto<TokenOutputDto>> Register(RegisterInputDto input);
+        Task<OutputDto<TokenResponse>> Register(RegisterRequest input);
 
-        Task<OutputDto<TokenOutputDto>> RefreshToken(string token, string refreshToken);
+        Task<OutputDto<TokenResponse>> RefreshToken(string token, string refreshToken);
     }
 }

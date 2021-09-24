@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Summer.Application.Services;
 using Summer.Domain.Identity.Entities;
 using Summer.Infra.Bootstrapper.DataSeeds;
+using Summer.Infra.Bootstrapper.HttpFilters;
 using Summer.Infra.Bootstrapper.Options;
 using Summer.Infra.Data;
 
@@ -24,9 +26,20 @@ namespace Summer.Infra.Bootstrapper
     {
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllers();
+            services
+                .AddFluentValidation(mvcConfiguration =>
+                {
+                    mvcConfiguration.RegisterValidatorsFromAssembly(typeof(IdentityService).Assembly);
+                })
+                .AddControllers(options =>
+                {
+                    options.Filters.Add<HttpGlobalExceptionFilter>();
+                    options.Filters.Add<HttpRequestValidationFilter>();
+                });
+
             //services.AddSpaStaticFiles(c => { c.RootPath = "ClientApp/dist"; });
-            services.AddMediatR(typeof(ApplicationUser).GetTypeInfo().Assembly);
+
+            services.AddMediatR(typeof(ApplicationUser));
 
             AddIdentity(services, configuration);
 
@@ -41,7 +54,6 @@ namespace Summer.Infra.Bootstrapper
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Summer.WebApi v1"); });
             }
@@ -78,16 +90,18 @@ namespace Summer.Infra.Bootstrapper
 
             services.AddSingleton(tokenValidationParameters);
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                //options.SaveToken = true;
-                options.TokenValidationParameters = tokenValidationParameters;
-            });
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    //options.SaveToken = true;
+                    options.TokenValidationParameters = tokenValidationParameters;
+                });
         }
 
         #endregion

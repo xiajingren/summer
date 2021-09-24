@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Summer.Application.Dtos;
+using Summer.Application.Requests;
 using Summer.Application.Services;
 
 namespace Summer.WebApi.Controllers
@@ -17,7 +17,7 @@ namespace Summer.WebApi.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterInputDto input)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest input)
         {
             var output = await _identityService.Register(input);
             if (!output.Success)
