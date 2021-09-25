@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Summer.Domain.Exceptions;
 using Summer.Domain.Identity.Entities;
 
 namespace Summer.Domain.Identity.Commands
@@ -23,14 +24,14 @@ namespace Summer.Domain.Identity.Commands
             var existingUser = await _userManager.FindByNameAsync(request.UserName);
             if (existingUser != null)
             {
-                throw new Exception("username already exists");
+                throw new DomainException("用户名已存在");
             }
 
-            var newUser = new ApplicationUser() {UserName = request.UserName};
+            var newUser = new ApplicationUser() { UserName = request.UserName };
             var isCreated = await _userManager.CreateAsync(newUser, request.Password);
             if (!isCreated.Succeeded)
             {
-                throw new Exception(string.Join(";", isCreated.Errors.Select(p => p.Description)));
+                throw new DomainException(string.Join(";", isCreated.Errors.Select(p => p.Description)));
             }
 
             return newUser;

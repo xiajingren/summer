@@ -7,37 +7,28 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Summer.Application.HttpFilters;
+using Summer.Application.Options;
 using Summer.Application.Services;
+using Summer.Application.Validators;
 using Summer.Domain.Identity.Entities;
 using Summer.Infra.Bootstrapper.DataSeeds;
-using Summer.Infra.Bootstrapper.HttpFilters;
-using Summer.Infra.Bootstrapper.Options;
 using Summer.Infra.Data;
 
-namespace Summer.Infra.Bootstrapper
+namespace Summer.Application
 {
     public static class ApplicationBootstrapper
     {
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
-            services
-                .AddFluentValidation(mvcConfiguration =>
-                {
-                    mvcConfiguration.RegisterValidatorsFromAssembly(typeof(IdentityService).Assembly);
-                })
-                .AddControllers(options =>
-                {
-                    options.Filters.Add<HttpGlobalExceptionFilter>();
-                    options.Filters.Add<HttpRequestValidationFilter>();
-                });
-
-            //services.AddSpaStaticFiles(c => { c.RootPath = "ClientApp/dist"; });
+            AddMvc(services);
 
             services.AddMediatR(typeof(ApplicationUser));
 
@@ -71,6 +62,31 @@ namespace Summer.Infra.Bootstrapper
 
             DbContextSeed(app);
         }
+
+        #region Mvc
+
+        private static void AddMvc(IServiceCollection services)
+        {
+            services
+                .AddControllers(options =>
+                {
+                    options.Filters.Add<HttpGlobalExceptionFilter>();
+                })
+                .AddFluentValidation(mvcConfiguration =>
+                {
+                    mvcConfiguration.RegisterValidatorsFromAssemblyContaining(typeof(ApplicationBootstrapper));
+                });
+
+            //services.Configure<ApiBehaviorOptions>(options =>
+            //{
+            //    // 是否支持自定义ModelState验证失败过滤器  默认false 返回 400 - ValidationProblemDetails
+            //    options.SuppressModelStateInvalidFilter = true;
+            //});
+
+            //services.AddSpaStaticFiles(c => { c.RootPath = "ClientApp/dist"; });
+        }
+
+        #endregion
 
         #region Authentication
 
@@ -119,7 +135,6 @@ namespace Summer.Infra.Bootstrapper
             services.AddIdentityCore<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
-                options.Stores.MaxLengthForKeys = 36;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IIdentityService, IdentityService>();

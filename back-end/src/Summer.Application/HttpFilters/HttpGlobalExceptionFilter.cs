@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Summer.Domain.Exceptions;
 
-namespace Summer.Infra.Bootstrapper.HttpFilters
+namespace Summer.Application.HttpFilters
 {
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
@@ -27,25 +27,34 @@ namespace Summer.Infra.Bootstrapper.HttpFilters
 
             switch (context.Exception)
             {
-                case ArgumentException:
-                    context.Result = new BadRequestObjectResult(new
+                case DomainException domainException:
+                    var domainError = new ProblemDetails()
                     {
-                        Errors = new List<string>() {"参数错误..."}
-                    });
+                        Instance = context.HttpContext.Request.Path,
+                        Status = StatusCodes.Status400BadRequest,
+                        Title = "Business errors occurred.",
+                        Detail = domainException.Message
+                    };
+
+                    context.Result = new BadRequestObjectResult(domainError);
                     break;
                 default:
+                    var unKnowError = new ProblemDetails()
+                    {
+                        Instance = context.HttpContext.Request.Path,
+                        Status = StatusCodes.Status500InternalServerError,
+                        Title = "Internal server errors occurred.",
+                        Detail = "服务器内部错误..."
+                    };
+
                     if (_env.IsDevelopment())
                     {
-                        context.Result = new InternalServerErrorResult(new
-                        {
-                            context.Exception.Message,
-                            context.Exception.Source,
-                            context.Exception.StackTrace
-                        });
-                        break;
+                        unKnowError.Extensions.Add("exception.message", context.Exception.Message);
+                        unKnowError.Extensions.Add("exception.source", context.Exception.Source);
+                        unKnowError.Extensions.Add("exception.stackTrace", context.Exception.StackTrace);
                     }
 
-                    context.Result = new InternalServerErrorResult(new {Message = "未知错误..."});
+                    context.Result = new InternalServerErrorResult(unKnowError);
                     break;
             }
 
@@ -59,5 +68,6 @@ namespace Summer.Infra.Bootstrapper.HttpFilters
                 StatusCode = StatusCodes.Status500InternalServerError;
             }
         }
+
     }
 }

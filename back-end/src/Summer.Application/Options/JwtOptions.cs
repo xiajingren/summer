@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Summer.Infra.Bootstrapper.Options
+namespace Summer.Application.Options
 {
     public class JwtOptions
     {

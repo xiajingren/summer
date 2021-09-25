@@ -7,10 +7,10 @@ namespace Summer.Application.Services
 {
     public interface IIdentityService
     {
-        Task<OutputDto<TokenResponse>> Login(string username, string password);
+        Task<OutputDto<TokenResponse>> LoginAsync(LoginRequest loginRequest);
 
-        Task<OutputDto<TokenResponse>> Register(RegisterRequest input);
+        Task<TokenResponse> RegisterAsync(RegisterRequest registerRequest);
 
-        Task<OutputDto<TokenResponse>> RefreshToken(string token, string refreshToken);
+        Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest);
     }
 }
