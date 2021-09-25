@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,11 +15,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Summer.Application.HttpFilters;
 using Summer.Application.Options;
-using Summer.Application.Services;
-using Summer.Application.Validators;
-using Summer.Domain.Identity.Entities;
-using Summer.Infra.Bootstrapper.DataSeeds;
+using Summer.Domain.Entities;
 using Summer.Infra.Data;
+using Summer.Infra.Data.DataSeeds;
 
 namespace Summer.Application
 {
@@ -30,7 +27,7 @@ namespace Summer.Application
         {
             AddMvc(services);
 
-            services.AddMediatR(typeof(ApplicationUser));
+            services.AddMediatR(typeof(ApplicationBootstrapper));
 
             AddIdentity(services, configuration);
 
@@ -68,10 +65,7 @@ namespace Summer.Application
         private static void AddMvc(IServiceCollection services)
         {
             services
-                .AddControllers(options =>
-                {
-                    options.Filters.Add<HttpGlobalExceptionFilter>();
-                })
+                .AddControllers(options => { options.Filters.Add<HttpGlobalExceptionFilter>(); })
                 .AddFluentValidation(mvcConfiguration =>
                 {
                     mvcConfiguration.RegisterValidatorsFromAssemblyContaining(typeof(ApplicationBootstrapper));
@@ -132,12 +126,8 @@ namespace Summer.Application
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
                     sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
 
-            services.AddIdentityCore<ApplicationUser>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = true;
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddIdentityCore<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = true; })
+                .AddEntityFrameworkStores<ApplicationDbContext>();
         }
 
         #endregion

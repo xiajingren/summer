@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Summer.Application.Requests;
-using Summer.Application.Services;
+using Summer.Application.Requests.Commands;
+using Summer.Application.Responses;
 
 namespace Summer.WebApi.Controllers
 {
@@ -9,17 +11,26 @@ namespace Summer.WebApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IIdentityService _identityService;
+        private readonly IMediator _mediator;
 
-        public AccountController(IIdentityService identityService)
+        public AccountController(IMediator mediator)
         {
-            _identityService = identityService;
+            _mediator = mediator;
+        }
+
+        [HttpPost("Login")]
+        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Login([FromBody] LoginCommand loginCommand)
+        {
+            var response = await _mediator.Send(loginCommand);
+            return Ok(response);
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
+        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Register([FromBody] RegisterCommand registerCommand)
         {
-            var response = await _identityService.RegisterAsync(registerRequest);
+            var response = await _mediator.Send(registerCommand);
             return Ok(response);
         }
     }

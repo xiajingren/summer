@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Summer.Domain.Identity.Entities;
+using Summer.Application.Responses;
 
-namespace Summer.Domain.Identity.Commands
+namespace Summer.Application.Requests.Commands
 {
-    public class RegisterCommand : IRequest<ApplicationUser>
+    public class RegisterCommand : IRequest<TokenResponse>
     {
         public string UserName { get; set; }
 

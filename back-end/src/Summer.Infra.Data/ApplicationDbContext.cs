@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Summer.Domain.Identity.Entities;
+using Summer.Domain.Entities;
 
 namespace Summer.Infra.Data
 {

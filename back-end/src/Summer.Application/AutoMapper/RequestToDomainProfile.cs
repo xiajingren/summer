@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Summer.Application.Requests;
-using Summer.Domain.Identity.Commands;
 
 namespace Summer.Application.AutoMapper
 {
@@ -8,7 +6,7 @@ namespace Summer.Application.AutoMapper
     {
         public RequestToDomainProfile()
         {
-            CreateMap<RegisterRequest, RegisterCommand>();
+            
         }
     }
 }

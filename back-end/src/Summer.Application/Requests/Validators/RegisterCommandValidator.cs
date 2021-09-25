@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Summer.Application.Requests;
+using Summer.Application.Requests.Commands;
 
-namespace Summer.Application.Validators
+namespace Summer.Application.Requests.Validators
 {
-    public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
+    public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
-        public RegisterRequestValidator()
+        public RegisterCommandValidator()
         {
             RuleFor(command => command.UserName).NotEmpty().WithMessage("用户名不能为空");
             RuleFor(command => command.Password).NotEmpty().WithMessage("密码不能为空");

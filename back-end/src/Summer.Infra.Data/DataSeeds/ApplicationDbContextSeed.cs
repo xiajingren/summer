@@ -4,10 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Summer.Domain.Identity.Entities;
-using Summer.Infra.Data;
+using Summer.Domain.Entities;
 
-namespace Summer.Infra.Bootstrapper.DataSeeds
+namespace Summer.Infra.Data.DataSeeds
 {
     public class ApplicationDbContextSeed : IDbContextSeed
     {

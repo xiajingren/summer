@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Aggregates\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Identity\Queries" />
-    <Folder Include="Queries\" />
-    <Folder Include="Validations\" />
     <Folder Include="EventHandlers\" />
   </ItemGroup>
 
