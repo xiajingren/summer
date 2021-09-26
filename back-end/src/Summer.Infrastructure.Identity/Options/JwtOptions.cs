@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Summer.Application.Options
+namespace Summer.Infrastructure.Identity.Options
 {
     public class JwtOptions
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Summer.Infra.Data.DataSeeds
+namespace Summer.Shared.SeedWork
 {
     public interface IDbContextSeed
     {

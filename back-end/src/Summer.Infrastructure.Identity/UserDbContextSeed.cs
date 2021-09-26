@@ -4,16 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Summer.Domain.Entities;
+using Summer.Infrastructure.Identity.Entities;
+using Summer.Shared.SeedWork;
 
-namespace Summer.Infra.Data.DataSeeds
+namespace Summer.Infrastructure.Identity
 {
-    public class ApplicationDbContextSeed : IDbContextSeed
+    public class UserDbContextSeed : IDbContextSeed
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
+        private readonly UserDbContext _context;
+        private readonly IPasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
 
-        public ApplicationDbContextSeed(ApplicationDbContext context)
+        public UserDbContextSeed(UserDbContext context)
         {
             _context = context;
         }
@@ -30,12 +31,11 @@ namespace Summer.Infra.Data.DataSeeds
             }
         }
 
-        private IEnumerable<ApplicationUser> GetDefaultUser()
+        private IEnumerable<User> GetDefaultUser()
         {
-            var user = new ApplicationUser()
+            var user = new User()
             {
                 Email = "demouser@microsoft.com",
-                Id = Guid.NewGuid().ToString(),
                 PhoneNumber = "1234567890",
                 UserName = "demouser@microsoft.com",
                 NormalizedEmail = "DEMOUSER@MICROSOFT.COM",
@@ -45,7 +45,7 @@ namespace Summer.Infra.Data.DataSeeds
 
             user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");
 
-            return new List<ApplicationUser>() { user };
+            return new List<User>() { user };
         }
 
     }

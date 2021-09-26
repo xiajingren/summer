@@ -14,10 +14,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Summer.Application.HttpFilters;
-using Summer.Application.Options;
-using Summer.Domain.Entities;
-using Summer.Infra.Data;
-using Summer.Infra.Data.DataSeeds;
+using Summer.Infrastructure.Identity;
+using Summer.Infrastructure.Identity.Entities;
+using Summer.Infrastructure.Identity.Options;
+using Summer.Shared.SeedWork;
 
 namespace Summer.Application
 {
@@ -28,6 +28,8 @@ namespace Summer.Application
             AddMvc(services);
 
             services.AddMediatR(typeof(ApplicationBootstrapper));
+
+            services.AddAutoMapper(typeof(ApplicationBootstrapper).Assembly);
 
             AddIdentity(services, configuration);
 
@@ -120,14 +122,14 @@ namespace Summer.Application
 
         private static void AddIdentity(IServiceCollection services, IConfiguration configuration)
         {
-            var migrationsAssembly = typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name;
+            var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
                     sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
 
-            services.AddIdentityCore<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = true; })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentityCore<User>(options => { options.SignIn.RequireConfirmedAccount = true; })
+                .AddEntityFrameworkStores<UserDbContext>();
         }
 
         #endregion
@@ -182,7 +184,7 @@ namespace Summer.Application
 
         private static void AddDbContextSeed(IServiceCollection services)
         {
-            services.AddScoped<IDbContextSeed, ApplicationDbContextSeed>();
+            services.AddScoped<IDbContextSeed, UserDbContextSeed>();
         }
 
         private static void DbContextSeed(IApplicationBuilder app)

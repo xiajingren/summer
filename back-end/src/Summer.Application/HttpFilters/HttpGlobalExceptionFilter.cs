@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Summer.Domain.Exceptions;
+using Summer.Shared.Exceptions;
 
 namespace Summer.Application.HttpFilters
 {
@@ -27,13 +27,13 @@ namespace Summer.Application.HttpFilters
 
             switch (context.Exception)
             {
-                case DomainException domainException:
+                case FriendlyException friendlyException:
                     var domainError = new ProblemDetails()
                     {
                         Instance = context.HttpContext.Request.Path,
                         Status = StatusCodes.Status400BadRequest,
                         Title = "Business errors occurred.",
-                        Detail = domainException.Message
+                        Detail = friendlyException.Message
                     };
 
                     context.Result = new BadRequestObjectResult(domainError);
