@@ -10,16 +10,19 @@ namespace Summer.Infrastructure.Identity.Entities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(128)]
         public string JwtId { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(256)]
         public string Token { get; set; }
 
         [Required]
         public bool Used { get; set; }
 
+        /// <summary>
+        /// 是否失效。修改用户信息时可将此字段更新为true，使用户重新登录
+        /// </summary>
         [Required]
         public bool Invalidated { get; set; }
 

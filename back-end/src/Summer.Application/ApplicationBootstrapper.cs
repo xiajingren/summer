@@ -16,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Summer.Application.HttpFilters;
 using Summer.Infrastructure.Identity;
 using Summer.Infrastructure.Identity.Entities;
+using Summer.Infrastructure.Identity.Managers;
 using Summer.Infrastructure.Identity.Options;
 using Summer.Shared.SeedWork;
 
@@ -90,7 +91,6 @@ namespace Summer.Application
         {
             var jwtConfig = configuration.GetSection(nameof(JwtOptions));
             var jwtOptions = jwtConfig.Get<JwtOptions>();
-            services.Configure<JwtOptions>(jwtConfig);
 
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -109,11 +109,9 @@ namespace Summer.Application
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(options =>
-                {
-                    //options.SaveToken = true;
-                    options.TokenValidationParameters = tokenValidationParameters;
-                });
+                .AddJwtBearer(options => { options.TokenValidationParameters = tokenValidationParameters; });
+            
+            services.Configure<JwtOptions>(jwtConfig);
         }
 
         #endregion
@@ -128,8 +126,9 @@ namespace Summer.Application
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
                     sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
 
-            services.AddIdentityCore<User>(options => { options.SignIn.RequireConfirmedAccount = true; })
-                .AddEntityFrameworkStores<UserDbContext>();
+            services.AddIdentityCore<User>().AddEntityFrameworkStores<UserDbContext>();
+
+            services.AddScoped<IIdentityManager, IdentityManager>();
         }
 
         #endregion

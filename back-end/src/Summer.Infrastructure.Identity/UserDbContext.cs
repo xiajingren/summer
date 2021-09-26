@@ -19,11 +19,7 @@ namespace Summer.Infrastructure.Identity
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<User>(b =>
-            {
-                //b.Property(x => x.Id).ValueGeneratedOnAdd();
-                b.ToTable("AppUsers");
-            });
+            builder.Entity<User>(b => { b.ToTable("AppUsers"); });
 
             builder.Entity<IdentityUserClaim<int>>(b => { b.ToTable("AppUserClaims"); });
 

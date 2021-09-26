@@ -9,11 +9,11 @@ namespace Summer.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AccountController(IMediator mediator)
+        public UserController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -31,6 +31,14 @@ namespace Summer.WebApi.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterCommand registerCommand)
         {
             var response = await _mediator.Send(registerCommand);
+            return Ok(response);
+        }
+
+        [HttpPost("RefreshToken")]
+        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand refreshTokenCommand)
+        {
+            var response = await _mediator.Send(refreshTokenCommand);
             return Ok(response);
         }
     }

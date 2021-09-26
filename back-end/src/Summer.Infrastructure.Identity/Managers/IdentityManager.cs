@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Summer.Infrastructure.Identity.Dtos;
@@ -33,38 +34,101 @@ namespace Summer.Infrastructure.Identity.Managers
 
         public async Task<TokenOutput> RegisterAsync(string username, string password)
         {
+            if (username.Length < 5)
+            {
+                throw new FriendlyException("用户名不合法");
+            }
+
             var existingUser = await _userManager.FindByNameAsync(username);
             if (existingUser != null)
             {
                 throw new FriendlyException("用户名已存在");
             }
 
-            var newUser = new User() { UserName = username };
+            var newUser = new User() {UserName = username};
             var isCreated = await _userManager.CreateAsync(newUser, password);
             if (!isCreated.Succeeded)
             {
-                throw new FriendlyException(string.Join(";", isCreated.Errors.Select(p => p.Description)));
+                throw new FriendlyException("注册失败，用户名或密码不合法");
             }
 
             return await GenerateJwtToken(newUser);
         }
 
-        public Task<TokenOutput> LoginAsync(string username, string password)
+        public async Task<TokenOutput> LoginAsync(string username, string password)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<TokenOutput> RefreshTokenAsync(string token, string refreshToken)
-        {
-            var validateToken = GetClaimsPrincipalByToken(token);
-            if (validateToken == null)
+            var existingUser = await _userManager.FindByNameAsync(username);
+            if (existingUser == null)
             {
-                throw new FriendlyException("Invalid Token");
+                throw new FriendlyException("用户名或密码错误");
             }
 
+            var isCorrect = await _userManager.CheckPasswordAsync(existingUser, password);
+            if (!isCorrect)
+            {
+                throw new FriendlyException("用户名或密码错误");
+            }
 
+            return await GenerateJwtToken(existingUser);
+        }
 
-            return null;
+        public async Task<TokenOutput> RefreshTokenAsync(string token, string refreshToken)
+        {
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+
+            var claimsPrincipal =
+                jwtTokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
+            var validatedSecurityAlgorithm = validatedToken is JwtSecurityToken jwtSecurityToken
+                                             && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                                                 StringComparison.InvariantCultureIgnoreCase);
+            if (!validatedSecurityAlgorithm)
+            {
+                throw new FriendlyException("无效的token...");
+            }
+
+            var expiryDateUnix =
+                long.Parse(claimsPrincipal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+            var expiryDateTimeUtc = CommonHelper.Instance.UnixTimeStampToDateTime(expiryDateUnix);
+            if (expiryDateTimeUtc > DateTime.UtcNow)
+            {
+                throw new FriendlyException("token未过期...");
+            }
+
+            var jti = claimsPrincipal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+
+            var storedRefreshToken =
+                await _userDbContext.RefreshTokens.SingleOrDefaultAsync(x => x.Token == refreshToken);
+            if (storedRefreshToken == null)
+            {
+                throw new FriendlyException("无效的refresh_token...");
+            }
+
+            if (storedRefreshToken.ExpiryTime < DateTime.UtcNow)
+            {
+                throw new FriendlyException("refresh_token已过期...");
+            }
+
+            if (storedRefreshToken.Invalidated)
+            {
+                throw new FriendlyException("refresh_token已失效...");
+            }
+
+            if (storedRefreshToken.Used)
+            {
+                throw new FriendlyException("refresh_token已使用...");
+            }
+
+            if (storedRefreshToken.JwtId != jti)
+            {
+                throw new FriendlyException("refresh_token与此token不匹配...");
+            }
+
+            storedRefreshToken.Used = true;
+            //_userDbContext.RefreshTokens.Update(storedRefreshToken);
+            await _userDbContext.SaveChangesAsync();
+
+            var dbUser = await _userManager.FindByIdAsync(storedRefreshToken.UserId.ToString());
+            return await GenerateJwtToken(dbUser);
         }
 
         private async Task<TokenOutput> GenerateJwtToken(User user)
@@ -92,11 +156,9 @@ namespace Summer.Infrastructure.Identity.Managers
             var refreshToken = new RefreshToken()
             {
                 JwtId = securityToken.Id,
-                Used = false,
-                Invalidated = false,
                 UserId = user.Id,
                 CreationTime = DateTime.UtcNow,
-                ExpiryTime = DateTime.UtcNow.AddMonths(3),
+                ExpiryTime = DateTime.UtcNow.AddMonths(6),
                 Token = CommonHelper.Instance.GenerateRandomNumber()
             };
 
@@ -106,27 +168,9 @@ namespace Summer.Infrastructure.Identity.Managers
             return new TokenOutput()
             {
                 AccessToken = token,
-                ExpiresIn = (int)_jwtOptions.ExpiresIn.TotalSeconds,
-                RefreshToken = CommonHelper.Instance.GenerateRandomNumber()
+                ExpiresIn = (int) _jwtOptions.ExpiresIn.TotalSeconds,
+                RefreshToken = refreshToken.Token
             };
         }
-
-        private ClaimsPrincipal GetClaimsPrincipalByToken(string token)
-        {
-            try
-            {
-                var jwtTokenHandler = new JwtSecurityTokenHandler();
-                var principal = jwtTokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
-                var validatedSecurityAlgorithm = validatedToken is JwtSecurityToken jwtSecurityToken
-                                                  && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
-
-                return !validatedSecurityAlgorithm ? null : principal;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
     }
 }
