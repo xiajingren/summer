@@ -1,18 +1,18 @@
-﻿using MediatR;
+﻿using System.Text.Json.Serialization;
+using MediatR;
 using Summer.Application.Responses;
 
 namespace Summer.Application.Requests.Commands
 {
     public class RefreshTokenCommand : IRequest<TokenResponse>
     {
-        public string Token { get; set; }
+        [JsonPropertyName("access_token")] public string AccessToken { get; set; }
 
-        public string RefreshToken { get; set; }
+        [JsonPropertyName("refresh_token")] public string RefreshToken { get; set; }
 
-
-        public RefreshTokenCommand(string token, string refreshToken)
+        public RefreshTokenCommand(string accessToken, string refreshToken)
         {
-            Token = token;
+            AccessToken = accessToken;
             RefreshToken = refreshToken;
         }
     }

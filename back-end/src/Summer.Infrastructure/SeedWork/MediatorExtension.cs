@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Summer.Domain.SeedWork;
 
-namespace Summer.Infra.Data.SeedWork
+namespace Summer.Infrastructure.SeedWork
 {
     public static class MediatorExtension
     {

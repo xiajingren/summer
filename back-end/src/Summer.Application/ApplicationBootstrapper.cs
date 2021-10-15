@@ -92,15 +92,14 @@ namespace Summer.Application
             var jwtConfig = configuration.GetSection(nameof(JwtOptions));
             var jwtOptions = jwtConfig.Get<JwtOptions>();
 
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecurityKey)),
-            };
-
-            services.AddSingleton(tokenValidationParameters);
+            TokenValidationParameters GenerateTokenValidationParameters() =>
+                new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecurityKey)),
+                };
 
             services
                 .AddAuthentication(options =>
@@ -109,8 +108,12 @@ namespace Summer.Application
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(options => { options.TokenValidationParameters = tokenValidationParameters; });
-            
+                .AddJwtBearer(options => { options.TokenValidationParameters = GenerateTokenValidationParameters(); });
+
+            var tokenValidationParameters = GenerateTokenValidationParameters();
+            tokenValidationParameters.ValidateLifetime = false; //refresh token验证jwt正确性时使用，忽略过期时间
+            services.AddSingleton(tokenValidationParameters);
+
             services.Configure<JwtOptions>(jwtConfig);
         }
 
@@ -126,7 +129,13 @@ namespace Summer.Application
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
                     sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
 
-            services.AddIdentityCore<User>().AddEntityFrameworkStores<UserDbContext>();
+            services.AddIdentityCore<User>(options =>
+            {
+                options.Password.RequireLowercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            }).AddEntityFrameworkStores<UserDbContext>();
 
             services.AddScoped<IIdentityManager, IdentityManager>();
         }

@@ -21,7 +21,7 @@ namespace Summer.Application.Requests.Handlers
 
         public async Task<TokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var token = await _identityManager.RefreshTokenAsync(request.Token, request.RefreshToken);
+            var token = await _identityManager.RefreshTokenAsync(request.AccessToken, request.RefreshToken);
             return _mapper.Map<TokenResponse>(token);
         }
     }

@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Summer.Domain.SeedWork;
-using Summer.Infra.Data.SeedWork;
+using Summer.Infrastructure.SeedWork;
 
-namespace Summer.Infra.Data
+namespace Summer.Infrastructure
 {
     public class SummerDbContext : DbContext, IUnitOfWork
     {
@@ -15,6 +16,13 @@ namespace Summer.Infra.Data
         public SummerDbContext(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         public async Task<bool> CommitAsync(CancellationToken cancellationToken = default)
