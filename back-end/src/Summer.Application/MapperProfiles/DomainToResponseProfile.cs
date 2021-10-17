@@ -2,7 +2,7 @@
 using Summer.Application.Responses;
 using Summer.Infrastructure.Identity.Dtos;
 
-namespace Summer.Application.AutoMapper
+namespace Summer.Application.MapperProfiles
 {
     public class DomainToResponseProfile : Profile
     {

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq;
+using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +27,25 @@ namespace Summer.Application.HttpFilters
 
             switch (context.Exception)
             {
+                case ValidationException validationException:
+                    var errors = validationException.Errors.Select(p => p.PropertyName)
+                        .Distinct()
+                        .ToDictionary(propName => propName, propName => validationException.Errors
+                            .Where(p => p.PropertyName == propName)
+                            .Select(x => x.ErrorMessage)
+                            .ToArray());
+
+                    var validationError = new ProblemDetails()
+                    {
+                        Instance = context.HttpContext.Request.Path,
+                        Status = StatusCodes.Status400BadRequest,
+                        Title = "One or more validation errors occurred.",
+                        Detail = "验证错误...",
+                        Extensions = {{"errors", errors}}
+                    };
+
+                    context.Result = new BadRequestObjectResult(validationError);
+                    break;
                 case FriendlyException friendlyException:
                     var domainError = new ProblemDetails()
                     {
@@ -54,20 +73,19 @@ namespace Summer.Application.HttpFilters
                         unKnowError.Extensions.Add("exception.stackTrace", context.Exception.StackTrace);
                     }
 
-                    context.Result = new InternalServerErrorResult(unKnowError);
+                    context.Result = new InternalServerErrorObjectResult(unKnowError);
                     break;
             }
 
             context.ExceptionHandled = true;
         }
 
-        private class InternalServerErrorResult : ObjectResult
+        private class InternalServerErrorObjectResult : ObjectResult
         {
-            public InternalServerErrorResult(object value) : base(value)
+            public InternalServerErrorObjectResult(object value) : base(value)
             {
                 StatusCode = StatusCodes.Status500InternalServerError;
             }
         }
-
     }
 }

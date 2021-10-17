@@ -8,11 +8,15 @@ namespace Summer.Application.Requests.Commands
         public string UserName { get; set; }
 
         public string Password { get; set; }
-        
-        public LoginCommand(string password, string userName)
+
+        public LoginCommand()
         {
-            Password = password;
+        }
+
+        public LoginCommand(string userName, string password)
+        {
             UserName = userName;
+            Password = password;
         }
     }
 }

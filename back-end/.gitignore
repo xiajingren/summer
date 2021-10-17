@@ -3,6 +3,7 @@
 ################################################################################
 
 /.vs
+/.idea
 /src/Summer.Application/obj
 /src/Summer.Application/bin
 /src/Summer.Domain/obj
@@ -17,4 +18,6 @@
 /src/Summer.WebApi/bin
 /src/Summer.WebTools/obj
 /src/Summer.WebTools/bin
-/.idea
+/tests/Summer.FunctionalTests/obj
+/tests/Summer.FunctionalTests/bin
+/Summer.sln.DotSettings.user

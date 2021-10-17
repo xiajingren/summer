@@ -9,6 +9,10 @@ namespace Summer.Application.Requests.Commands
 
         public string Password { get; set; }
 
+        public RegisterCommand()
+        {
+        }
+
         public RegisterCommand(string userName, string password)
         {
             UserName = userName;

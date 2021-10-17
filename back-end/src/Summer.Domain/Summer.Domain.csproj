@@ -7,11 +7,11 @@
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="EventHandlers\" />
+    <Folder Include="Specifications" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.Stores" Version="1.0.3" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 

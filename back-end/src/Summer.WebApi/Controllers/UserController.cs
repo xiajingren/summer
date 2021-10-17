@@ -7,7 +7,7 @@ using Summer.Application.Responses;
 
 namespace Summer.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace Summer.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Login([FromBody] LoginCommand loginCommand)
         {
@@ -26,7 +26,7 @@ namespace Summer.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Register([FromBody] RegisterCommand registerCommand)
         {
@@ -34,7 +34,7 @@ namespace Summer.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("RefreshToken")]
+        [HttpPost("refresh-token")]
         [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand refreshTokenCommand)
         {

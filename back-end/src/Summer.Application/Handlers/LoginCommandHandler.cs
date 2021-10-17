@@ -6,22 +6,22 @@ using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
 using Summer.Infrastructure.Identity.Managers;
 
-namespace Summer.Application.Requests.Handlers
+namespace Summer.Application.Handlers
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TokenResponse>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, TokenResponse>
     {
         private readonly IIdentityManager _identityManager;
         private readonly IMapper _mapper;
 
-        public RefreshTokenCommandHandler(IIdentityManager identityManager, IMapper mapper)
+        public LoginCommandHandler(IIdentityManager identityManager, IMapper mapper)
         {
             _identityManager = identityManager;
             _mapper = mapper;
         }
 
-        public async Task<TokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<TokenResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var token = await _identityManager.RefreshTokenAsync(request.AccessToken, request.RefreshToken);
+            var token = await _identityManager.LoginAsync(request.UserName, request.Password);
             return _mapper.Map<TokenResponse>(token);
         }
     }

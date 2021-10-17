@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Summer.Application.AutoMapper
+namespace Summer.Application.MapperProfiles
 {
     public class RequestToDomainProfile : Profile
     {

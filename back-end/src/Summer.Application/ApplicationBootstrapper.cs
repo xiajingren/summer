@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
-using FluentValidation.AspNetCore;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Summer.Application.Behaviors;
 using Summer.Application.HttpFilters;
 using Summer.Infrastructure.Identity;
 using Summer.Infrastructure.Identity.Entities;
@@ -28,9 +29,7 @@ namespace Summer.Application
         {
             AddMvc(services);
 
-            services.AddMediatR(typeof(ApplicationBootstrapper));
-
-            services.AddAutoMapper(typeof(ApplicationBootstrapper).Assembly);
+            AddApplicationServices(services);
 
             AddIdentity(services, configuration);
 
@@ -68,11 +67,11 @@ namespace Summer.Application
         private static void AddMvc(IServiceCollection services)
         {
             services
-                .AddControllers(options => { options.Filters.Add<HttpGlobalExceptionFilter>(); })
-                .AddFluentValidation(mvcConfiguration =>
-                {
-                    mvcConfiguration.RegisterValidatorsFromAssemblyContaining(typeof(ApplicationBootstrapper));
-                });
+                .AddControllers(options => { options.Filters.Add<HttpGlobalExceptionFilter>(); });
+            // .AddFluentValidation(mvcConfiguration =>
+            // {
+            //     mvcConfiguration.RegisterValidatorsFromAssemblyContaining(typeof(ApplicationBootstrapper));
+            // });
 
             //services.Configure<ApiBehaviorOptions>(options =>
             //{
@@ -115,6 +114,20 @@ namespace Summer.Application
             services.AddSingleton(tokenValidationParameters);
 
             services.Configure<JwtOptions>(jwtConfig);
+        }
+
+        #endregion
+
+        #region Application Services
+
+        private static void AddApplicationServices(IServiceCollection services)
+        {
+            services.AddMediatR(typeof(ApplicationBootstrapper).Assembly);
+
+            services.AddAutoMapper(typeof(ApplicationBootstrapper).Assembly);
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+            services.AddValidatorsFromAssembly(typeof(ApplicationBootstrapper).Assembly);
         }
 
         #endregion
