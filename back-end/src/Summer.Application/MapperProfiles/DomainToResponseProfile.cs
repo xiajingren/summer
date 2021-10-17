@@ -8,7 +8,7 @@ namespace Summer.Application.MapperProfiles
     {
         public DomainToResponseProfile()
         {
-            CreateMap<TokenOutput, TokenResponse>();
+            CreateMap<TokenOutputDto, TokenResponse>();
         }
     }
 }

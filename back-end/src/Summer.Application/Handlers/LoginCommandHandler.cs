@@ -4,16 +4,16 @@ using AutoMapper;
 using MediatR;
 using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
-using Summer.Infrastructure.Identity.Managers;
+using Summer.Infrastructure.Identity.Services;
 
 namespace Summer.Application.Handlers
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, TokenResponse>
     {
-        private readonly IIdentityManager _identityManager;
+        private readonly IIdentityService _identityManager;
         private readonly IMapper _mapper;
 
-        public LoginCommandHandler(IIdentityManager identityManager, IMapper mapper)
+        public LoginCommandHandler(IIdentityService identityManager, IMapper mapper)
         {
             _identityManager = identityManager;
             _mapper = mapper;

@@ -1,6 +1,6 @@
 ﻿namespace Summer.Infrastructure.Identity.Dtos
 {
-    public class TokenOutput
+    public class TokenOutputDto
     {
         public string AccessToken { get; set; }
 

@@ -17,8 +17,8 @@ using Summer.Application.Behaviors;
 using Summer.Application.HttpFilters;
 using Summer.Infrastructure.Identity;
 using Summer.Infrastructure.Identity.Entities;
-using Summer.Infrastructure.Identity.Managers;
 using Summer.Infrastructure.Identity.Options;
+using Summer.Infrastructure.Identity.Services;
 using Summer.Shared.SeedWork;
 
 namespace Summer.Application
@@ -150,7 +150,7 @@ namespace Summer.Application
                 options.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<UserDbContext>();
 
-            services.AddScoped<IIdentityManager, IdentityManager>();
+            services.AddScoped<IIdentityService, IdentityService>();
         }
 
         #endregion

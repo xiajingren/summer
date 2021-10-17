@@ -1,7 +1,8 @@
-﻿namespace Summer.Domain.SeedWork
+﻿using Ardalis.Specification;
+
+namespace Summer.Domain.SeedWork
 {
-    public interface IRepository<T> where T : IAggregateRoot
+    public interface IRepository<T> : IRepositoryBase<T> where T : class, IAggregateRoot
     {
-        IUnitOfWork UnitOfWork { get; }
     }
 }

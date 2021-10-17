@@ -14,16 +14,16 @@ using Summer.Infrastructure.Identity.Options;
 using Summer.Shared.Exceptions;
 using Summer.Shared.Utils;
 
-namespace Summer.Infrastructure.Identity.Managers
+namespace Summer.Infrastructure.Identity.Services
 {
-    public class IdentityManager : IIdentityManager
+    public class IdentityService : IIdentityService
     {
         private readonly UserManager<User> _userManager;
         private readonly UserDbContext _userDbContext;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtOptions _jwtOptions;
 
-        public IdentityManager(UserManager<User> userManager, UserDbContext userDbContext,
+        public IdentityService(UserManager<User> userManager, UserDbContext userDbContext,
             TokenValidationParameters tokenValidationParameters, IOptions<JwtOptions> jwtOptions)
         {
             _userManager = userManager;
@@ -32,7 +32,7 @@ namespace Summer.Infrastructure.Identity.Managers
             _jwtOptions = jwtOptions.Value;
         }
 
-        public async Task<TokenOutput> RegisterAsync(string username, string password)
+        public async Task<TokenOutputDto> RegisterAsync(string username, string password)
         {
             if (username.Length < 5)
             {
@@ -55,7 +55,7 @@ namespace Summer.Infrastructure.Identity.Managers
             return await GenerateJwtToken(newUser);
         }
 
-        public async Task<TokenOutput> LoginAsync(string username, string password)
+        public async Task<TokenOutputDto> LoginAsync(string username, string password)
         {
             var existingUser = await _userManager.FindByNameAsync(username);
             if (existingUser == null)
@@ -72,7 +72,7 @@ namespace Summer.Infrastructure.Identity.Managers
             return await GenerateJwtToken(existingUser);
         }
 
-        public async Task<TokenOutput> RefreshTokenAsync(string token, string refreshToken)
+        public async Task<TokenOutputDto> RefreshTokenAsync(string token, string refreshToken)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
@@ -131,7 +131,7 @@ namespace Summer.Infrastructure.Identity.Managers
             return await GenerateJwtToken(dbUser);
         }
 
-        private async Task<TokenOutput> GenerateJwtToken(User user)
+        private async Task<TokenOutputDto> GenerateJwtToken(User user)
         {
             var key = Encoding.UTF8.GetBytes(_jwtOptions.SecurityKey);
 
@@ -165,7 +165,7 @@ namespace Summer.Infrastructure.Identity.Managers
             await _userDbContext.RefreshTokens.AddAsync(refreshToken);
             await _userDbContext.SaveChangesAsync();
 
-            return new TokenOutput()
+            return new TokenOutputDto()
             {
                 AccessToken = token,
                 ExpiresIn = (int) _jwtOptions.ExpiresIn.TotalSeconds,

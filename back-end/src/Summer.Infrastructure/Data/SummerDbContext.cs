@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Summer.Domain.SeedWork;
 using Summer.Infrastructure.SeedWork;
 
-namespace Summer.Infrastructure
+namespace Summer.Infrastructure.Data
 {
-    public class SummerDbContext : DbContext, IUnitOfWork
+    public class SummerDbContext : DbContext
     {
         private readonly IMediator _mediator;
 
@@ -25,13 +25,19 @@ namespace Summer.Infrastructure
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public async Task<bool> CommitAsync(CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            await _mediator.PublishDomainEventsAsync(this);
+            var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            var result = await SaveChangesAsync(cancellationToken) > 0;
+            // dispatch events only if save was successful
+            await _mediator.DispatchDomainEventsAsync(this);
 
             return result;
+        }
+
+        public override int SaveChanges()
+        {
+            return SaveChangesAsync().GetAwaiter().GetResult();
         }
     }
 }

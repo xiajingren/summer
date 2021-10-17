@@ -8,11 +8,17 @@ namespace Summer.Infrastructure.SeedWork
 {
     public static class MediatorExtension
     {
-        public static async Task PublishDomainEventsAsync<TContext>(this IMediator mediator, TContext ctx)
+        /// <summary>
+        /// 发布领域事件
+        /// </summary>
+        /// <param name="mediator"></param>
+        /// <param name="context"></param>
+        /// <typeparam name="TContext"></typeparam>
+        public static async Task DispatchDomainEventsAsync<TContext>(this IMediator mediator, TContext context)
             where TContext : DbContext
         {
-            var domainEntities = ctx.ChangeTracker
-                .Entries<Entity>()
+            var domainEntities = context.ChangeTracker
+                .Entries<BaseEntity>()
                 .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any())
                 .ToList();
 

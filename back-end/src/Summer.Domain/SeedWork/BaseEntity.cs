@@ -3,10 +3,11 @@ using MediatR;
 
 namespace Summer.Domain.SeedWork
 {
-    public abstract class Entity
+    public abstract class BaseEntity
     {
-        private List<INotification> _domainEvents;
         public virtual int Id { get; protected set; }
+
+        private List<INotification> _domainEvents;
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)
