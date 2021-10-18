@@ -5,14 +5,12 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Summer.Domain.Entities;
 using Summer.Domain.Interfaces;
 using Summer.Domain.Options;
 using Summer.Domain.Results;
-using Summer.Infrastructure.Data;
 using Summer.Shared.Exceptions;
 using Summer.Shared.Utils;
 
@@ -21,16 +19,18 @@ namespace Summer.Infrastructure.Services
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<User> _userManager;
-        private readonly SummerDbContext _summerDbContext;
         private readonly TokenValidationParameters _tokenValidationParameters;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly JwtOptions _jwtOptions;
 
-        public IdentityService(UserManager<User> userManager, SummerDbContext summerDbContext,
-            TokenValidationParameters tokenValidationParameters, IOptions<JwtOptions> jwtOptions)
+        public IdentityService(UserManager<User> userManager,
+            TokenValidationParameters tokenValidationParameters,
+            IOptions<JwtOptions> jwtOptions,
+            IRefreshTokenRepository refreshTokenRepository)
         {
             _userManager = userManager;
-            _summerDbContext = summerDbContext;
             _tokenValidationParameters = tokenValidationParameters;
+            _refreshTokenRepository = refreshTokenRepository;
             _jwtOptions = jwtOptions.Value;
         }
 
@@ -98,36 +98,15 @@ namespace Summer.Infrastructure.Services
 
             var jti = claimsPrincipal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            var storedRefreshToken =
-                await _summerDbContext.RefreshTokens.SingleOrDefaultAsync(x => x.Token == refreshToken);
+            var storedRefreshToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
             if (storedRefreshToken == null)
             {
                 throw new FriendlyException("无效的refresh_token...");
             }
 
-            if (storedRefreshToken.ExpiryTime < DateTime.UtcNow)
-            {
-                throw new FriendlyException("refresh_token已过期...");
-            }
+            storedRefreshToken.Confirm(jti);
 
-            if (storedRefreshToken.Invalidated)
-            {
-                throw new FriendlyException("refresh_token已失效...");
-            }
-
-            if (storedRefreshToken.Used)
-            {
-                throw new FriendlyException("refresh_token已使用...");
-            }
-
-            if (storedRefreshToken.JwtId != jti)
-            {
-                throw new FriendlyException("refresh_token与此token不匹配...");
-            }
-
-            storedRefreshToken.Used = true;
-            //_summerDbContext.RefreshTokens.Update(storedRefreshToken);
-            await _summerDbContext.SaveChangesAsync();
+            await _refreshTokenRepository.UpdateAsync(storedRefreshToken);
 
             var dbUser = await _userManager.FindByIdAsync(storedRefreshToken.UserId.ToString());
             return await GenerateJwtToken(dbUser);
@@ -155,17 +134,9 @@ namespace Summer.Infrastructure.Services
             var securityToken = jwtTokenHandler.CreateToken(tokenDescriptor);
             var token = jwtTokenHandler.WriteToken(securityToken);
 
-            var refreshToken = new RefreshToken()
-            {
-                JwtId = securityToken.Id,
-                UserId = user.Id,
-                CreationTime = DateTime.UtcNow,
-                ExpiryTime = DateTime.UtcNow.AddMonths(6),
-                Token = CommonHelper.Instance.GenerateRandomNumber()
-            };
+            var refreshToken = new RefreshToken(securityToken.Id, user.Id);
 
-            await _summerDbContext.RefreshTokens.AddAsync(refreshToken);
-            await _summerDbContext.SaveChangesAsync();
+            await _refreshTokenRepository.AddAsync(refreshToken);
 
             return new TokenResult()
             {

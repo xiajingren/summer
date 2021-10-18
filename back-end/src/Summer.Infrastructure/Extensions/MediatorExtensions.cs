@@ -4,9 +4,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Summer.Domain.SeedWork;
 
-namespace Summer.Infrastructure.SeedWork
+namespace Summer.Infrastructure.Extensions
 {
-    public static class MediatorExtension
+    public static class MediatorExtensions
     {
         /// <summary>
         /// 发布领域事件

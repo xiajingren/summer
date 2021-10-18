@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Summer.Domain.Entities;
+using Summer.Infrastructure.Extensions;
 using Summer.Infrastructure.SeedWork;
 
 namespace Summer.Infrastructure.Data

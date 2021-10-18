@@ -10,29 +10,27 @@ using Summer.Shared.SeedWork;
 
 namespace Summer.Infrastructure.Data.Seeds
 {
-    public class IdentitySeed : IDbContextSeed
+    public class IdentityDataSeed : IDataSeed
     {
         private readonly SummerDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
 
-        public IdentitySeed(SummerDbContext context)
+        public IdentityDataSeed(SummerDbContext context)
         {
             _context = context;
         }
 
         public async Task SeedAsync()
         {
-            await _context.Database.MigrateAsync();
-
             if (!_context.Users.Any())
             {
-                await _context.Users.AddRangeAsync(GetDefaultUser());
+                await _context.Users.AddRangeAsync(GetDefaultUsers());
 
                 await _context.SaveChangesAsync();
             }
         }
 
-        private IEnumerable<User> GetDefaultUser()
+        private IEnumerable<User> GetDefaultUsers()
         {
             var user = new User()
             {

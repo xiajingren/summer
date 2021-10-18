@@ -10,8 +10,6 @@
 /src/Summer.Domain/bin
 /src/Summer.Infrastructure/obj
 /src/Summer.Infrastructure/bin
-/src/Summer.Infrastructure.Identity/obj
-/src/Summer.Infrastructure.Identity/bin
 /src/Summer.Shared/obj
 /src/Summer.Shared/bin
 /src/Summer.WebApi/obj

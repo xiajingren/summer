@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using FluentValidation;
@@ -207,13 +208,21 @@ namespace Summer.Application
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
                     sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
 
-            services.AddScoped<IDbContextSeed, IdentitySeed>();
+            services.AddScoped<IDataSeed, IdentityDataSeed>();
         }
 
         private static void DbContextSeed(IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
-            var seeds = scope.ServiceProvider.GetServices<IDbContextSeed>();
+            
+            var summerDbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
+            summerDbContext.Database.EnsureCreatedAsync().Wait();
+            if (summerDbContext.Database.GetPendingMigrationsAsync().Result.Any())
+            {
+                summerDbContext.Database.MigrateAsync().Wait();
+            }
+
+            var seeds = scope.ServiceProvider.GetServices<IDataSeed>();
             foreach (var seed in seeds) seed.SeedAsync().Wait();
         }
 

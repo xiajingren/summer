@@ -2,7 +2,7 @@
 
 namespace Summer.Infrastructure.SeedWork
 {
-    public interface IDbContextSeed
+    public interface IDataSeed
     {
         Task SeedAsync();
     }
