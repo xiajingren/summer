@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="EventHandlers\" />
     <Folder Include="Specifications" />
   </ItemGroup>

@@ -4,7 +4,7 @@ using AutoMapper;
 using MediatR;
 using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
-using Summer.Infrastructure.Identity.Services;
+using Summer.Domain.Interfaces;
 
 namespace Summer.Application.Handlers
 {

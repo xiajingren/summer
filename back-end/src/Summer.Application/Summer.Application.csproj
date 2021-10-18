@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Summer.Shared\Summer.Shared.csproj" />
     <ProjectReference Include="..\Summer.Infrastructure\Summer.Infrastructure.csproj" />
-    <ProjectReference Include="..\Summer.Infrastructure.Identity\Summer.Infrastructure.Identity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

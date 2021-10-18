@@ -15,11 +15,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Summer.Application.Behaviors;
 using Summer.Application.HttpFilters;
-using Summer.Infrastructure.Identity;
-using Summer.Infrastructure.Identity.Entities;
-using Summer.Infrastructure.Identity.Options;
-using Summer.Infrastructure.Identity.Services;
-using Summer.Shared.SeedWork;
+using Summer.Domain.Entities;
+using Summer.Domain.Interfaces;
+using Summer.Domain.Options;
+using Summer.Infrastructure.Data;
+using Summer.Infrastructure.Data.Seeds;
+using Summer.Infrastructure.SeedWork;
+using Summer.Infrastructure.Services;
 
 namespace Summer.Application
 {
@@ -31,13 +33,13 @@ namespace Summer.Application
 
             AddApplicationServices(services);
 
-            AddIdentity(services, configuration);
+            AddIdentity(services);
 
             AddJwtAuthentication(services, configuration);
 
             AddSwagger(services);
 
-            AddDbContextSeed(services);
+            AddDbContext(services, configuration);
         }
 
         public static void ConfigureApplication(IApplicationBuilder app, IWebHostEnvironment env)
@@ -134,21 +136,15 @@ namespace Summer.Application
 
         #region Identity
 
-        private static void AddIdentity(IServiceCollection services, IConfiguration configuration)
+        private static void AddIdentity(IServiceCollection services)
         {
-            var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
-
-            services.AddDbContext<UserDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
-                    sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
-
             services.AddIdentityCore<User>(options =>
             {
                 options.Password.RequireLowercase = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<UserDbContext>();
+            }).AddEntityFrameworkStores<SummerDbContext>();
 
             services.AddScoped<IIdentityService, IdentityService>();
         }
@@ -201,11 +197,17 @@ namespace Summer.Application
 
         #endregion
 
-        #region DbContextSeed
+        #region DbContext
 
-        private static void AddDbContextSeed(IServiceCollection services)
+        private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IDbContextSeed, UserDbContextSeed>();
+            var migrationsAssembly = typeof(SummerDbContext).GetTypeInfo().Assembly.GetName().Name;
+
+            services.AddDbContext<SummerDbContext>(options =>
+                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
+                    sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
+
+            services.AddScoped<IDbContextSeed, IdentitySeed>();
         }
 
         private static void DbContextSeed(IApplicationBuilder app)

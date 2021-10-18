@@ -8,31 +8,33 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Summer.Infrastructure.Identity.Dtos;
-using Summer.Infrastructure.Identity.Entities;
-using Summer.Infrastructure.Identity.Options;
+using Summer.Domain.Entities;
+using Summer.Domain.Interfaces;
+using Summer.Domain.Options;
+using Summer.Domain.Results;
+using Summer.Infrastructure.Data;
 using Summer.Shared.Exceptions;
 using Summer.Shared.Utils;
 
-namespace Summer.Infrastructure.Identity.Services
+namespace Summer.Infrastructure.Services
 {
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<User> _userManager;
-        private readonly UserDbContext _userDbContext;
+        private readonly SummerDbContext _summerDbContext;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtOptions _jwtOptions;
 
-        public IdentityService(UserManager<User> userManager, UserDbContext userDbContext,
+        public IdentityService(UserManager<User> userManager, SummerDbContext summerDbContext,
             TokenValidationParameters tokenValidationParameters, IOptions<JwtOptions> jwtOptions)
         {
             _userManager = userManager;
-            _userDbContext = userDbContext;
+            _summerDbContext = summerDbContext;
             _tokenValidationParameters = tokenValidationParameters;
             _jwtOptions = jwtOptions.Value;
         }
 
-        public async Task<TokenOutputDto> RegisterAsync(string username, string password)
+        public async Task<TokenResult> RegisterAsync(string username, string password)
         {
             if (username.Length < 5)
             {
@@ -55,7 +57,7 @@ namespace Summer.Infrastructure.Identity.Services
             return await GenerateJwtToken(newUser);
         }
 
-        public async Task<TokenOutputDto> LoginAsync(string username, string password)
+        public async Task<TokenResult> LoginAsync(string username, string password)
         {
             var existingUser = await _userManager.FindByNameAsync(username);
             if (existingUser == null)
@@ -72,7 +74,7 @@ namespace Summer.Infrastructure.Identity.Services
             return await GenerateJwtToken(existingUser);
         }
 
-        public async Task<TokenOutputDto> RefreshTokenAsync(string token, string refreshToken)
+        public async Task<TokenResult> RefreshTokenAsync(string token, string refreshToken)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
@@ -97,7 +99,7 @@ namespace Summer.Infrastructure.Identity.Services
             var jti = claimsPrincipal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
             var storedRefreshToken =
-                await _userDbContext.RefreshTokens.SingleOrDefaultAsync(x => x.Token == refreshToken);
+                await _summerDbContext.RefreshTokens.SingleOrDefaultAsync(x => x.Token == refreshToken);
             if (storedRefreshToken == null)
             {
                 throw new FriendlyException("无效的refresh_token...");
@@ -124,14 +126,14 @@ namespace Summer.Infrastructure.Identity.Services
             }
 
             storedRefreshToken.Used = true;
-            //_userDbContext.RefreshTokens.Update(storedRefreshToken);
-            await _userDbContext.SaveChangesAsync();
+            //_summerDbContext.RefreshTokens.Update(storedRefreshToken);
+            await _summerDbContext.SaveChangesAsync();
 
             var dbUser = await _userManager.FindByIdAsync(storedRefreshToken.UserId.ToString());
             return await GenerateJwtToken(dbUser);
         }
 
-        private async Task<TokenOutputDto> GenerateJwtToken(User user)
+        private async Task<TokenResult> GenerateJwtToken(User user)
         {
             var key = Encoding.UTF8.GetBytes(_jwtOptions.SecurityKey);
 
@@ -162,10 +164,10 @@ namespace Summer.Infrastructure.Identity.Services
                 Token = CommonHelper.Instance.GenerateRandomNumber()
             };
 
-            await _userDbContext.RefreshTokens.AddAsync(refreshToken);
-            await _userDbContext.SaveChangesAsync();
+            await _summerDbContext.RefreshTokens.AddAsync(refreshToken);
+            await _summerDbContext.SaveChangesAsync();
 
-            return new TokenOutputDto()
+            return new TokenResult()
             {
                 AccessToken = token,
                 ExpiresIn = (int) _jwtOptions.ExpiresIn.TotalSeconds,

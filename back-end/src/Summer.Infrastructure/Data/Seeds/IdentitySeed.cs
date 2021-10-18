@@ -4,17 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Summer.Infrastructure.Identity.Entities;
+using Summer.Domain.Entities;
+using Summer.Infrastructure.SeedWork;
 using Summer.Shared.SeedWork;
 
-namespace Summer.Infrastructure.Identity
+namespace Summer.Infrastructure.Data.Seeds
 {
-    public class UserDbContextSeed : IDbContextSeed
+    public class IdentitySeed : IDbContextSeed
     {
-        private readonly UserDbContext _context;
+        private readonly SummerDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
 
-        public UserDbContextSeed(UserDbContext context)
+        public IdentitySeed(SummerDbContext context)
         {
             _context = context;
         }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Summer.Infrastructure.Identity;
+using Summer.Infrastructure.Data;
 using Summer.WebApi;
 
 namespace Summer.FunctionalTests
@@ -16,8 +16,8 @@ namespace Summer.FunctionalTests
 
             builder.ConfigureServices(services =>
             {
-                services.RemoveAll(typeof(UserDbContext));
-                services.AddDbContext<UserDbContext>(options => { options.UseInMemoryDatabase("TestDB"); });
+                services.RemoveAll(typeof(SummerDbContext));
+                services.AddDbContext<SummerDbContext>(options => { options.UseInMemoryDatabase("TestDB"); });
             });
         }
     }
