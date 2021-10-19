@@ -11,6 +11,7 @@ using Summer.Domain.Entities;
 using Summer.Domain.Interfaces;
 using Summer.Domain.Options;
 using Summer.Domain.Results;
+using Summer.Infrastructure.Constants;
 using Summer.Shared.Exceptions;
 using Summer.Shared.Utils;
 
@@ -47,7 +48,7 @@ namespace Summer.Infrastructure.Services
                 throw new FriendlyException("用户名已存在");
             }
 
-            var newUser = new User() {UserName = username};
+            var newUser = new User() { UserName = username };
             var isCreated = await _userManager.CreateAsync(newUser, password);
             if (!isCreated.Succeeded)
             {
@@ -89,14 +90,14 @@ namespace Summer.Infrastructure.Services
             }
 
             var expiryDateUnix =
-                long.Parse(claimsPrincipal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                long.Parse(claimsPrincipal.Claims.Single(x => x.Type == ClaimConstants.Expiry).Value);
             var expiryDateTimeUtc = CommonHelper.Instance.UnixTimeStampToDateTime(expiryDateUnix);
             if (expiryDateTimeUtc > DateTime.UtcNow)
             {
                 throw new FriendlyException("token未过期...");
             }
 
-            var jti = claimsPrincipal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+            var jti = claimsPrincipal.Claims.Single(x => x.Type == ClaimConstants.Jti).Value;
 
             var storedRefreshToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
             if (storedRefreshToken == null)
@@ -120,8 +121,9 @@ namespace Summer.Infrastructure.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString())
+                    new Claim(ClaimConstants.Jti, Guid.NewGuid().ToString("N")),
+                    new Claim(ClaimConstants.UserId, user.Id.ToString()),
+                    new Claim(ClaimConstants.UserName, user.UserName)
                 }),
                 IssuedAt = DateTime.UtcNow,
                 NotBefore = DateTime.UtcNow,
@@ -141,7 +143,7 @@ namespace Summer.Infrastructure.Services
             return new TokenResult()
             {
                 AccessToken = token,
-                ExpiresIn = (int) _jwtOptions.ExpiresIn.TotalSeconds,
+                ExpiresIn = (int)_jwtOptions.ExpiresIn.TotalSeconds,
                 RefreshToken = refreshToken.Token
             };
         }

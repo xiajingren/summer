@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Summer.Infrastructure\Summer.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Requests\Queries" />
-  </ItemGroup>
-
 </Project>

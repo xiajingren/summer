@@ -29,7 +29,7 @@ namespace Summer.Infrastructure.Extensions
             domainEntities.ForEach(entity => entity.Entity.ClearDomainEvents());
 
             foreach (var domainEvent in domainEvents)
-                await mediator.Publish(domainEvent);
+                await mediator.Publish(domainEvent).ConfigureAwait(false);
         }
     }
 }

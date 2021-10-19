@@ -9,14 +9,14 @@ namespace Summer.Infrastructure.Data.Repositories
 {
     public class EfRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T> where T : class, IAggregateRoot
     {
-        public SummerDbContext Context { get; } // todo:
+        public SummerDbContext Context { get; }
 
         public EfRepository(SummerDbContext dbContext) : base(dbContext)
         {
             Context = dbContext;
         }
 
-        // public EfRepository(DbContext dbContext, ISpecificationEvaluator specificationEvaluator) : base(dbContext,
+        // public EfRepository(SummerDbContext dbContext, ISpecificationEvaluator specificationEvaluator) : base(dbContext,
         //     specificationEvaluator)
         // {
         // }

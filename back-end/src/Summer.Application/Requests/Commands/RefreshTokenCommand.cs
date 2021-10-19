@@ -10,6 +10,10 @@ namespace Summer.Application.Requests.Commands
 
         [JsonPropertyName("refresh_token")] public string RefreshToken { get; set; }
 
+        public RefreshTokenCommand()
+        {
+        }
+
         public RefreshTokenCommand(string accessToken, string refreshToken)
         {
             AccessToken = accessToken;

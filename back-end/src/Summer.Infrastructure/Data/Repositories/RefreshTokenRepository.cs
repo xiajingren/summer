@@ -12,9 +12,9 @@ namespace Summer.Infrastructure.Data.Repositories
         {
         }
 
-        public Task<RefreshToken> GetByTokenAsync(string token)
+        public async Task<RefreshToken> GetByTokenAsync(string token)
         {
-            throw new System.NotImplementedException();
+            return await Context.RefreshTokens.SingleOrDefaultAsync(x => x.Token == token);
         }
     }
 }

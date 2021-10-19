@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Summer.Domain.Entities;
 using Summer.Infrastructure.Extensions;
-using Summer.Infrastructure.SeedWork;
 
 namespace Summer.Infrastructure.Data
 {
@@ -22,7 +21,6 @@ namespace Summer.Infrastructure.Data
         }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,6 +72,8 @@ namespace Summer.Infrastructure.Data
                     .WithMany()
                     .HasForeignKey(p => p.UserId)
                     .IsRequired();
+
+                b.Ignore(x => x.DomainEvents);
             });
         }
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Summer.Domain.SeedWork;
 using Summer.Shared.Exceptions;
 using Summer.Shared.Utils;
@@ -20,9 +18,9 @@ namespace Summer.Domain.Entities
         /// </summary>
         public bool Invalidated { get; private set; }
 
-        public DateTime CreationTime { get; private set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
-        public DateTime ExpiryTime { get; private set; } = DateTime.UtcNow.AddMonths(6);
+        public DateTime ExpiredAt { get; private set; } = DateTime.UtcNow.AddMonths(6);
 
         public int UserId { get; private set; }
 
@@ -38,9 +36,14 @@ namespace Summer.Domain.Entities
             Token = CommonHelper.Instance.GenerateRandomNumber();
         }
 
+        public void Invalidate()
+        {
+            Invalidated = true;
+        }
+
         public void Confirm(string jti)
         {
-            if (ExpiryTime < DateTime.UtcNow)
+            if (ExpiredAt < DateTime.UtcNow)
             {
                 throw new FriendlyException("refresh_token已过期...");
             }

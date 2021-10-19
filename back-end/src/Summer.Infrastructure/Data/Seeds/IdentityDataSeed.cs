@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Summer.Domain.Entities;
 using Summer.Infrastructure.SeedWork;
-using Summer.Shared.SeedWork;
 
 namespace Summer.Infrastructure.Data.Seeds
 {
@@ -34,15 +32,12 @@ namespace Summer.Infrastructure.Data.Seeds
         {
             var user = new User()
             {
-                Email = "demouser@microsoft.com",
-                PhoneNumber = "1234567890",
-                UserName = "demouser@microsoft.com",
-                NormalizedEmail = "DEMOUSER@MICROSOFT.COM",
-                NormalizedUserName = "DEMOUSER@MICROSOFT.COM",
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
                 SecurityStamp = Guid.NewGuid().ToString("D"),
             };
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");
+            user.PasswordHash = _passwordHasher.HashPassword(user, "123456");
 
             return new List<User>() { user };
         }

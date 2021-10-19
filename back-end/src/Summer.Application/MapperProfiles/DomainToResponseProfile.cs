@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Summer.Application.Responses;
+using Summer.Domain.Interfaces;
 using Summer.Domain.Results;
 
 namespace Summer.Application.MapperProfiles
@@ -9,6 +10,7 @@ namespace Summer.Application.MapperProfiles
         public DomainToResponseProfile()
         {
             CreateMap<TokenResult, TokenResponse>();
+            CreateMap<ICurrentUser, UserProfileResponse>();
         }
     }
 }

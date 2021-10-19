@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Summer.Application.Requests.Commands;
+using Summer.Application.Requests.Queries;
 using Summer.Application.Responses;
 
 namespace Summer.WebApi.Controllers
@@ -41,5 +42,14 @@ namespace Summer.WebApi.Controllers
             var response = await _mediator.Send(refreshTokenCommand);
             return Ok(response);
         }
+
+        [HttpGet("profile")]
+        [ProducesResponseType(typeof(UserProfileResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            var response = await _mediator.Send(new GetUserProfileQuery());
+            return Ok(response);
+        }
+
     }
 }

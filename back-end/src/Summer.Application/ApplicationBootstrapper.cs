@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +20,9 @@ using Summer.Application.HttpFilters;
 using Summer.Domain.Entities;
 using Summer.Domain.Interfaces;
 using Summer.Domain.Options;
+using Summer.Domain.SeedWork;
 using Summer.Infrastructure.Data;
+using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.Seeds;
 using Summer.Infrastructure.SeedWork;
 using Summer.Infrastructure.Services;
@@ -94,6 +97,9 @@ namespace Summer.Application
             var jwtConfig = configuration.GetSection(nameof(JwtOptions));
             var jwtOptions = jwtConfig.Get<JwtOptions>();
 
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
             TokenValidationParameters GenerateTokenValidationParameters() =>
                 new TokenValidationParameters
                 {
@@ -131,6 +137,9 @@ namespace Summer.Application
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddValidatorsFromAssembly(typeof(ApplicationBootstrapper).Assembly);
+
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         }
 
         #endregion
@@ -147,7 +156,10 @@ namespace Summer.Application
                 options.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<SummerDbContext>();
 
+            services.AddHttpContextAccessor();
+
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<ICurrentUser, CurrentUser>();
         }
 
         #endregion
@@ -208,20 +220,12 @@ namespace Summer.Application
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
                     sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
 
-            services.AddScoped<IDataSeed, IdentityDataSeed>();
+            services.AddTransient<IDataSeed, IdentityDataSeed>();
         }
 
         private static void DbContextSeed(IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
-            
-            var summerDbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
-            summerDbContext.Database.EnsureCreatedAsync().Wait();
-            if (summerDbContext.Database.GetPendingMigrationsAsync().Result.Any())
-            {
-                summerDbContext.Database.MigrateAsync().Wait();
-            }
-
             var seeds = scope.ServiceProvider.GetServices<IDataSeed>();
             foreach (var seed in seeds) seed.SeedAsync().Wait();
         }
