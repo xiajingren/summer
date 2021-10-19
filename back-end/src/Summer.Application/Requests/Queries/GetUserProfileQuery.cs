@@ -5,8 +5,5 @@ namespace Summer.Application.Requests.Queries
 {
     public class GetUserProfileQuery : IRequest<UserProfileResponse>
     {
-        public GetUserProfileQuery()
-        {
-        }
     }
 }

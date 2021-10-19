@@ -1,7 +1,4 @@
-﻿using Ardalis.Specification;
-using AutoMapper;
-using Summer.Application.Responses;
-using Summer.Shared.SeedWork;
+﻿using AutoMapper;
 
 namespace Summer.Application.MapperProfiles
 {

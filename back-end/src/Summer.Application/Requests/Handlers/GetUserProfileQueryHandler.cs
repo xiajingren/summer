@@ -6,7 +6,7 @@ using Summer.Application.Requests.Queries;
 using Summer.Application.Responses;
 using Summer.Domain.Interfaces;
 
-namespace Summer.Application.Handlers
+namespace Summer.Application.Requests.Handlers
 {
     public class GetUserProfileQueryHandler : IRequestHandler<GetUserProfileQuery, UserProfileResponse>
     {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Summer.Application.Responses;
 using Summer.Domain.Interfaces;
 using Summer.Domain.Results;
@@ -11,6 +12,7 @@ namespace Summer.Application.MapperProfiles
         {
             CreateMap<TokenResult, TokenResponse>();
             CreateMap<ICurrentUser, UserProfileResponse>();
+            CreateMap<IdentityRole<int>, RoleResponse>();
         }
     }
 }

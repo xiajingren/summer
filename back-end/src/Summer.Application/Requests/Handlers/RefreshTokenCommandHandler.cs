@@ -6,22 +6,22 @@ using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
 using Summer.Domain.Interfaces;
 
-namespace Summer.Application.Handlers
+namespace Summer.Application.Requests.Handlers
 {
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TokenResponse>
     {
-        private readonly IIdentityService _identityManager;
+        private readonly IIdentityService _identityService;
         private readonly IMapper _mapper;
 
-        public RefreshTokenCommandHandler(IIdentityService identityManager, IMapper mapper)
+        public RefreshTokenCommandHandler(IIdentityService identityService, IMapper mapper)
         {
-            _identityManager = identityManager;
+            _identityService = identityService;
             _mapper = mapper;
         }
 
         public async Task<TokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var token = await _identityManager.RefreshTokenAsync(request.AccessToken, request.RefreshToken);
+            var token = await _identityService.RefreshTokenAsync(request.AccessToken, request.RefreshToken);
             return _mapper.Map<TokenResponse>(token);
         }
     }
