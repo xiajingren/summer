@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Summer.Domain.Entities;
+using Summer.Domain.Exceptions;
+using Summer.Domain.Extensions;
 using Summer.Domain.Interfaces;
 using Summer.Domain.Options;
 using Summer.Domain.Results;
 using Summer.Infrastructure.Constants;
-using Summer.Shared.Exceptions;
 using Summer.Shared.Utils;
 
 namespace Summer.Infrastructure.Services
@@ -39,20 +40,20 @@ namespace Summer.Infrastructure.Services
         {
             if (username.Length < 5)
             {
-                throw new FriendlyException("用户名不合法");
+                throw new BusinessException("用户名不合法");
             }
 
             var existingUser = await _userManager.FindByNameAsync(username);
             if (existingUser != null)
             {
-                throw new FriendlyException("用户名已存在");
+                throw new BusinessException("用户名已存在");
             }
 
             var newUser = new User() { UserName = username };
             var isCreated = await _userManager.CreateAsync(newUser, password);
             if (!isCreated.Succeeded)
             {
-                throw new FriendlyException("注册失败，用户名或密码不合法");
+                throw new DetailErrorsBusinessException(isCreated.Errors.ToDetailErrors());
             }
 
             return await GenerateJwtToken(newUser);
@@ -63,13 +64,13 @@ namespace Summer.Infrastructure.Services
             var existingUser = await _userManager.FindByNameAsync(username);
             if (existingUser == null)
             {
-                throw new FriendlyException("用户名或密码错误");
+                throw new BusinessException("用户名或密码错误");
             }
 
             var isCorrect = await _userManager.CheckPasswordAsync(existingUser, password);
             if (!isCorrect)
             {
-                throw new FriendlyException("用户名或密码错误");
+                throw new BusinessException("用户名或密码错误");
             }
 
             return await GenerateJwtToken(existingUser);
@@ -86,7 +87,7 @@ namespace Summer.Infrastructure.Services
                                                  StringComparison.InvariantCultureIgnoreCase);
             if (!validatedSecurityAlgorithm)
             {
-                throw new FriendlyException("无效的token...");
+                throw new BusinessException("无效的token...");
             }
 
             var expiryDateUnix =
@@ -94,7 +95,7 @@ namespace Summer.Infrastructure.Services
             var expiryDateTimeUtc = CommonHelper.Instance.UnixTimeStampToDateTime(expiryDateUnix);
             if (expiryDateTimeUtc > DateTime.UtcNow)
             {
-                throw new FriendlyException("token未过期...");
+                throw new BusinessException("token未过期...");
             }
 
             var jti = claimsPrincipal.Claims.Single(x => x.Type == ClaimConstants.Jti).Value;
@@ -102,7 +103,7 @@ namespace Summer.Infrastructure.Services
             var storedRefreshToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
             if (storedRefreshToken == null)
             {
-                throw new FriendlyException("无效的refresh_token...");
+                throw new BusinessException("无效的refresh_token...");
             }
 
             storedRefreshToken.Confirm(jti);

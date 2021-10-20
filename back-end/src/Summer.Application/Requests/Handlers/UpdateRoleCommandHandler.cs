@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -10,28 +9,27 @@ using Summer.Domain.Extensions;
 
 namespace Summer.Application.Requests.Handlers
 {
-    public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand>
+    public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand>
     {
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IMapper _mapper;
 
-        public CreateRoleCommandHandler(RoleManager<IdentityRole<int>> roleManager, IMapper mapper)
+        public UpdateRoleCommandHandler(RoleManager<IdentityRole<int>> roleManager, IMapper mapper)
         {
             _roleManager = roleManager;
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
         {
-            var role = _mapper.Map<IdentityRole<int>>(request);
-
-            var existingRole = await _roleManager.FindByNameAsync(role.Name);
-            if (existingRole != null)
+            var role = await _roleManager.FindByIdAsync(request.Id.ToString());
+            if (role == null)
             {
-                throw new BusinessException("角色名已存在");
+                throw new NotFoundBusinessException();
             }
 
-            var result = await _roleManager.CreateAsync(role);
+            var newRole = _mapper.Map(request, role);
+            var result = await _roleManager.UpdateAsync(newRole);
             if (!result.Succeeded)
             {
                 throw new DetailErrorsBusinessException(result.Errors.ToDetailErrors());

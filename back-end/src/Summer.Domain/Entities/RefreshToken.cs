@@ -1,6 +1,6 @@
 ﻿using System;
+using Summer.Domain.Exceptions;
 using Summer.Domain.SeedWork;
-using Summer.Shared.Exceptions;
 using Summer.Shared.Utils;
 
 namespace Summer.Domain.Entities
@@ -45,22 +45,22 @@ namespace Summer.Domain.Entities
         {
             if (ExpiredAt < DateTime.UtcNow)
             {
-                throw new FriendlyException("refresh_token已过期...");
+                throw new BusinessException("refresh_token已过期...");
             }
 
             if (Invalidated)
             {
-                throw new FriendlyException("refresh_token已失效...");
+                throw new BusinessException("refresh_token已失效...");
             }
 
             if (Used)
             {
-                throw new FriendlyException("refresh_token已使用...");
+                throw new BusinessException("refresh_token已使用...");
             }
 
             if (JwtId != jti)
             {
-                throw new FriendlyException("refresh_token与此token不匹配...");
+                throw new BusinessException("refresh_token与此token不匹配...");
             }
 
             Used = true;
