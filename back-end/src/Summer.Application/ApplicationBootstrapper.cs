@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -138,8 +139,8 @@ namespace Summer.Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddValidatorsFromAssembly(typeof(ApplicationBootstrapper).Assembly);
 
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
         }
 
         #endregion
@@ -148,7 +149,7 @@ namespace Summer.Application
 
         private static void AddIdentity(IServiceCollection services)
         {
-            services.AddIdentityCore<User>(options =>
+            services.AddIdentity<User, IdentityRole<int>>(options =>
             {
                 options.Password.RequireLowercase = false;
                 options.Password.RequireDigit = false;
@@ -158,8 +159,8 @@ namespace Summer.Application
 
             services.AddHttpContextAccessor();
 
-            services.AddScoped<IIdentityService, IdentityService>();
-            services.AddScoped<ICurrentUser, CurrentUser>();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<ICurrentUser, CurrentUser>();
         }
 
         #endregion

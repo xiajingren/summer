@@ -1,12 +1,14 @@
-﻿namespace Summer.Application.Requests.Queries
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Summer.Application.Requests.Queries
 {
     public class PaginationQuery
     {
-        public int PageIndex { get; set; }
+        [FromQuery(Name = "pageIndex")] public int PageIndex { get; set; }
 
-        public int PageSize { get; set; }
+        [FromQuery(Name = "pageSize")] public int PageSize { get; set; }
 
-        public int Skip => (PageIndex - 1) * PageSize;
+        public int GetSkip() => (PageIndex - 1) * PageSize;
 
         public PaginationQuery(int pageIndex, int pageSize)
         {

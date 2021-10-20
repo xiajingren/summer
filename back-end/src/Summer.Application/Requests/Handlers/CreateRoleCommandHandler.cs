@@ -1,16 +1,16 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Summer.Application.Requests.Commands;
+using Summer.Application.Responses;
 using Summer.Domain.Exceptions;
 using Summer.Domain.Extensions;
 
 namespace Summer.Application.Requests.Handlers
 {
-    public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand>
+    public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, RoleResponse>
     {
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace Summer.Application.Requests.Handlers
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+        public async Task<RoleResponse> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
         {
             var role = _mapper.Map<IdentityRole<int>>(request);
 
@@ -37,7 +37,7 @@ namespace Summer.Application.Requests.Handlers
                 throw new DetailErrorsBusinessException(result.Errors.ToDetailErrors());
             }
 
-            return Unit.Value;
+            return _mapper.Map<RoleResponse>(role);
         }
     }
 }

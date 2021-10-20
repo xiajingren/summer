@@ -27,7 +27,7 @@ namespace Summer.Application.Requests.Handlers
             CancellationToken cancellationToken)
         {
             var rowCount = await _roleManager.Roles.CountAsync(cancellationToken);
-            var rows = _roleManager.Roles.Skip(request.Skip).Take(request.PageSize).ToList();
+            var rows = _roleManager.Roles.Skip(request.GetSkip()).Take(request.PageSize).ToList();
 
             return new PaginationResponse<RoleResponse>(request.PageIndex, request.PageSize, rowCount,
                 _mapper.Map<IEnumerable<RoleResponse>>(rows));

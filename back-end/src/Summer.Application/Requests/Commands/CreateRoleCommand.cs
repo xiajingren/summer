@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using Summer.Application.Responses;
 
 namespace Summer.Application.Requests.Commands
 {
-    public class CreateRoleCommand : IRequest
+    public class CreateRoleCommand : IRequest<RoleResponse>
     {
         public string Name { get; set; }
 
