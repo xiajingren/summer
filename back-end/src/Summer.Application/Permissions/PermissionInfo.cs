@@ -1,9 +1,6 @@
-﻿using System;
-
-namespace Summer.Application.Permissions
+﻿namespace Summer.Application.Permissions
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class PermissionAttribute : Attribute
+    public class PermissionInfo
     {
         public string Code { get; }
 
@@ -11,7 +8,7 @@ namespace Summer.Application.Permissions
 
         public string GroupName { get; }
 
-        public PermissionAttribute(string code, string name, string groupName)
+        public PermissionInfo(string code, string name, string groupName = PermissionConstants.DefaultGroupName)
         {
             Code = code;
             Name = name;

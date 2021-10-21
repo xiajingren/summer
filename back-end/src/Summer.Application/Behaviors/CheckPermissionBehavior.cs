@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -11,11 +12,9 @@ namespace Summer.Application.Behaviors
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
-            var attr = request.GetType().GetCustomAttributes(typeof(PermissionAttribute), false).FirstOrDefault();
-            if (attr != null)
+            var permissionAttr = request.GetType().GetCustomAttribute<PermissionAttribute>();
+            if (permissionAttr != null)
             {
-                var permissionAttr = attr as PermissionAttribute;
-
                 // todo:
             }
 
