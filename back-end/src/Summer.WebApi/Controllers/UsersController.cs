@@ -8,46 +8,42 @@ using Summer.Application.Responses;
 
 namespace Summer.WebApi.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public UserController(IMediator mediator)
+        public UsersController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Login([FromBody] LoginCommand loginCommand)
+        public async Task<ActionResult<TokenResponse>> Login([FromBody] LoginCommand loginCommand)
         {
             var response = await _mediator.Send(loginCommand);
             return Ok(response);
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Register([FromBody] RegisterCommand registerCommand)
+        public async Task<ActionResult<TokenResponse>> Register([FromBody] RegisterCommand registerCommand)
         {
             var response = await _mediator.Send(registerCommand);
             return Ok(response);
         }
 
         [HttpPost("refresh-token")]
-        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand refreshTokenCommand)
+        public async Task<ActionResult<TokenResponse>> RefreshToken([FromBody] RefreshTokenCommand refreshTokenCommand)
         {
             var response = await _mediator.Send(refreshTokenCommand);
             return Ok(response);
         }
 
-        [HttpGet("profile")]
-        [ProducesResponseType(typeof(UserProfileResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUserProfile()
+        [HttpGet("current/profile")]
+        public async Task<ActionResult<CurrentUserProfileResponse>> GetCurrentUserProfile()
         {
-            var response = await _mediator.Send(new GetUserProfileQuery());
+            var response = await _mediator.Send(new GetCurrentUserProfileQuery());
             return Ok(response);
         }
 

@@ -9,7 +9,7 @@ using Summer.Application.Responses;
 
 namespace Summer.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/roles")]
     [ApiController]
     [Authorize]
     public class RolesController : ControllerBase
@@ -52,11 +52,11 @@ namespace Summer.WebApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<RoleResponse>> DeleteRole(DeleteRoleCommand deleteRoleCommand)
+        public async Task<ActionResult<RoleResponse>> DeleteRole(int id)
         {
-            await _mediator.Send(deleteRoleCommand);
+            await _mediator.Send(new DeleteRoleCommand(id));
             return NoContent();
         }
     }

@@ -18,7 +18,7 @@ namespace Summer.FunctionalTests.Controllers
         public async Task Get_ShouldBe_Ok()
         {
             // Arrange
-            await Authorization("admin", "123456");
+            await AuthorizationAsync("admin", "123456");
 
             // Act
             var response = await Client.GetAsync("/WeatherForecast");

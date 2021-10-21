@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace Summer.Application.Responses
+﻿namespace Summer.Application.Responses
 {
-    public class UserProfileResponse
+    public class CurrentUserProfileResponse
     {
         public bool IsAuthenticated { get; set; }
 

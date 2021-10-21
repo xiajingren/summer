@@ -20,7 +20,7 @@ namespace Summer.FunctionalTests
             Client = factory.CreateClient();
         }
 
-        public async Task Authorization(string userName, string password)
+        public async Task AuthorizationAsync(string userName, string password)
         {
             var loginCommand = new LoginCommand(userName, password);
 

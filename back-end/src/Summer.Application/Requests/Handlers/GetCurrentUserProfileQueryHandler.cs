@@ -8,20 +8,20 @@ using Summer.Domain.Interfaces;
 
 namespace Summer.Application.Requests.Handlers
 {
-    public class GetUserProfileQueryHandler : IRequestHandler<GetUserProfileQuery, UserProfileResponse>
+    public class GetCurrentUserProfileQueryHandler : IRequestHandler<GetCurrentUserProfileQuery, CurrentUserProfileResponse>
     {
         private readonly ICurrentUser _currentUser;
         private readonly IMapper _mapper;
 
-        public GetUserProfileQueryHandler(ICurrentUser currentUser, IMapper mapper)
+        public GetCurrentUserProfileQueryHandler(ICurrentUser currentUser, IMapper mapper)
         {
             _currentUser = currentUser;
             _mapper = mapper;
         }
 
-        public Task<UserProfileResponse> Handle(GetUserProfileQuery request, CancellationToken cancellationToken)
+        public Task<CurrentUserProfileResponse> Handle(GetCurrentUserProfileQuery request, CancellationToken cancellationToken)
         {
-            var response = _mapper.Map<UserProfileResponse>(_currentUser);
+            var response = _mapper.Map<CurrentUserProfileResponse>(_currentUser);
             return Task.FromResult(response);
         }
     }

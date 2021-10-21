@@ -11,7 +11,7 @@ namespace Summer.Application.MapperProfiles
         public DomainToResponseProfile()
         {
             CreateMap<TokenResult, TokenResponse>();
-            CreateMap<ICurrentUser, UserProfileResponse>();
+            CreateMap<ICurrentUser, CurrentUserProfileResponse>();
             CreateMap<IdentityRole<int>, RoleResponse>();
         }
     }
