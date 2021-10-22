@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="EventHandlers\" />
-    <Folder Include="Specifications" />
   </ItemGroup>
 
   <ItemGroup>

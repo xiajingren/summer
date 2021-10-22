@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace Summer.Domain.Interfaces
+﻿namespace Summer.Domain.Interfaces
 {
     public interface ICurrentUser
     {

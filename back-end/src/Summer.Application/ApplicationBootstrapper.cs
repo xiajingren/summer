@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using FluentValidation;
@@ -22,6 +21,7 @@ using Summer.Domain.Entities;
 using Summer.Domain.Interfaces;
 using Summer.Domain.Options;
 using Summer.Domain.SeedWork;
+using Summer.Domain.Services;
 using Summer.Infrastructure.Data;
 using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.Seeds;
@@ -136,11 +136,13 @@ namespace Summer.Application
 
             services.AddAutoMapper(typeof(ApplicationBootstrapper).Assembly);
 
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CheckPermissionBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddValidatorsFromAssembly(typeof(ApplicationBootstrapper).Assembly);
 
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddTransient<IPermissionManager, PermissionManager>();
         }
 
         #endregion

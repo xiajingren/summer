@@ -22,6 +22,10 @@ namespace Summer.Infrastructure.Data
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+        public DbSet<UserPermission> UserPermissions { get; set; }
+
+        public DbSet<RolePermission> RolePermissions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -61,21 +65,6 @@ namespace Summer.Infrastructure.Data
             modelBuilder.Entity<IdentityRoleClaim<int>>(b => { b.ToTable("RoleClaims"); });
 
             modelBuilder.Entity<IdentityUserRole<int>>(b => { b.ToTable("UserRoles"); });
-
-            modelBuilder.Entity<RefreshToken>(b =>
-            {
-                b.ToTable("RefreshTokens");
-                b.HasKey(x => x.Id);
-                b.Property(x => x.JwtId).HasMaxLength(128).IsRequired();
-                b.Property(x => x.Token).HasMaxLength(256).IsRequired();
-                b.HasOne<User>()
-                    .WithMany()
-                    .HasForeignKey(p => p.UserId)
-                    .IsRequired();
-
-                b.Ignore(x => x.DomainEvents);
-            });
         }
-
     }
 }

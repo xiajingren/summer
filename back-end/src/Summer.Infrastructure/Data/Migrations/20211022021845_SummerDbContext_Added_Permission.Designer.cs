@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Summer.Infrastructure.Data;
 
 namespace Summer.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(SummerDbContext))]
-    partial class SummerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211022021845_SummerDbContext_Added_Permission")]
+    partial class SummerDbContext_Added_Permission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

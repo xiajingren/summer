@@ -28,7 +28,7 @@ namespace Summer.Application.Permissions
                     .Select(x => x.GetCustomAttribute<PermissionAttribute>()).ToArray();
 
 
-                foreach (var attr in attrs)
+                foreach (var attr in attrs.OrderBy(x => x.Sort).ThenBy(x => x.Name))
                 {
                     _permissions.Add(new PermissionInfo(attr.Code, attr.Name, attr.GroupName));
                 }

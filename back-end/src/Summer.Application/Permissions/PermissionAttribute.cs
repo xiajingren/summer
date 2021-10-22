@@ -11,11 +11,14 @@ namespace Summer.Application.Permissions
 
         public string GroupName { get; }
 
-        public PermissionAttribute(string code, string name, string groupName)
+        public int Sort { get; }
+
+        public PermissionAttribute(string code, string name, string groupName, int sort = default)
         {
             Code = code;
             Name = name;
             GroupName = groupName;
+            Sort = sort;
         }
     }
 }

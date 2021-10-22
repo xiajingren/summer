@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,13 +29,18 @@ namespace Summer.Application.HttpFilters
             {
                 ValidationException validationException => CreateResult(context.HttpContext.Request.Path,
                     validationException),
+                UnauthorizedBusinessException unauthorizedBusinessException => CreateResult(
+                    context.HttpContext.Request.Path, unauthorizedBusinessException),
+                ForbidBusinessException forbidBusinessException => CreateResult(context.HttpContext.Request.Path,
+                    forbidBusinessException),
                 NotFoundBusinessException notFoundBusinessException => CreateResult(context.HttpContext.Request.Path,
                     notFoundBusinessException),
                 ErrorsBusinessException errorsBusinessException => CreateResult(context.HttpContext.Request.Path,
                     errorsBusinessException),
                 DetailErrorsBusinessException detailErrorsBusinessException => CreateResult(
                     context.HttpContext.Request.Path, detailErrorsBusinessException),
-                BusinessException businessException => CreateResult(context.HttpContext.Request.Path, businessException),
+                BusinessException businessException =>
+                    CreateResult(context.HttpContext.Request.Path, businessException),
                 _ => CreateResult(context.HttpContext.Request.Path, context.Exception)
             };
 
@@ -62,7 +66,32 @@ namespace Summer.Application.HttpFilters
 
             return new BadRequestObjectResult(problemDetails);
         }
+        
+        private ActionResult CreateResult(string path, UnauthorizedBusinessException exception)
+        {
+            var problemDetails = new ProblemDetails()
+            {
+                Instance = path,
+                Title = "Unauthorized.",
+                Detail = exception.Message
+            };
 
+            return new UnauthorizedObjectResult(problemDetails);
+        }
+
+        private ActionResult CreateResult(string path, ForbidBusinessException exception)
+        {
+            var problemDetails = new ProblemDetails()
+            {
+                Instance = path,
+                Title = "Forbidden.",
+                Status = StatusCodes.Status403Forbidden,
+                Detail = exception.Message
+            };
+
+            return new BadRequestObjectResult(problemDetails);
+        }
+        
         private ActionResult CreateResult(string path, NotFoundBusinessException exception)
         {
             var problemDetails = new ProblemDetails()
