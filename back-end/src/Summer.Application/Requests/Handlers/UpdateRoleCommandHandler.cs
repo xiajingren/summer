@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Summer.Application.Requests.Commands;
 using Summer.Domain.Exceptions;
-using Summer.Domain.Extensions;
 
 namespace Summer.Application.Requests.Handlers
 {

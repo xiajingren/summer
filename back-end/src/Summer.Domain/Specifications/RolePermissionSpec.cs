@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Ardalis.Specification;
-using Microsoft.AspNetCore.Identity;
 using Summer.Domain.Entities;
 
 namespace Summer.Domain.Specifications

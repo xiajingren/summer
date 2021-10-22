@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
 using Summer.Domain.Exceptions;
-using Summer.Domain.Extensions;
 
 namespace Summer.Application.Requests.Handlers
 {

@@ -3,26 +3,27 @@ using Summer.Domain.SeedWork;
 
 namespace Summer.Domain.Entities
 {
-    public class UserPermission : ValueObject
+    public class UserRole : ValueObject
     {
         public int UserId { get; private set; }
-        public string PermissionCode { get; private set; }
 
-        private UserPermission()
+        public int RoleId { get; private set; }
+
+        private UserRole()
         {
             // required by EF
         }
 
-        public UserPermission(int userId, string permissionCode)
+        public UserRole(int userId, int roleId)
         {
             UserId = userId;
-            PermissionCode = permissionCode;
+            RoleId = roleId;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return UserId;
-            yield return PermissionCode;
+            yield return RoleId;
         }
     }
 }

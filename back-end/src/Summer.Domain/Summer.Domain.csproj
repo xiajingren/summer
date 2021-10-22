@@ -6,11 +6,11 @@
 
   <ItemGroup>
     <Folder Include="EventHandlers\" />
+    <Folder Include="Extensions" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Ardalis.Specification" Version="5.2.0" />
-    <PackageReference Include="AspNetCore.Identity.Stores" Version="1.0.3" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 

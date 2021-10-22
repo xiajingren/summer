@@ -9,7 +9,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Summer.Domain.Entities;
 using Summer.Domain.Exceptions;
-using Summer.Domain.Extensions;
 using Summer.Domain.Interfaces;
 using Summer.Domain.Options;
 using Summer.Domain.Results;

@@ -1,21 +1,28 @@
-﻿using Summer.Domain.SeedWork;
+﻿using System.Collections.Generic;
+using Summer.Domain.SeedWork;
 
 namespace Summer.Domain.Entities
 {
-    public class RolePermission : BaseEntity, IAggregateRoot
+    public class RolePermission : ValueObject
     {
         public int RoleId { get; private set; }
         public string PermissionCode { get; private set; }
 
-        // private RolePermission()
-        // {
-        //     // required by EF
-        // }
+        private RolePermission()
+        {
+            // required by EF
+        }
 
         public RolePermission(int roleId, string permissionCode)
         {
             RoleId = roleId;
             PermissionCode = permissionCode;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return RoleId;
+            yield return PermissionCode;
         }
     }
 }
