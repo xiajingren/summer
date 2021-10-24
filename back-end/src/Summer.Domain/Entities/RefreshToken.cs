@@ -41,7 +41,7 @@ namespace Summer.Domain.Entities
             Invalidated = true;
         }
 
-        public void Confirm(string jti)
+        public void Confirm(string jwtId)
         {
             if (ExpiredAt < DateTime.UtcNow)
             {
@@ -58,7 +58,7 @@ namespace Summer.Domain.Entities
                 throw new BusinessException("refresh_token已使用...");
             }
 
-            if (JwtId != jti)
+            if (JwtId != jwtId)
             {
                 throw new BusinessException("refresh_token与此token不匹配...");
             }

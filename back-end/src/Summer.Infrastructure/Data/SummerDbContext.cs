@@ -18,12 +18,18 @@ namespace Summer.Infrastructure.Data
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
-
         public DbSet<User> Users { get; set; }
 
         public DbSet<Role> Roles { get; set; }
 
+        // public DbSet<UserRole> UserRoles { get; set; }
+        //
+        // public DbSet<RolePermission> RolePermissions { get; set; }
+        //
+        // public DbSet<UserPermission> UserPermissions { get; set; }
+
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

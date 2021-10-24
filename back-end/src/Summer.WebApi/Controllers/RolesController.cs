@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,13 @@ namespace Summer.WebApi.Controllers
         public RolesController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<RoleResponse>>> GetAllRoles()
+        {
+            var response = await _mediator.Send(new GetAllRolesQuery());
+            return Ok(response);
         }
 
         [HttpGet]
@@ -46,7 +54,7 @@ namespace Summer.WebApi.Controllers
 
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<RoleResponse>> UpdateRole(int id, UpdateRoleCommand updateRoleCommand)
+        public async Task<IActionResult> UpdateRole(int id, UpdateRoleCommand updateRoleCommand)
         {
             await _mediator.Send(updateRoleCommand);
             return NoContent();
@@ -54,7 +62,7 @@ namespace Summer.WebApi.Controllers
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<RoleResponse>> DeleteRole(int id)
+        public async Task<IActionResult> DeleteRole(int id)
         {
             await _mediator.Send(new DeleteRoleCommand(id));
             return NoContent();

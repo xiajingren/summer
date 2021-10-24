@@ -1,4 +1,6 @@
-﻿namespace Summer.Application.Permissions
+﻿using Summer.Application.Constants;
+
+namespace Summer.Application.Permissions
 {
     public class PermissionInfo
     {

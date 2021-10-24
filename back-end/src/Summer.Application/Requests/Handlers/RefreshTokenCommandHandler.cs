@@ -1,28 +1,54 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
+using Summer.Application.Interfaces;
 using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
-using Summer.Domain.Interfaces;
+using Summer.Domain.Entities;
+using Summer.Domain.Exceptions;
+using Summer.Domain.SeedWork;
+using Summer.Domain.Specifications;
 
 namespace Summer.Application.Requests.Handlers
 {
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TokenResponse>
     {
-        private readonly IIdentityService _identityService;
-        private readonly IMapper _mapper;
+        private readonly IRepository<User> _userRepository;
+        private readonly IJwtTokenService _jwtTokenService;
+        private readonly IRepository<RefreshToken> _refreshTokenRepository;
 
-        public RefreshTokenCommandHandler(IIdentityService identityService, IMapper mapper)
+        public RefreshTokenCommandHandler(IRepository<User> userRepository, IJwtTokenService jwtTokenService,
+            IRepository<RefreshToken> refreshTokenRepository)
         {
-            _identityService = identityService;
-            _mapper = mapper;
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _jwtTokenService = jwtTokenService ?? throw new ArgumentNullException(nameof(jwtTokenService));
+            _refreshTokenRepository =
+                refreshTokenRepository ?? throw new ArgumentNullException(nameof(refreshTokenRepository));
         }
 
         public async Task<TokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var token = await _identityService.RefreshTokenAsync(request.AccessToken, request.RefreshToken);
-            return _mapper.Map<TokenResponse>(token);
+            var passed = _jwtTokenService.ValidateExpiredToken(request.AccessToken, out var jwtId);
+            if (!passed)
+            {
+                throw new BusinessException();
+            }
+
+            var refreshToken =
+                await _refreshTokenRepository.GetBySpecAsync(new RefreshTokenSpec(request.RefreshToken),
+                    cancellationToken);
+
+            if (refreshToken == null)
+            {
+                throw new BusinessException();
+            }
+
+            refreshToken.Confirm(jwtId);
+            await _refreshTokenRepository.UpdateAsync(refreshToken, cancellationToken);
+
+            var user = await _userRepository.GetByIdAsync(refreshToken.UserId, cancellationToken);
+            return await _jwtTokenService.IssueTokenAsync(user);
         }
     }
 }

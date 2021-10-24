@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,18 +16,18 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Summer.Application.Behaviors;
 using Summer.Application.HttpFilters;
-using Summer.Domain.Entities;
+using Summer.Application.Interfaces;
+using Summer.Application.Options;
+using Summer.Application.Services;
 using Summer.Domain.Interfaces;
-using Summer.Domain.Options;
 using Summer.Domain.SeedWork;
 using Summer.Domain.Services;
 using Summer.Infrastructure.Data;
 using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.Seeds;
 using Summer.Infrastructure.SeedWork;
-using Summer.Infrastructure.Services;
 
-namespace Summer.Application
+namespace Summer.Infrastructure
 {
     public static class ApplicationBootstrapper
     {
@@ -36,9 +35,7 @@ namespace Summer.Application
         {
             AddMvc(services);
 
-            AddApplicationServices(services);
-
-            AddIdentity(services);
+            AddCoreServices(services);
 
             AddJwtAuthentication(services, configuration);
 
@@ -66,7 +63,7 @@ namespace Summer.Application
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            DbContextSeed(app);
+            //DbContextSeed(app);
         }
 
         #region Mvc
@@ -128,41 +125,27 @@ namespace Summer.Application
 
         #endregion
 
-        #region Application Services
+        #region Core Services
 
-        private static void AddApplicationServices(IServiceCollection services)
+        private static void AddCoreServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(ApplicationBootstrapper).Assembly);
+            services.AddMediatR(typeof(ICurrentUser).Assembly);
 
-            services.AddAutoMapper(typeof(ApplicationBootstrapper).Assembly);
+            services.AddAutoMapper(typeof(ICurrentUser).Assembly);
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CheckPermissionBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
-            services.AddValidatorsFromAssembly(typeof(ApplicationBootstrapper).Assembly);
+            services.AddValidatorsFromAssembly(typeof(ICurrentUser).Assembly);
 
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
-            services.AddTransient<IPermissionManager, PermissionManager>();
-        }
-
-        #endregion
-
-        #region Identity
-
-        private static void AddIdentity(IServiceCollection services)
-        {
-            services.AddIdentity<User, IdentityRole<int>>(options =>
-            {
-                options.Password.RequireLowercase = false;
-                options.Password.RequireDigit = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<SummerDbContext>();
 
             services.AddHttpContextAccessor();
-
-            services.AddTransient<IIdentityService, IdentityService>();
+            
+            services.AddTransient<IJwtTokenService, JwtTokenService>();
             services.AddTransient<ICurrentUser, CurrentUser>();
+            services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IRoleManager, RoleManager>();
+            services.AddTransient<IPermissionManager, PermissionManager>();
         }
 
         #endregion
@@ -223,7 +206,7 @@ namespace Summer.Application
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
                     sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
 
-            services.AddTransient<IDataSeed, IdentityDataSeed>();
+            services.AddTransient<IDataSeed, UserDataSeed>();
         }
 
         private static void DbContextSeed(IApplicationBuilder app)

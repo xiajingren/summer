@@ -21,6 +21,9 @@ namespace Summer.Application.Requests.Queries
             set => _pageSize = value > 100 ? 100 : value;
         }
 
+        [FromQuery(Name = "filter")] 
+        public string Filter { get; set; }
+
         public int GetSkip() => (PageIndex - 1) * PageSize;
     }
 }

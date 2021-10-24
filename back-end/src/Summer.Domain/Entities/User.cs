@@ -6,30 +6,26 @@ namespace Summer.Domain.Entities
 {
     public class User : BaseEntity, IAggregateRoot
     {
-        public string UserName { get; private set; }
+        public string UserName { get; internal set; }
 
-        public string PasswordHash { get; private set; }
+        public string PasswordHash { get; internal set; }
 
-        public string SecurityStamp { get; private set; }
-        
+        public string SecurityStamp { get; internal set; }
+
 
         private readonly List<UserRole> _roles = new List<UserRole>();
         public IReadOnlyCollection<UserRole> Roles => _roles.AsReadOnly();
-
-
-        private readonly List<UserPermission> _userPermissions = new List<UserPermission>();
-        public IReadOnlyCollection<UserPermission> UserPermissions => _userPermissions.AsReadOnly();
 
         private User()
         {
             // required by EF
         }
 
-        internal User(string userName, string passwordHash)
+        internal User(string userName, string passwordHash, string securityStamp)
         {
             UserName = userName;
             PasswordHash = passwordHash;
-            SecurityStamp = Guid.NewGuid().ToString("N");
+            SecurityStamp = securityStamp;
         }
 
         public void SetRoles(IEnumerable<int> roleIds = null)

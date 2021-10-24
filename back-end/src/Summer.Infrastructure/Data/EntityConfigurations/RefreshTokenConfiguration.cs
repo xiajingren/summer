@@ -10,12 +10,15 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
         {
             builder.ToTable("RefreshTokens");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.JwtId).HasMaxLength(128).IsRequired();
-            builder.Property(x => x.Token).HasMaxLength(256).IsRequired();
+            builder.Property(x => x.JwtId).HasMaxLength(64).IsRequired();
+            builder.Property(x => x.Token).HasMaxLength(128).IsRequired();
             builder.HasOne<User>()
                 .WithMany()
                 .HasForeignKey(p => p.UserId)
                 .IsRequired();
+
+            builder.HasIndex(x => x.JwtId).IsUnique();
+            builder.HasIndex(x => x.Token).IsUnique();
 
             builder.Ignore(x => x.DomainEvents);
         }

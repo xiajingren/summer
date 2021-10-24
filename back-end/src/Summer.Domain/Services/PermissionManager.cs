@@ -1,14 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Summer.Domain.Interfaces;
 
 namespace Summer.Domain.Services
 {
     public class PermissionManager : IPermissionManager
     {
-        public async Task<IEnumerable<string>> GetCodesByUserIdAsync(int id)
+        public Task<string> GetUserPermissionCodesAsync(int userId)
         {
-            return await Task.FromResult(new List<string> { "CreateRoleCommand" });
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<bool> CheckUserPermissionCodeAsync(int userId, string permissionCode)
+        {
+            // var permissions = await GetUserPermissionCodesAsync(userId);
+            //
+            // return permissions.Contains(permissionCode);
+
+            return await Task.FromResult(true);
         }
     }
 }

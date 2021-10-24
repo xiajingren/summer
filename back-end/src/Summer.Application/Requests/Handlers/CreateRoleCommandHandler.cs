@@ -1,41 +1,29 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
-using Summer.Domain.Exceptions;
+using Summer.Domain.Interfaces;
 
 namespace Summer.Application.Requests.Handlers
 {
     public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, RoleResponse>
     {
-        private readonly RoleManager<IdentityRole<int>> _roleManager;
+        private readonly IRoleManager _roleManager;
         private readonly IMapper _mapper;
 
-        public CreateRoleCommandHandler(RoleManager<IdentityRole<int>> roleManager, IMapper mapper)
+        public CreateRoleCommandHandler(IRoleManager roleManager, IMapper mapper)
         {
-            _roleManager = roleManager;
-            _mapper = mapper;
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<RoleResponse> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
         {
-            var role = _mapper.Map<IdentityRole<int>>(request);
-
-            var existingRole = await _roleManager.FindByNameAsync(role.Name);
-            if (existingRole != null)
-            {
-                throw new BusinessException("角色名已存在");
-            }
-
-            var result = await _roleManager.CreateAsync(role);
-            if (!result.Succeeded)
-            {
-                throw new DetailErrorsBusinessException(result.Errors.ToDetailErrors());
-            }
-
+            var role = await _roleManager.CreateAsync(request.Name);
+            
             return _mapper.Map<RoleResponse>(role);
         }
     }

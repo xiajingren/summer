@@ -10,15 +10,16 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Summer.Domain\Summer.Domain.csproj" />
+    <ProjectReference Include="..\Summer.Application\Summer.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Data\EntityConfigurations\" />
+    <Folder Include="Data\Migrations" />
+    <Folder Include="Services" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+using Summer.Application.Interfaces;
 using Summer.Application.Responses;
-using Summer.Domain.Interfaces;
-using Summer.Domain.Results;
+using Summer.Domain.Entities;
 
 namespace Summer.Application.MapperProfiles
 {
@@ -10,9 +9,12 @@ namespace Summer.Application.MapperProfiles
     {
         public DomainToResponseProfile()
         {
-            CreateMap<TokenResult, TokenResponse>();
             CreateMap<ICurrentUser, CurrentUserProfileResponse>();
-            CreateMap<IdentityRole<int>, RoleResponse>();
+            CreateMap<Role, RoleResponse>();
+            CreateMap<User, UserResponse>();
+            CreateMap<UserRole, RoleResponse>()
+                .ForMember(x => x.Id, op => op.MapFrom(r => r.RoleId))
+                .ForMember(x => x.Name, op => op.Ignore());
         }
     }
 }

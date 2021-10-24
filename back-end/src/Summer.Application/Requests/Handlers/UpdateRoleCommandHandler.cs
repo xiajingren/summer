@@ -1,38 +1,36 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Summer.Application.Requests.Commands;
+using Summer.Domain.Entities;
 using Summer.Domain.Exceptions;
+using Summer.Domain.Interfaces;
+using Summer.Domain.SeedWork;
 
 namespace Summer.Application.Requests.Handlers
 {
     public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand>
     {
-        private readonly RoleManager<IdentityRole<int>> _roleManager;
-        private readonly IMapper _mapper;
+        private readonly IRoleManager _roleManager;
+        private readonly IRepository<Role> _roleRepository;
 
-        public UpdateRoleCommandHandler(RoleManager<IdentityRole<int>> roleManager, IMapper mapper)
+        public UpdateRoleCommandHandler(IRoleManager roleManager, IRepository<Role> roleRepository)
         {
-            _roleManager = roleManager;
-            _mapper = mapper;
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         }
 
         public async Task<Unit> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
         {
-            var role = await _roleManager.FindByIdAsync(request.Id.ToString());
+            var role = await _roleRepository.GetByIdAsync(request.Id, cancellationToken);
             if (role == null)
             {
                 throw new NotFoundBusinessException();
             }
 
-            var newRole = _mapper.Map(request, role);
-            var result = await _roleManager.UpdateAsync(newRole);
-            if (!result.Succeeded)
-            {
-                throw new DetailErrorsBusinessException(result.Errors.ToDetailErrors());
-            }
+            await _roleManager.UpdateAsync(role, request.Name);
 
             return Unit.Value;
         }

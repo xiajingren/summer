@@ -11,5 +11,13 @@ namespace Summer.Application.Responses
         [JsonPropertyName("token_type")] public string TokenType { get; set; }
 
         [JsonPropertyName("refresh_token")] public string RefreshToken { get; set; }
+
+        public TokenResponse(string accessToken, int expiresIn, string tokenType, string refreshToken)
+        {
+            AccessToken = accessToken;
+            ExpiresIn = expiresIn;
+            TokenType = tokenType;
+            RefreshToken = refreshToken;
+        }
     }
 }

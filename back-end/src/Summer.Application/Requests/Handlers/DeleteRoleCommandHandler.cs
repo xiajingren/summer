@@ -1,35 +1,33 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Summer.Application.Requests.Commands;
+using Summer.Domain.Entities;
 using Summer.Domain.Exceptions;
-using Summer.Domain.Extensions;
+using Summer.Domain.SeedWork;
 
 namespace Summer.Application.Requests.Handlers
 {
     public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand>
     {
-        private readonly RoleManager<IdentityRole<int>> _roleManager;
+        private readonly IRepository<Role> _roleRepository;
 
-        public DeleteRoleCommandHandler(RoleManager<IdentityRole<int>> roleManager)
+        public DeleteRoleCommandHandler(IRepository<Role> roleRepository)
         {
-            _roleManager = roleManager;
+            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         }
+
 
         public async Task<Unit> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
         {
-            var role = await _roleManager.FindByIdAsync(request.Id.ToString());
+            var role = await _roleRepository.GetByIdAsync(request.Id, cancellationToken);
             if (role == null)
             {
                 throw new NotFoundBusinessException();
             }
 
-            var result = await _roleManager.DeleteAsync(role);
-            if (!result.Succeeded)
-            {
-                throw new DetailErrorsBusinessException(result.Errors.ToDetailErrors());
-            }
+            await _roleRepository.DeleteAsync(role, cancellationToken);
 
             return Unit.Value;
         }

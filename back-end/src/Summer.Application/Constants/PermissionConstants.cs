@@ -1,6 +1,6 @@
-﻿namespace Summer.Application.Permissions
+﻿namespace Summer.Application.Constants
 {
-    public class PermissionConstants
+    public static class PermissionConstants
     {
         public const string DefaultGroupName = "角色管理";
         public const string RoleGroupName = "角色管理";

@@ -8,12 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Summer.Application\Summer.Application.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="app.db">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+      <ProjectReference Include="..\Summer.Infrastructure\Summer.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

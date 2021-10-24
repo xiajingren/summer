@@ -1,7 +1,8 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
+using Summer.Application.Interfaces;
 using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
 using Summer.Domain.Interfaces;
@@ -10,19 +11,19 @@ namespace Summer.Application.Requests.Handlers
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, TokenResponse>
     {
-        private readonly IIdentityService _identityService;
-        private readonly IMapper _mapper;
+        private readonly IUserManager _userManager;
+        private readonly IJwtTokenService _jwtTokenService;
 
-        public RegisterCommandHandler(IIdentityService identityService, IMapper mapper)
+        public RegisterCommandHandler(IUserManager userManager, IJwtTokenService jwtTokenService)
         {
-            _identityService = identityService;
-            _mapper = mapper;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _jwtTokenService = jwtTokenService ?? throw new ArgumentNullException(nameof(jwtTokenService));
         }
 
         public async Task<TokenResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var token = await _identityService.RegisterAsync(request.UserName, request.Password);
-            return _mapper.Map<TokenResponse>(token);
+            var user = await _userManager.CreateAsync(request.UserName, request.Password);
+            return await _jwtTokenService.IssueTokenAsync(user);
         }
     }
 }

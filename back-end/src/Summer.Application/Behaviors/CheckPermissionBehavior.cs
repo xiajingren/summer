@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Summer.Application.Interfaces;
 using Summer.Application.Permissions;
 using Summer.Domain.Exceptions;
 using Summer.Domain.Interfaces;
@@ -31,8 +31,10 @@ namespace Summer.Application.Behaviors
                 throw new UnauthorizedBusinessException();
             }
 
-            var permissions = await _permissionManager.GetCodesByUserIdAsync(int.Parse(_currentUser.Id));
-            if (!permissions.Contains(permissionAttr.Code))
+            var passed =
+                await _permissionManager.CheckUserPermissionCodeAsync(int.Parse(_currentUser.Id), permissionAttr.Code);
+
+            if (!passed)
             {
                 throw new ForbidBusinessException();
             }

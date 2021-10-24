@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Summer.Application.Interfaces;
 using Summer.Application.Requests.Queries;
 using Summer.Application.Responses;
-using Summer.Domain.Interfaces;
 
 namespace Summer.Application.Requests.Handlers
 {

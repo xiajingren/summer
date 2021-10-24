@@ -1,0 +1,30 @@
+﻿using Ardalis.Specification;
+using Summer.Domain.Entities;
+
+namespace Summer.Domain.Specifications
+{
+    public sealed class UserPaginatedSpec : Specification<User>
+    {
+        public UserPaginatedSpec(string filter)
+        {
+            if (!string.IsNullOrEmpty(filter))
+            {
+                Query.Where(x => x.UserName.Contains(filter));
+            }
+
+            Query.Include(x => x.Roles);
+        }
+
+        public UserPaginatedSpec(string filter, int skip, int take)
+        {
+            if (!string.IsNullOrEmpty(filter))
+            {
+                Query.Where(x => x.UserName.Contains(filter));
+            }
+
+            Query.OrderByDescending(x => x.Id).Skip(skip).Take(take);
+
+            Query.Include(x => x.Roles);
+        }
+    }
+}

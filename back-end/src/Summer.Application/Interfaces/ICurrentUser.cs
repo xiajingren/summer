@@ -1,4 +1,4 @@
-﻿namespace Summer.Domain.Interfaces
+﻿namespace Summer.Application.Interfaces
 {
     public interface ICurrentUser
     {
