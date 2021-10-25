@@ -19,12 +19,14 @@ using Summer.Application.HttpFilters;
 using Summer.Application.Interfaces;
 using Summer.Application.Options;
 using Summer.Application.Services;
+using Summer.Application.UnitOfWork;
 using Summer.Domain.Interfaces;
 using Summer.Domain.SeedWork;
 using Summer.Domain.Services;
 using Summer.Infrastructure.Data;
 using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.Seeds;
+using Summer.Infrastructure.Data.UnitOfWork;
 using Summer.Infrastructure.SeedWork;
 
 namespace Summer.Infrastructure
@@ -135,17 +137,20 @@ namespace Summer.Infrastructure
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CheckPermissionBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
+
             services.AddValidatorsFromAssembly(typeof(ICurrentUser).Assembly);
 
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
 
             services.AddHttpContextAccessor();
-            
+
             services.AddTransient<IJwtTokenService, JwtTokenService>();
             services.AddTransient<ICurrentUser, CurrentUser>();
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IRoleManager, RoleManager>();
             services.AddTransient<IPermissionManager, PermissionManager>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         #endregion

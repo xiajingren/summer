@@ -2,10 +2,12 @@
 using Summer.Application.Constants;
 using Summer.Application.Permissions;
 using Summer.Application.Responses;
+using Summer.Application.UnitOfWork;
 
 namespace Summer.Application.Requests.Commands
 {
     [Permission(nameof(CreateUserCommand), "创建用户", PermissionConstants.UserGroupName)]
+    [UnitOfWork]
     public class CreateUserCommand : IRequest<UserResponse>
     {
         public string UserName { get; set; }
