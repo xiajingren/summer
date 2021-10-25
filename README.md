@@ -156,25 +156,6 @@ await _todoRepository.ListAsync(new TodoSpec("xx", 0, 10));
 ##### Command
 
 ```c#
-public class TodosController : ControllerBase
-{
-    private readonly IMediator _mediator;
-    public TodosController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<TodoResponse>> CreateTodo(CreateTodoCommand createTodoCommand)
-    {
-        var response = await _mediator.Send(createTodoCommand);
-        return CreatedAtAction(nameof(GetTodo), new {id = response.Id}, response);
-    }
-}
-```
-
-```c#
 public class CreateTodoCommand : IRequest<TodoResponse>
 {
     public string Name { get; set; }
@@ -196,8 +177,6 @@ public class CreateTodoCommandHandler : IRequestHandler<CreateTodoCommand, TodoR
 }
 ```
 
-##### Query
-
 ```c#
 public class TodosController : ControllerBase
 {
@@ -206,15 +185,18 @@ public class TodosController : ControllerBase
     {
         _mediator = mediator;
     }
-    
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<TodoResponse>> GetTodo(int id)
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<TodoResponse>> CreateTodo(CreateTodoCommand createTodoCommand)
     {
-        var response = await _mediator.Send(new GetTodoByIdQuery(id));
-        return Ok(response);
+        var response = await _mediator.Send(createTodoCommand);
+        return CreatedAtAction(nameof(GetTodo), new {id = response.Id}, response);
     }
 }
 ```
+
+##### Query
 
 ```c#
 public class GetTodoByIdQuery : IRequest<TodoResponse>
@@ -231,6 +213,24 @@ public class GetTodoByIdQueryHandler : IRequestHandler<GetTodoByIdQuery, TodoRes
         // todo:
         
         return response;
+    }
+}
+```
+
+```c#
+public class TodosController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    public TodosController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+    
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<TodoResponse>> GetTodo(int id)
+    {
+        var response = await _mediator.Send(new GetTodoByIdQuery(id));
+        return Ok(response);
     }
 }
 ```
