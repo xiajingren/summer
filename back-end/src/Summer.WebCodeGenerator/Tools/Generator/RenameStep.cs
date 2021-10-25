@@ -1,4 +1,4 @@
-﻿namespace Summer.WebTools.Tools.Generator
+﻿namespace Summer.WebCodeGenerator.Tools.Generator
 {
     public class RenameStep : IMakeProjectStep
     {

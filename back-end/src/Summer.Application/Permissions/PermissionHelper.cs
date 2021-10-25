@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper.Internal;
 using MediatR;
-using Summer.Application.Responses;
 
 namespace Summer.Application.Permissions
 {

@@ -74,7 +74,7 @@ namespace Summer.Application.Services
 
             var expiryDateUnix =
                 long.Parse(claimsPrincipal.Claims.Single(x => x.Type == ClaimConstants.Expiry).Value);
-            var expiryDateTimeUtc = CommonHelper.Instance.UnixTimeStampToDateTime(expiryDateUnix);
+            var expiryDateTimeUtc = CommonHelper.UnixTimeStampToDateTime(expiryDateUnix);
             if (expiryDateTimeUtc > DateTime.UtcNow)
             {
                 return false;

@@ -13,8 +13,8 @@ namespace Summer.Application.MapperProfiles
             CreateMap<Role, RoleResponse>();
             CreateMap<User, UserResponse>();
             CreateMap<UserRole, RoleResponse>()
-                .ForMember(x => x.Id, op => op.MapFrom(r => r.RoleId))
-                .ForMember(x => x.Name, op => op.Ignore());
+                .ForMember(x => x.Id, opts => opts.MapFrom(r => r.RoleId))
+                .ForMember(x => x.Name, opts => opts.Ignore());
         }
     }
 }

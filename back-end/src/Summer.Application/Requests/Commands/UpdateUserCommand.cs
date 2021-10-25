@@ -14,13 +14,24 @@ namespace Summer.Application.Requests.Commands
 
         public string Password { get; set; }
 
-        public IEnumerable<int> RoleIds { get; set; } = new List<int>();
-        
-        public UpdateUserCommand(int id, string userName, string password)
+        public IEnumerable<UpdateUserCommandRole> Roles { get; set; }
+
+        public UpdateUserCommand(int id, string userName, string password, IEnumerable<UpdateUserCommandRole> roles)
         {
             Id = id;
             UserName = userName;
             Password = password;
+            Roles = roles ?? new List<UpdateUserCommandRole>();
+        }
+
+        public class UpdateUserCommandRole
+        {
+            public int Id { get; set; }
+
+            public UpdateUserCommandRole(int id)
+            {
+                Id = id;
+            }
         }
     }
 }

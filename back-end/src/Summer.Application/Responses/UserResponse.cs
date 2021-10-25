@@ -8,12 +8,6 @@ namespace Summer.Application.Responses
 
         public string UserName { get; set; }
 
-        public IEnumerable<RoleResponse> Roles { get; set; } = new List<RoleResponse>();
-
-        public UserResponse(int id, string userName)
-        {
-            Id = id;
-            UserName = userName;
-        }
+        public IEnumerable<RoleResponse> Roles { get; set; }
     }
 }

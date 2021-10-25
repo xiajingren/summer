@@ -12,7 +12,6 @@ namespace Summer.WebApi.Controllers
 {
     [Route("api/roles")]
     [ApiController]
-    [Authorize]
     public class RolesController : ControllerBase
     {
         private readonly IMediator _mediator;

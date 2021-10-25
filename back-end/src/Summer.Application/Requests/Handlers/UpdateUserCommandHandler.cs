@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Summer.Application.Requests.Commands;
@@ -28,7 +29,7 @@ namespace Summer.Application.Requests.Handlers
                 throw new NotFoundBusinessException();
             }
 
-            user.SetRoles(request.RoleIds);
+            user.SetRoles(request.Roles.Select(x => x.Id));
 
             await _userManager.UpdateAsync(user, request.UserName, request.Password);
 

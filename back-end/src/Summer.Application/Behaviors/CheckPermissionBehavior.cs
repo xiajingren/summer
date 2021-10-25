@@ -32,7 +32,7 @@ namespace Summer.Application.Behaviors
             }
 
             var passed =
-                await _permissionManager.CheckUserPermissionCodeAsync(int.Parse(_currentUser.Id), permissionAttr.Code);
+                await _permissionManager.CheckUserPermissionCodeAsync(_currentUser.Id, permissionAttr.Code);
 
             if (!passed)
             {

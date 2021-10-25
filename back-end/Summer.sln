@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5AF64135-8E4E-4328-B0DC-B6FAEEE8EB33}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.WebTools", "src\Summer.WebTools\Summer.WebTools.csproj", "{64689C7E-0835-47DE-B535-9602021EDB8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.WebCodeGenerator", "src\Summer.WebCodeGenerator\Summer.WebCodeGenerator.csproj", "{64689C7E-0835-47DE-B535-9602021EDB8D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Summer.Infrastructure", "src\Summer.Infrastructure\Summer.Infrastructure.csproj", "{7124186B-A8FA-4466-B0E3-1021BB5394C3}"
 EndProject

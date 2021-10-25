@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Summer.WebTools.Models;
+using Summer.WebCodeGenerator.Models;
 
-namespace Summer.WebTools.Controllers
+namespace Summer.WebCodeGenerator.Controllers
 {
     public class HomeController : Controller
     {

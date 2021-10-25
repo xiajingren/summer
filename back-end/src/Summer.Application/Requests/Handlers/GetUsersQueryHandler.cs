@@ -29,14 +29,14 @@ namespace Summer.Application.Requests.Handlers
         public async Task<PaginationResponse<UserResponse>> Handle(GetUsersQuery request,
             CancellationToken cancellationToken)
         {
-            var rowCount = await _userRepository.CountAsync(new UserPaginatedSpec(request.Filter), cancellationToken);
+            var rowCount = await _userRepository.CountAsync(new UserSpec(request.Filter), cancellationToken);
             var users = await _userRepository.ListAsync(
-                new UserPaginatedSpec(request.Filter, request.GetSkip(), request.PageSize),
+                new UserSpec(request.Filter, request.GetSkip(), request.PageSize),
                 cancellationToken);
 
             var roles = await _roleRepository.ListAsync(cancellationToken);
 
-            var responseUsers = _mapper.Map<IEnumerable<UserResponse>>(users);
+            var responseUsers = _mapper.Map<List<UserResponse>>(users);
             foreach (var responseUser in responseUsers)
             {
                 responseUser.Roles =

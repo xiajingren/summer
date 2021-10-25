@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Summer.WebTools.Tools.Generator
+namespace Summer.WebCodeGenerator.Tools.Generator
 {
     public interface IProjectGenerator
     {

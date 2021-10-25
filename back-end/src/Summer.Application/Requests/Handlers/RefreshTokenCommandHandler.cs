@@ -36,7 +36,7 @@ namespace Summer.Application.Requests.Handlers
             }
 
             var refreshToken =
-                await _refreshTokenRepository.GetBySpecAsync(new RefreshTokenSpec(request.RefreshToken),
+                await _refreshTokenRepository.GetBySpecAsync(new RefreshTokenByTokenSpec(request.RefreshToken),
                     cancellationToken);
 
             if (refreshToken == null)

@@ -26,9 +26,9 @@ namespace Summer.Application.Requests.Handlers
         public async Task<PaginationResponse<RoleResponse>> Handle(GetRolesQuery request,
             CancellationToken cancellationToken)
         {
-            var rowCount = await _roleRepository.CountAsync(new RolePaginatedSpec(request.Filter), cancellationToken);
+            var rowCount = await _roleRepository.CountAsync(new RoleSpec(request.Filter), cancellationToken);
             var roles = await _roleRepository.ListAsync(
-                new RolePaginatedSpec(request.Filter, request.GetSkip(), request.PageSize),
+                new RoleSpec(request.Filter, request.GetSkip(), request.PageSize),
                 cancellationToken);
 
             return new PaginationResponse<RoleResponse>(request.PageIndex, request.PageSize, rowCount,

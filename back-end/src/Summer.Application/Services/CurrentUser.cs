@@ -17,7 +17,14 @@ namespace Summer.Application.Services
 
         public bool IsAuthenticated => _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
 
-        public string Id => _httpContextAccessor.HttpContext.User.FindFirst(ClaimConstants.UserId)?.Value;
+        public int Id
+        {
+            get
+            {
+                var v = _httpContextAccessor.HttpContext.User.FindFirst(ClaimConstants.UserId)?.Value;
+                return v == null ? -1 : int.Parse(v);
+            }
+        }
 
         public string UserName => _httpContextAccessor.HttpContext.User.Identity.Name;
     }

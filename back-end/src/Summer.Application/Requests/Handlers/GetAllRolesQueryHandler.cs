@@ -8,6 +8,7 @@ using Summer.Application.Requests.Queries;
 using Summer.Application.Responses;
 using Summer.Domain.Entities;
 using Summer.Domain.SeedWork;
+using Summer.Domain.Specifications;
 
 namespace Summer.Application.Requests.Handlers
 {
@@ -25,7 +26,7 @@ namespace Summer.Application.Requests.Handlers
         public async Task<IEnumerable<RoleResponse>> Handle(GetAllRolesQuery request,
             CancellationToken cancellationToken)
         {
-            var roles = await _roleRepository.ListAsync(cancellationToken);
+            var roles = await _roleRepository.ListAsync(new RoleSpec(), cancellationToken);
             return _mapper.Map<IEnumerable<RoleResponse>>(roles);
         }
     }

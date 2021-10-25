@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Summer.WebTools
+namespace Summer.WebCodeGenerator
 {
     public class Program
     {

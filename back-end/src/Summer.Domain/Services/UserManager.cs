@@ -14,7 +14,7 @@ namespace Summer.Domain.Services
 
         public UserManager(IRepository<User> useRepository)
         {
-            _useRepository = useRepository;
+            _useRepository = useRepository ?? throw new ArgumentNullException(nameof(useRepository));
         }
 
         public async Task<User> CreateAsync(string userName, string password)

@@ -3,9 +3,9 @@ using Summer.Domain.Entities;
 
 namespace Summer.Domain.Specifications
 {
-    public sealed class RefreshTokenSpec : Specification<RefreshToken>, ISingleResultSpecification
+    public sealed class RefreshTokenByTokenSpec : Specification<RefreshToken>, ISingleResultSpecification
     {
-        public RefreshTokenSpec(string refreshToken)
+        public RefreshTokenByTokenSpec(string refreshToken)
         {
             Query.Where(x => x.Token == refreshToken);
         }

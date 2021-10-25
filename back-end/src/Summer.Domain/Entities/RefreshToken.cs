@@ -33,7 +33,7 @@ namespace Summer.Domain.Entities
         {
             JwtId = jwtId;
             UserId = userId;
-            Token = CommonHelper.Instance.GenerateRandomNumber();
+            Token = CommonHelper.GenerateRandomNumber();
         }
 
         public void Invalidate()

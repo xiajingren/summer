@@ -4,7 +4,7 @@
     {
         bool IsAuthenticated { get; }
 
-        string Id { get; }
+        int Id { get; }
 
         string UserName { get; }
     }
