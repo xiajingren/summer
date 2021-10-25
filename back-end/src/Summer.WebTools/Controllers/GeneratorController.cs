@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Summer.WebCodeGenerator.Tools.Generator;
+using Summer.WebTools.Tools.Generator;
 
-namespace Summer.WebCodeGenerator.Controllers
+namespace Summer.WebTools.Controllers
 {
     public class GeneratorController : Controller
     {

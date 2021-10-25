@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Summer.WebCodeGenerator.Tools.Generator
+namespace Summer.WebTools.Tools.Generator
 {
     public class ProjectModel
     {

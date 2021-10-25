@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 
-namespace Summer.WebCodeGenerator.Tools.Generator
+namespace Summer.WebTools.Tools.Generator
 {
     public class ProjectGenerator : IProjectGenerator
     {

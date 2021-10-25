@@ -1,4 +1,4 @@
-namespace Summer.WebCodeGenerator.Models
+namespace Summer.WebTools.Models
 {
     public class ErrorViewModel
     {

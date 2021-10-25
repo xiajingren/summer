@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Summer.WebCodeGenerator.Tools.Generator;
+using Summer.WebTools.Tools.Generator;
 
-namespace Summer.WebCodeGenerator
+namespace Summer.WebTools
 {
     public class Startup
     {
