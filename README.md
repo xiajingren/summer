@@ -16,7 +16,7 @@
 
 ## Getting started
 
-### 领域层(Domain)
+### 领域层(Domain Layer)
 
 #### 实体(Entity)
 
@@ -59,6 +59,8 @@ public class Order : BaseEntity, IAggregateRoot
 
 #### 仓储(Repository)
 
+`IRepository`泛型仓储，提供了一系列基础方法，配合规约使用。
+
 ```c#
 public class GetTodoByIdQueryHandler : IRequestHandler<GetTodoByIdQuery, TodoResponse>
 {
@@ -84,11 +86,9 @@ public class GetTodoByIdQueryHandler : IRequestHandler<GetTodoByIdQuery, TodoRes
 }
 ```
 
-#### 领域服务(Domain Service)
-
-// todo:
-
 #### 规约(Specification)
+
+使用`ardalis/Specification`实现。
 
 ```c#
 public sealed class TodoSpec : Specification<Todo>
@@ -129,6 +129,10 @@ await _todoRepository.ListAsync(new TodoSpec("xx"));
 await _todoRepository.ListAsync(new TodoSpec("xx", 0, 10));
 ```
 
+#### 领域服务(Domain Service)
+
+// todo:
+
 #### 领域事件(Domain Event)
 
 // todo:
@@ -137,13 +141,13 @@ await _todoRepository.ListAsync(new TodoSpec("xx", 0, 10));
 
 // todo:
 
-### 应用层（Application）
+### 应用层（Application Layer）
 
 #### 命令查询分离(CQRS)
 
-使用`MediatR`实现。
+基于`MediatR`实现。
 
-- 以下的 **Handler** 相当于**应用服务**
+- 以下的 **Handler** 相当于**应用服务(Application Service)**
 
 - **Command**，**Query** 相当于 **输入DTO**
 
