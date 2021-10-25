@@ -11,21 +11,26 @@ namespace Summer.Domain.Services
     public class UserManager : IUserManager
     {
         private readonly IRepository<User> _useRepository;
+        private readonly IPasswordHashService _passwordHasher;
 
-        public UserManager(IRepository<User> useRepository)
+        public UserManager(IRepository<User> useRepository, IPasswordHashService passwordHasher)
         {
             _useRepository = useRepository ?? throw new ArgumentNullException(nameof(useRepository));
+            _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         }
 
         public async Task<User> CreateAsync(string userName, string password)
         {
-            var user = await _useRepository.GetBySpecAsync(new UserByUserNameSpec(userName));
-            if (user != null)
+            var storedUser = await _useRepository.GetBySpecAsync(new UserByUserNameSpec(userName));
+            if (storedUser != null)
             {
                 throw new BusinessException("用户已存在");
             }
 
-            return await _useRepository.AddAsync(new User(userName, password, Guid.NewGuid().ToString("N")));
+            var user = new User(userName);
+            user.SetPasswordHash(_passwordHasher.Hash(user, password));
+            
+            return await _useRepository.AddAsync(user);
         }
 
         public async Task UpdateAsync(User user, string userName, string password)
@@ -39,8 +44,8 @@ namespace Summer.Domain.Services
             user.UserName = userName;
             if (!string.IsNullOrEmpty(password))
             {
-                user.PasswordHash = password;
-                user.SecurityStamp = Guid.NewGuid().ToString("N");
+                user.RefreshSecurityStamp();
+                user.SetPasswordHash(_passwordHasher.Hash(user, password));
             }
 
             await _useRepository.UpdateAsync(user);
@@ -48,7 +53,7 @@ namespace Summer.Domain.Services
 
         public Task<bool> CheckPasswordAsync(User user, string password)
         {
-            return Task.FromResult(user.PasswordHash == password);
+            return Task.FromResult(_passwordHasher.Verify(user, password));
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Summer.Domain.Entities
     {
         public string UserName { get; internal set; }
 
-        public string PasswordHash { get; internal set; }
+        public string PasswordHash { get; private set; }
 
-        public string SecurityStamp { get; internal set; }
+        public string SecurityStamp { get; private set; }
 
 
         private readonly List<UserRole> _roles = new List<UserRole>();
@@ -21,11 +21,20 @@ namespace Summer.Domain.Entities
             // required by EF
         }
 
-        internal User(string userName, string passwordHash, string securityStamp)
+        internal User(string userName)
         {
             UserName = userName;
+            RefreshSecurityStamp();
+        }
+
+        internal void RefreshSecurityStamp()
+        {
+            SecurityStamp = Guid.NewGuid().ToString("N");
+        }
+
+        internal void SetPasswordHash(string passwordHash)
+        {
             PasswordHash = passwordHash;
-            SecurityStamp = securityStamp;
         }
 
         public void SetRoles(IEnumerable<int> roleIds = null)

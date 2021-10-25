@@ -28,6 +28,7 @@ using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.Seeds;
 using Summer.Infrastructure.Data.UnitOfWork;
 using Summer.Infrastructure.SeedWork;
+using Summer.Infrastructure.Services;
 
 namespace Summer.Infrastructure
 {
@@ -150,6 +151,7 @@ namespace Summer.Infrastructure
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IRoleManager, RoleManager>();
             services.AddTransient<IPermissionManager, PermissionManager>();
+            services.AddTransient<IPasswordHashService, PasswordHashService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
