@@ -18,8 +18,6 @@ namespace Summer.Domain.Specifications
             }
 
             Query.OrderByDescending(x => x.Id);
-            
-            Query.Include(x => x.Roles);
         }
 
         public UserSpec(string filter, int skip, int take)
@@ -30,8 +28,6 @@ namespace Summer.Domain.Specifications
             }
 
             Query.OrderByDescending(x => x.Id).Skip(skip).Take(take);
-
-            Query.Include(x => x.Roles);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Summer.Domain.Specifications
     {
         public UserByUserNameSpec(string userName)
         {
-            Query.Where(x => x.UserName == userName).Include(x => x.Roles);
+            Query.Where(x => x.UserName== userName);
         }
     }
 }

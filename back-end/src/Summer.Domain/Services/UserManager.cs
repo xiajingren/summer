@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Summer.Domain.Entities;
 using Summer.Domain.Exceptions;
@@ -19,7 +20,7 @@ namespace Summer.Domain.Services
             _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         }
 
-        public async Task<User> CreateAsync(string userName, string password)
+        public async Task<User> CreateAsync(string userName, string password, IEnumerable<int> roleIds = null)
         {
             var storedUser = await _useRepository.GetBySpecAsync(new UserByUserNameSpec(userName));
             if (storedUser != null)
@@ -28,8 +29,9 @@ namespace Summer.Domain.Services
             }
 
             var user = new User(userName);
+            user.SetRoles(roleIds);
             user.SetPasswordHash(_passwordHasher.Hash(user, password));
-            
+
             return await _useRepository.AddAsync(user);
         }
 

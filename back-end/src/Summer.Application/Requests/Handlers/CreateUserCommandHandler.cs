@@ -29,7 +29,8 @@ namespace Summer.Application.Requests.Handlers
 
         public async Task<UserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.CreateAsync(request.UserName, request.Password);
+            var user = await _userManager.CreateAsync(request.UserName, request.Password,
+                request.Roles.Select(x => x.Id));
 
             var roles = await _roleRepository.ListAsync(new RoleByIdsSpec(user.Roles.Select(x => x.RoleId).ToArray()),
                 cancellationToken);

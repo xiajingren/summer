@@ -13,7 +13,7 @@ namespace Summer.Domain.Entities
         public string SecurityStamp { get; private set; }
 
 
-        private readonly List<UserRole> _roles = new List<UserRole>();
+        private readonly List<UserRole> _roles = new();
         public IReadOnlyCollection<UserRole> Roles => _roles.AsReadOnly();
 
         private User()
