@@ -64,7 +64,7 @@ public class Order : BaseEntity, IAggregateRoot
 ```c#
 public class GetTodoByIdQueryHandler : IRequestHandler<GetTodoByIdQuery, TodoResponse>
 {
-    private readonly IRepository<Todo> _TodoRepository;
+    private readonly IRepository<Todo> _todoRepository;
     public GetTodoByIdQueryHandler(IRepository<Todo> todoRepository)
     {
         _todoRepository = todoRepository ?? throw new ArgumentNullException(nameof(todoRepository));
