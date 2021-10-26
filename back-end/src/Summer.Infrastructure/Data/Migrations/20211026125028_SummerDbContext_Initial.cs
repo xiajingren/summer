@@ -8,12 +8,28 @@ namespace Summer.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Permissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TargetId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PermissionType = table.Column<int>(type: "INTEGER", nullable: false),
+                    PermissionCode = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,6 +43,7 @@ namespace Summer.Infrastructure.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     PasswordHash = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     SecurityStamp = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false)
                 },
@@ -85,6 +102,12 @@ namespace Summer.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Permissions_TargetId_PermissionType_PermissionCode",
+                table: "Permissions",
+                columns: new[] { "TargetId", "PermissionType", "PermissionCode" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_JwtId",
                 table: "RefreshTokens",
                 column: "JwtId",
@@ -102,13 +125,26 @@ namespace Summer.Infrastructure.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_NormalizedName",
+                table: "Roles",
+                column: "NormalizedName");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_NormalizedUserName",
+                table: "Users",
+                column: "NormalizedUserName");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Permissions");
+
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
 

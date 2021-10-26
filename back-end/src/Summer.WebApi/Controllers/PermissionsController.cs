@@ -18,10 +18,18 @@ namespace Summer.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PermissionGroupInfoResponse>>> GetPermissions()
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<PermissionGroupInfoResponse>>> GetAllPermissions()
         {
             var response = await _mediator.Send(new GetPermissionGroupsQuery());
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PermissionResponse>>> GetPermissions(
+            [FromQuery] GetPermissionsQuery getPermissionsQuery)
+        {
+            var response = await _mediator.Send(getPermissionsQuery);
             return Ok(response);
         }
     }

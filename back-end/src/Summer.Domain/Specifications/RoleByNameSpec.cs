@@ -7,7 +7,7 @@ namespace Summer.Domain.Specifications
     {
         public RoleByNameSpec(string name)
         {
-            Query.Where(x => x.NormalizedName == name);
+            Query.Where(x => x.NormalizedName == name.ToUpperInvariant());
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Summer.Domain.Entities
         public string SecurityStamp { get; private set; }
 
         private readonly List<UserRole> _roles = new();
-        public IReadOnlyCollection<UserRole> Roles => _roles.AsReadOnly();
+        public IEnumerable<UserRole> Roles => _roles.AsReadOnly();
         public IEnumerable<int> RoleIds => Roles.Select(x => x.RoleId);
         
         private User()
@@ -38,7 +38,7 @@ namespace Summer.Domain.Entities
         internal void SetUserName(string userName)
         {
             UserName = userName;
-            NormalizedUserName = UserName.ToUpper();
+            NormalizedUserName = UserName.ToUpperInvariant();
         }
 
         internal void SetPasswordHash(string passwordHash)

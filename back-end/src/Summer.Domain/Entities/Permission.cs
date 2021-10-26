@@ -6,7 +6,7 @@ namespace Summer.Domain.Entities
     {
         public int TargetId { get; private set; }
 
-        public PermissionType PermissionType { get; private set; }
+        public PermissionType PermissionType { get; private set; } // todo: 枚举类修改
 
         public string PermissionCode { get; private set; }
 

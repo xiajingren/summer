@@ -26,7 +26,6 @@ using Summer.Infrastructure.Data.Seeds;
 using Summer.Infrastructure.Data.UnitOfWork;
 using Summer.Infrastructure.HttpFilters;
 using Summer.Infrastructure.Options;
-using Summer.Infrastructure.SeedWork;
 using Summer.Infrastructure.Services;
 
 namespace Summer.Infrastructure
@@ -65,7 +64,7 @@ namespace Summer.Infrastructure
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            //DbContextSeed(app);
+            DbContextSeed(app);
         }
 
         #region Mvc
@@ -227,6 +226,10 @@ namespace Summer.Infrastructure
         private static void DbContextSeed(IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
+
+            var dbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
+            dbContext.Database.MigrateAsync().Wait();
+
             var seeds = scope.ServiceProvider.GetServices<IDataSeed>();
             foreach (var seed in seeds) seed.SeedAsync().Wait();
         }

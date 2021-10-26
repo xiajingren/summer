@@ -21,7 +21,7 @@ namespace Summer.Domain.Entities
         internal void SetName(string name)
         {
             Name = name;
-            NormalizedName = Name.ToUpper();
+            NormalizedName = Name.ToUpperInvariant();
         }
     }
 }

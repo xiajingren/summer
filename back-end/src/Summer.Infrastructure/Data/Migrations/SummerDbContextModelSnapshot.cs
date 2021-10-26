@@ -16,6 +16,31 @@ namespace Summer.Infrastructure.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.10");
 
+            modelBuilder.Entity("Summer.Domain.Entities.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PermissionCode")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PermissionType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TargetId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TargetId", "PermissionType", "PermissionCode")
+                        .IsUnique();
+
+                    b.ToTable("Permissions");
+                });
+
             modelBuilder.Entity("Summer.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -71,7 +96,14 @@ namespace Summer.Infrastructure.Data.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName");
 
                     b.ToTable("Roles");
                 });
@@ -81,6 +113,11 @@ namespace Summer.Infrastructure.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("NormalizedUserName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -98,6 +135,8 @@ namespace Summer.Infrastructure.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NormalizedUserName");
 
                     b.ToTable("Users");
                 });
