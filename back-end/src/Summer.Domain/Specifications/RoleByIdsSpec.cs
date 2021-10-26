@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Ardalis.Specification;
 using Summer.Domain.Entities;
 
@@ -6,7 +7,7 @@ namespace Summer.Domain.Specifications
 {
     public sealed class RoleByIdsSpec : Specification<Role>
     {
-        public RoleByIdsSpec(int[] ids)
+        public RoleByIdsSpec(IEnumerable<int> ids)
         {
             Query.Where(x => ids.Contains(x.Id));
         }

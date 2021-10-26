@@ -36,8 +36,7 @@ namespace Summer.Application.Requests.Handlers
                 throw new NotFoundBusinessException();
             }
 
-            var roles = await _roleRepository.ListAsync(new RoleByIdsSpec(user.Roles.Select(x => x.RoleId).ToArray()),
-                cancellationToken);
+            var roles = await _roleRepository.ListAsync(new RoleByIdsSpec(user.RoleIds), cancellationToken);
 
             var response = _mapper.Map<UserResponse>(user);
             response.Roles = _mapper.Map<IEnumerable<RoleResponse>>(roles);

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Summer.Domain.Exceptions;
 
-namespace Summer.Application.HttpFilters
+namespace Summer.Infrastructure.HttpFilters
 {
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {

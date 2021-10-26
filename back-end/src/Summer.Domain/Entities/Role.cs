@@ -4,7 +4,9 @@ namespace Summer.Domain.Entities
 {
     public class Role : BaseEntity, IAggregateRoot
     {
-        public string Name { get; internal set; }
+        public string Name { get; private set; }
+
+        public string NormalizedName { get; private set; }
 
         private Role()
         {
@@ -13,7 +15,13 @@ namespace Summer.Domain.Entities
 
         internal Role(string name)
         {
+            SetName(name);
+        }
+
+        internal void SetName(string name)
+        {
             Name = name;
+            NormalizedName = Name.ToUpper();
         }
     }
 }

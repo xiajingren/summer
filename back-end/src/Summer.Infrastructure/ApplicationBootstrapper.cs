@@ -15,10 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Summer.Application.Behaviors;
-using Summer.Application.HttpFilters;
 using Summer.Application.Interfaces;
-using Summer.Application.Options;
-using Summer.Application.Services;
 using Summer.Application.UnitOfWork;
 using Summer.Domain.Interfaces;
 using Summer.Domain.SeedWork;
@@ -27,6 +24,8 @@ using Summer.Infrastructure.Data;
 using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.Seeds;
 using Summer.Infrastructure.Data.UnitOfWork;
+using Summer.Infrastructure.HttpFilters;
+using Summer.Infrastructure.Options;
 using Summer.Infrastructure.SeedWork;
 using Summer.Infrastructure.Services;
 
@@ -75,6 +74,7 @@ namespace Summer.Infrastructure
         {
             services
                 .AddControllers(options => { options.Filters.Add<HttpGlobalExceptionFilter>(); });
+            // .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
             // .AddFluentValidation(mvcConfiguration =>
             // {
             //     mvcConfiguration.RegisterValidatorsFromAssemblyContaining(typeof(ApplicationBootstrapper));
@@ -87,6 +87,12 @@ namespace Summer.Infrastructure
             //});
 
             //services.AddSpaStaticFiles(c => { c.RootPath = "ClientApp/dist"; });
+
+            // services.Configure<RouteOptions>(options =>
+            // {
+            //     options.LowercaseUrls = true;
+            //     options.LowercaseQueryStrings = true;
+            // });
         }
 
         #endregion
@@ -198,6 +204,8 @@ namespace Summer.Infrastructure
                         Array.Empty<string>()
                     }
                 });
+
+                c.DescribeAllParametersInCamelCase();
             });
         }
 

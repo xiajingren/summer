@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace Summer.Application.Constants
+namespace Summer.Infrastructure.Constants
 {
     public static class ClaimConstants
     {

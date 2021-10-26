@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Summer.Application.Requests.Commands;
 using Summer.Domain.Entities;
 using Summer.Domain.Exceptions;

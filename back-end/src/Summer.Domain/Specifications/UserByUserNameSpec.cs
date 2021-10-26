@@ -7,7 +7,7 @@ namespace Summer.Domain.Specifications
     {
         public UserByUserNameSpec(string userName)
         {
-            Query.Where(x => x.UserName== userName);
+            Query.Where(x => x.NormalizedUserName== userName);
         }
     }
 }

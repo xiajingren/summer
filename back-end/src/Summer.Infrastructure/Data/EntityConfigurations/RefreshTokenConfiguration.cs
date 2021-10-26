@@ -10,8 +10,10 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
         {
             builder.ToTable("RefreshTokens");
             builder.HasKey(x => x.Id);
+            
             builder.Property(x => x.JwtId).HasMaxLength(64).IsRequired();
             builder.Property(x => x.Token).HasMaxLength(128).IsRequired();
+            
             builder.HasOne<User>()
                 .WithMany()
                 .HasForeignKey(p => p.UserId)

@@ -8,8 +8,14 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
-            //builder.HasIndex(x => new {x.TargetId, x.PermissionCode, x.PermissionType}).IsUnique();
-            throw new System.NotImplementedException();
+            builder.ToTable("Permissions");
+            builder.HasKey(x => x.Id);
+            
+            builder.Property(x => x.PermissionCode).HasMaxLength(64).IsRequired();
+            
+            builder.HasIndex(x => new { x.TargetId, x.PermissionType, x.PermissionCode }).IsUnique();
+
+            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

@@ -43,11 +43,11 @@ namespace Summer.Domain.Services
                 throw new BusinessException("用户已存在");
             }
 
-            user.UserName = userName;
+            user.SetUserName(userName);
             if (!string.IsNullOrEmpty(password))
             {
                 user.RefreshSecurityStamp();
-                user.SetPasswordHash(_passwordHasher.Hash(user, password));
+                user.UpdatePasswordHash(_passwordHasher.Hash(user, password));
             }
 
             await _useRepository.UpdateAsync(user);

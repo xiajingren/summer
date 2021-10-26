@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Summer.Application.Constants;
 using Summer.Application.Interfaces;
-using Summer.Domain.Interfaces;
+using Summer.Infrastructure.Constants;
 
-namespace Summer.Application.Services
+namespace Summer.Infrastructure.Services
 {
     public class CurrentUser : ICurrentUser
     {

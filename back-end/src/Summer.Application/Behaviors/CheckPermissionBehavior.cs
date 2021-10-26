@@ -31,8 +31,7 @@ namespace Summer.Application.Behaviors
                 throw new UnauthorizedBusinessException();
             }
 
-            var passed =
-                await _permissionManager.CheckUserPermissionCodeAsync(_currentUser.Id, permissionAttr.Code);
+            var passed = await _permissionManager.CheckUserPermissionAsync(_currentUser.Id, permissionAttr.Code);
 
             if (!passed)
             {

@@ -8,13 +8,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Summer.Application.Constants;
 using Summer.Application.Interfaces;
-using Summer.Application.Options;
 using Summer.Application.Responses;
 using Summer.Domain.Entities;
 using Summer.Domain.SeedWork;
+using Summer.Infrastructure.Constants;
+using Summer.Infrastructure.Options;
 using Summer.Shared.Utils;
 
-namespace Summer.Application.Services
+namespace Summer.Infrastructure.Services
 {
     public class JwtTokenService : IJwtTokenService
     {

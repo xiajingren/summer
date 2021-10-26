@@ -36,7 +36,7 @@ namespace Summer.Domain.Services
                 throw new BusinessException("角色已存在");
             }
 
-            role.Name = name;
+            role.SetName(name);
 
             await _roleRepository.UpdateAsync(role);
         }

@@ -11,7 +11,10 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
             builder.ToTable("Roles");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(64).IsRequired();
-            
+            builder.Property(x => x.NormalizedName).HasMaxLength(64).IsRequired();
+
+            builder.HasIndex(x => x.NormalizedName);
+
             builder.Ignore(x => x.DomainEvents);
         }
     }
