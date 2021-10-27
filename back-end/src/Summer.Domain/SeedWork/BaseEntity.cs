@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using MediatR;
 
 namespace Summer.Domain.SeedWork
 {
@@ -7,16 +6,16 @@ namespace Summer.Domain.SeedWork
     {
         public virtual int Id { get; protected set; }
 
-        private List<INotification> _domainEvents;
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+        private List<BaseEvent> _domainEvents;
+        public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents?.AsReadOnly();
 
-        public void AddDomainEvent(INotification eventItem)
+        public void AddDomainEvent(BaseEvent eventItem)
         {
-            _domainEvents ??= new List<INotification>();
+            _domainEvents ??= new List<BaseEvent>();
             _domainEvents.Add(eventItem);
         }
 
-        public void RemoveDomainEvent(INotification eventItem)
+        public void RemoveDomainEvent(BaseEvent eventItem)
         {
             _domainEvents?.Remove(eventItem);
         }

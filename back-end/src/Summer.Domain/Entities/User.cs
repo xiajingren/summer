@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Summer.Domain.Events;
 using Summer.Domain.SeedWork;
 
 namespace Summer.Domain.Entities
@@ -18,7 +19,7 @@ namespace Summer.Domain.Entities
         private readonly List<UserRole> _roles = new();
         public IEnumerable<UserRole> Roles => _roles.AsReadOnly();
         public IEnumerable<int> RoleIds => Roles.Select(x => x.RoleId);
-        
+
         private User()
         {
             // required by EF
@@ -50,7 +51,7 @@ namespace Summer.Domain.Entities
         {
             PasswordHash = passwordHash;
 
-            // todo: UpdatePassword Event
+            AddDomainEvent(new UserPasswordUpdatedEvent(Id));
         }
 
         public void SetRoles(IEnumerable<int> roleIds = null)

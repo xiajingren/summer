@@ -135,7 +135,54 @@ await _todoRepository.ListAsync(new TodoSpec("xx", 0, 10));
 
 #### 领域事件(Domain Event)
 
-// todo:
+基于`MediatR`实现。
+
+```c#
+public class NewUserEvent : BaseEvent
+{
+    public string Email { get; }
+    
+    // todo...
+    
+    public NewUserEvent(string email)
+    {
+        Email = email;
+    }
+}
+```
+
+```c#
+public class User : BaseEntity, IAggregateRoot
+{
+    public string UserName { get; }
+    
+    public string Password { get; }
+    
+    public string Email { get; }
+    
+    // todo...
+    
+    public User(string userName, string password, string email)
+	{
+        UserName = userName;
+        Password = password;
+        Email = email;
+        
+        AddDomainEvent(new NewUserEvent(email)); //add event
+	}
+}
+```
+
+```c#
+public class NewUserSendEmailHandler : INotificationHandler<NewUserEvent>
+{
+    public async Task Handle(NewUserEvent notification, CancellationToken cancellationToken)
+    {
+        // todo:
+        // send email...
+    }
+}
+```
 
 #### 业务异常(Business Exception)
 
