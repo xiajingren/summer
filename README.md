@@ -163,13 +163,13 @@ public class User : BaseEntity, IAggregateRoot
     // todo...
     
     public User(string userName, string password, string email)
-	{
+    {
         UserName = userName;
         Password = password;
         Email = email;
         
         AddDomainEvent(new NewUserEvent(email)); //add event
-	}
+    }
 }
 ```
 
