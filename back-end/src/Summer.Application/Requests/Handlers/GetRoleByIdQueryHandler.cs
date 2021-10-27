@@ -12,10 +12,10 @@ namespace Summer.Application.Requests.Handlers
 {
     public class GetRoleByIdQueryHandler : IRequestHandler<GetRoleByIdQuery, RoleResponse>
     {
-        private readonly IRepository<Role> _roleRepository;
+        private readonly IReadRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
 
-        public GetRoleByIdQueryHandler(IRepository<Role> roleRepository, IMapper mapper)
+        public GetRoleByIdQueryHandler(IReadRepository<Role> roleRepository, IMapper mapper)
         {
             _roleRepository = roleRepository;
             _mapper = mapper;

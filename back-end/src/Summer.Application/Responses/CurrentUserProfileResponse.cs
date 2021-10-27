@@ -2,9 +2,7 @@
 {
     public class CurrentUserProfileResponse
     {
-        public bool IsAuthenticated { get; set; }
-
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string UserName { get; set; }
     }

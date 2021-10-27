@@ -50,18 +50,13 @@ namespace Summer.Domain.Services
             return await _useRepository.AddAsync(user);
         }
 
-        public async Task UpdateAsync(User user, string userName, string password)
+        public async Task UpdateAsync(User user, string userName, IEnumerable<int> roleIds = null)
         {
             if (!ValidateUserName(userName))
             {
                 throw new BusinessException("用户名格式不符");
             }
-
-            if (!ValidatePassword(password))
-            {
-                throw new BusinessException("密码格式不符");
-            }
-
+            
             var storedUser = await _useRepository.GetBySpecAsync(new UserByUserNameSpec(userName));
             if (storedUser != null && storedUser.Id != user.Id)
             {
@@ -69,12 +64,21 @@ namespace Summer.Domain.Services
             }
 
             user.SetUserName(userName);
-            if (!string.IsNullOrEmpty(password))
-            {
-                user.RefreshSecurityStamp();
-                user.UpdatePasswordHash(_passwordHasher.Hash(user, password));
-            }
+            user.SetRoles(roleIds);
+            
+            await _useRepository.UpdateAsync(user);
+        }
 
+        public async Task UpdatePasswordAsync(User user, string password)
+        {
+            if (!ValidatePassword(password))
+            {
+                throw new BusinessException("密码格式不符");
+            }
+            
+            user.RefreshSecurityStamp();
+            user.UpdatePasswordHash(_passwordHasher.Hash(user, password));
+            
             await _useRepository.UpdateAsync(user);
         }
 
@@ -83,7 +87,7 @@ namespace Summer.Domain.Services
             return _passwordHasher.Verify(user, password);
         }
 
-        public bool ValidateUserName(string userName)
+        private bool ValidateUserName(string userName)
         {
             if (userName.Length < _userOptions.UserNameRequiredLength)
             {
@@ -93,7 +97,7 @@ namespace Summer.Domain.Services
             return true;
         }
 
-        public bool ValidatePassword(string password)
+        private bool ValidatePassword(string password)
         {
             if (password.Length < _userOptions.PasswordRequiredLength)
             {

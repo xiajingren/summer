@@ -9,18 +9,18 @@ using Summer.Domain.SeedWork;
 
 namespace Summer.Application.Requests.Handlers
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
+    public class UpdateUserPasswordCommandHandler : IRequestHandler<UpdateUserPasswordCommand>
     {
         private readonly IUserManager _userManager;
         private readonly IReadRepository<User> _userRepository;
 
-        public UpdateUserCommandHandler(IUserManager userManager, IReadRepository<User> userRepository)
+        public UpdateUserPasswordCommandHandler(IUserManager userManager, IReadRepository<User> userRepository)
         {
             _userManager = userManager;
             _userRepository = userRepository;
         }
 
-        public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateUserPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
             if (user == null)
@@ -28,7 +28,7 @@ namespace Summer.Application.Requests.Handlers
                 throw new NotFoundBusinessException();
             }
 
-            await _userManager.UpdateAsync(user, request.UserName, request.RoleIds);
+            await _userManager.UpdatePasswordAsync(user, request.Password);
 
             return Unit.Value;
         }

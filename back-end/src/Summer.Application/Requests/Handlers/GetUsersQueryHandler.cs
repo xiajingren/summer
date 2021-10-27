@@ -14,11 +14,11 @@ namespace Summer.Application.Requests.Handlers
 {
     public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, PaginationResponse<UserResponse>>
     {
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<Role> _roleRepository;
+        private readonly IReadRepository<User> _userRepository;
+        private readonly IReadRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
 
-        public GetUsersQueryHandler(IRepository<User> userRepository, IRepository<Role> roleRepository, IMapper mapper)
+        public GetUsersQueryHandler(IReadRepository<User> userRepository, IReadRepository<Role> roleRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;

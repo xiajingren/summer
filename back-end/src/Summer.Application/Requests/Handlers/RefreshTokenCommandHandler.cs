@@ -13,11 +13,11 @@ namespace Summer.Application.Requests.Handlers
 {
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, TokenResponse>
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly IReadRepository<User> _userRepository;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IRepository<RefreshToken> _refreshTokenRepository;
 
-        public RefreshTokenCommandHandler(IRepository<User> userRepository, IJwtTokenService jwtTokenService,
+        public RefreshTokenCommandHandler(IReadRepository<User> userRepository, IJwtTokenService jwtTokenService,
             IRepository<RefreshToken> refreshTokenRepository)
         {
             _userRepository = userRepository;

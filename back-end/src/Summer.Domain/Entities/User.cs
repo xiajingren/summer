@@ -54,7 +54,7 @@ namespace Summer.Domain.Entities
             AddDomainEvent(new UserPasswordUpdatedEvent(Id));
         }
 
-        public void SetRoles(IEnumerable<int> roleIds = null)
+        internal void SetRoles(IEnumerable<int> roleIds = null)
         {
             _roles.Clear();
 

@@ -16,10 +16,10 @@ namespace Summer.Application.Requests.Handlers
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserResponse>
     {
         private readonly IUserManager _userManager;
-        private readonly IRepository<Role> _roleRepository;
+        private readonly IReadRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
 
-        public CreateUserCommandHandler(IUserManager userManager, IRepository<Role> roleRepository, IMapper mapper)
+        public CreateUserCommandHandler(IUserManager userManager, IReadRepository<Role> roleRepository, IMapper mapper)
         {
             _userManager = userManager;
             _roleRepository = roleRepository;

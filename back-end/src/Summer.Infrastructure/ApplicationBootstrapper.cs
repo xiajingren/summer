@@ -148,8 +148,9 @@ namespace Summer.Infrastructure
 
             services.AddValidatorsFromAssembly(typeof(ICurrentUser).Assembly);
 
+            services.AddTransient(typeof(IReadRepository<>), typeof(EfRepository<>));
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
-
+            
             services.AddHttpContextAccessor();
 
             services.AddTransient<IJwtTokenService, JwtTokenService>();

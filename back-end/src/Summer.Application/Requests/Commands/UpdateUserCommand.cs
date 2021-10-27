@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MediatR;
 using Summer.Application.Constants;
 using Summer.Application.Permissions;
@@ -12,15 +13,14 @@ namespace Summer.Application.Requests.Commands
 
         public string UserName { get; set; }
 
-        public string Password { get; set; }
-
         public IEnumerable<UpdateUserCommandRole> Roles { get; set; }
 
-        public UpdateUserCommand(int id, string userName, string password, IEnumerable<UpdateUserCommandRole> roles)
+        public IEnumerable<int> RoleIds => Roles.Select(x => x.Id);
+
+        public UpdateUserCommand(int id, string userName, IEnumerable<UpdateUserCommandRole> roles)
         {
             Id = id;
             UserName = userName;
-            Password = password;
             Roles = roles ?? new List<UpdateUserCommandRole>();
         }
 

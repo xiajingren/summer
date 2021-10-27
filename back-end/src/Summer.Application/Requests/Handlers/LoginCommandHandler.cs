@@ -15,10 +15,10 @@ namespace Summer.Application.Requests.Handlers
     public class LoginCommandHandler : IRequestHandler<LoginCommand, TokenResponse>
     {
         private readonly IUserManager _userManager;
-        private readonly IRepository<User> _userRepository;
+        private readonly IReadRepository<User> _userRepository;
         private readonly IJwtTokenService _jwtTokenService;
 
-        public LoginCommandHandler(IUserManager userManager, IRepository<User> userRepository,
+        public LoginCommandHandler(IUserManager userManager, IReadRepository<User> userRepository,
             IJwtTokenService jwtTokenService)
         {
             _userManager = userManager;

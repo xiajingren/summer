@@ -75,7 +75,7 @@ namespace Summer.FunctionalTests.Controllers
             await AuthorizationAsync("admin", "123456");
 
             // Act
-            var response = await Client.GetAsync("/api/users/current/profile");
+            var response = await Client.GetAsync("/api/users/my-profile");
             TestOutputHelper.WriteLine(await response.Content.ReadAsStringAsync());
 
             // Assert
@@ -83,7 +83,7 @@ namespace Summer.FunctionalTests.Controllers
 
             var result = await response.Content.ReadFromJsonAsync<CurrentUserProfileResponse>();
             Assert.NotNull(result);
-            Assert.True(result.IsAuthenticated);
+            Assert.True(result.Id > 0);
         }
 
     }

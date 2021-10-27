@@ -12,9 +12,9 @@ namespace Summer.Application.Requests.Handlers
     public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand>
     {
         private readonly IRoleManager _roleManager;
-        private readonly IRepository<Role> _roleRepository;
+        private readonly IReadRepository<Role> _roleRepository;
 
-        public UpdateRoleCommandHandler(IRoleManager roleManager, IRepository<Role> roleRepository)
+        public UpdateRoleCommandHandler(IRoleManager roleManager, IReadRepository<Role> roleRepository)
         {
             _roleManager = roleManager;
             _roleRepository = roleRepository;

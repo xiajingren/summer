@@ -1,4 +1,7 @@
-﻿namespace Summer.Application.Interfaces
+﻿using System.Threading.Tasks;
+using Summer.Domain.Entities;
+
+namespace Summer.Application.Interfaces
 {
     public interface ICurrentUser
     {
@@ -7,5 +10,7 @@
         int Id { get; }
 
         string UserName { get; }
+
+        Task<User> GetUserAsync();
     }
 }

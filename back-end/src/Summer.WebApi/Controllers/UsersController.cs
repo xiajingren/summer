@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Summer.Application.Requests.Commands;
@@ -39,7 +40,7 @@ namespace Summer.WebApi.Controllers
         public async Task<ActionResult<UserResponse>> CreateUser(CreateUserCommand createUserCommand)
         {
             var response = await _mediator.Send(createUserCommand);
-            return CreatedAtAction(nameof(GetUser), new {id = response.Id}, response);
+            return CreatedAtAction(nameof(GetUser), new { id = response.Id }, response);
         }
 
         [HttpPut("{id:int}")]
@@ -47,6 +48,14 @@ namespace Summer.WebApi.Controllers
         public async Task<IActionResult> UpdateUser(int id, UpdateUserCommand updateUserCommand)
         {
             await _mediator.Send(updateUserCommand);
+            return NoContent();
+        }
+
+        [HttpPut("{id:int}/change-password")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateUserPassword(int id, UpdateUserPasswordCommand updateUserPasswordCommand)
+        {
+            await _mediator.Send(updateUserPasswordCommand);
             return NoContent();
         }
 
@@ -79,11 +88,31 @@ namespace Summer.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("current/profile")]
+        [Authorize]
+        [HttpGet("my-profile")]
         public async Task<ActionResult<CurrentUserProfileResponse>> GetCurrentUserProfile()
         {
             var response = await _mediator.Send(new GetCurrentUserProfileQuery());
             return Ok(response);
+        }
+
+        [Authorize]
+        [HttpPut("my-profile")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateCurrentUserProfile(
+            UpdateCurrentUserProfileCommand updateCurrentUserProfileCommand)
+        {
+            await _mediator.Send(updateCurrentUserProfileCommand);
+            return NoContent();
+        }
+
+        [HttpPut("my-profile/change-password")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateCurrentUserPassword(
+            UpdateCurrentUserPasswordCommand updateCurrentUserPasswordCommand)
+        {
+            await _mediator.Send(updateCurrentUserPasswordCommand);
+            return NoContent();
         }
     }
 }

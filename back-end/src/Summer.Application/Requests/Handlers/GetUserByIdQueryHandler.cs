@@ -14,11 +14,11 @@ namespace Summer.Application.Requests.Handlers
 {
     public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserResponse>
     {
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<Role> _roleRepository;
+        private readonly IReadRepository<User> _userRepository;
+        private readonly IReadRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
 
-        public GetUserByIdQueryHandler(IRepository<User> userRepository, IRepository<Role> roleRepository,
+        public GetUserByIdQueryHandler(IReadRepository<User> userRepository, IReadRepository<Role> roleRepository,
             IMapper mapper)
         {
             _userRepository = userRepository;

@@ -11,10 +11,10 @@ namespace Summer.Domain.Services
 {
     public class PermissionManager : IPermissionManager
     {
-        private readonly IRepository<Permission> _permissionRepository;
-        private readonly IRepository<User> _userRepository;
+        private readonly IReadRepository<Permission> _permissionRepository;
+        private readonly IReadRepository<User> _userRepository;
 
-        public PermissionManager(IRepository<Permission> permissionRepository, IRepository<User> userRepository)
+        public PermissionManager(IReadRepository<Permission> permissionRepository, IReadRepository<User> userRepository)
         {
             _permissionRepository = permissionRepository;
             _userRepository = userRepository;

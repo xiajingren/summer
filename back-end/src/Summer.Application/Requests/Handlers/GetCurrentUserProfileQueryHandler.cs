@@ -5,6 +5,7 @@ using MediatR;
 using Summer.Application.Interfaces;
 using Summer.Application.Requests.Queries;
 using Summer.Application.Responses;
+using Summer.Domain.Exceptions;
 
 namespace Summer.Application.Requests.Handlers
 {
@@ -21,6 +22,11 @@ namespace Summer.Application.Requests.Handlers
 
         public Task<CurrentUserProfileResponse> Handle(GetCurrentUserProfileQuery request, CancellationToken cancellationToken)
         {
+            if (!_currentUser.IsAuthenticated)
+            {
+                throw new UnauthorizedBusinessException();
+            }
+
             var response = _mapper.Map<CurrentUserProfileResponse>(_currentUser);
             return Task.FromResult(response);
         }
