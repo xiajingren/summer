@@ -35,7 +35,7 @@ namespace Summer.Infrastructure
     {
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
-            AddMvc(services);
+            AddMvc(services, configuration);
 
             AddCoreServices(services);
 
@@ -60,6 +60,8 @@ namespace Summer.Infrastructure
 
             app.UseRouting();
 
+            app.UseCors();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -70,7 +72,7 @@ namespace Summer.Infrastructure
 
         #region Mvc
 
-        private static void AddMvc(IServiceCollection services)
+        private static void AddMvc(IServiceCollection services, IConfiguration configuration)
         {
             services
                 .AddControllers(options => { options.Filters.Add<HttpGlobalExceptionFilter>(); });
@@ -93,6 +95,20 @@ namespace Summer.Infrastructure
             //     options.LowercaseUrls = true;
             //     options.LowercaseQueryStrings = true;
             // });
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        var origins = configuration.GetSection("AllowedOrigins").Value
+                            .Split(";", StringSplitOptions.RemoveEmptyEntries);
+
+                        builder.WithOrigins(origins)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
         }
 
         #endregion
@@ -140,17 +156,17 @@ namespace Summer.Infrastructure
         {
             services.AddMediatR(typeof(ICurrentUser).Assembly);
 
-            services.AddAutoMapper(typeof(ICurrentUser).Assembly);
-
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CheckPermissionBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
+
+            services.AddAutoMapper(typeof(ICurrentUser).Assembly);
 
             services.AddValidatorsFromAssembly(typeof(ICurrentUser).Assembly);
 
             services.AddTransient(typeof(IReadRepository<>), typeof(EfRepository<>));
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
-            
+
             services.AddHttpContextAccessor();
 
             services.AddTransient<IJwtTokenService, JwtTokenService>();
