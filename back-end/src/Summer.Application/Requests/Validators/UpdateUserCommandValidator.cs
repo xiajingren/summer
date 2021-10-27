@@ -5,9 +5,9 @@ using Summer.Domain.Options;
 
 namespace Summer.Application.Requests.Validators
 {
-    public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
+    public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     {
-        public RegisterCommandValidator(IOptions<UserOptions> userOptions)
+        public UpdateUserCommandValidator(IOptions<UserOptions> userOptions)
         {
             RuleFor(x => x.UserName)
                 .NotEmpty()

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -23,9 +21,9 @@ namespace Summer.Application.Requests.Handlers
         public GetUserByIdQueryHandler(IRepository<User> userRepository, IRepository<Role> roleRepository,
             IMapper mapper)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserResponse> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -19,8 +18,8 @@ namespace Summer.Application.Requests.Handlers
 
         public GetAllRolesQueryHandler(IRepository<Role> roleRepository, IMapper mapper)
         {
-            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _roleRepository = roleRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<RoleResponse>> Handle(GetAllRolesQuery request,

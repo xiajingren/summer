@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Summer.Application.Interfaces;
@@ -16,8 +15,8 @@ namespace Summer.Application.Requests.Handlers
 
         public RegisterCommandHandler(IUserManager userManager, IJwtTokenService jwtTokenService)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _jwtTokenService = jwtTokenService ?? throw new ArgumentNullException(nameof(jwtTokenService));
+            _userManager = userManager;
+            _jwtTokenService = jwtTokenService;
         }
 
         public async Task<TokenResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)

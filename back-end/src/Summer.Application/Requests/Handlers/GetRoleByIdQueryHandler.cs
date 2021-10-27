@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -18,8 +17,8 @@ namespace Summer.Application.Requests.Handlers
 
         public GetRoleByIdQueryHandler(IRepository<Role> roleRepository, IMapper mapper)
         {
-            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _roleRepository = roleRepository;
+            _mapper = mapper;
         }
 
         public async Task<RoleResponse> Handle(GetRoleByIdQuery request, CancellationToken cancellationToken)

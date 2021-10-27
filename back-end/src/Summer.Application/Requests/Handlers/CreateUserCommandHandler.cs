@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,9 +21,9 @@ namespace Summer.Application.Requests.Handlers
 
         public CreateUserCommandHandler(IUserManager userManager, IRepository<Role> roleRepository, IMapper mapper)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userManager = userManager;
+            _roleRepository = roleRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)

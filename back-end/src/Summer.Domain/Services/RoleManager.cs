@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Summer.Domain.Entities;
 using Summer.Domain.Exceptions;
 using Summer.Domain.Interfaces;
@@ -14,7 +13,7 @@ namespace Summer.Domain.Services
 
         public RoleManager(IRepository<Role> roleRepository)
         {
-            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
+            _roleRepository = roleRepository;
         }
 
         public async Task<Role> CreateAsync(string name)

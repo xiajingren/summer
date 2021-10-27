@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Summer.Application.Interfaces;
@@ -21,10 +20,9 @@ namespace Summer.Application.Requests.Handlers
         public RefreshTokenCommandHandler(IRepository<User> userRepository, IJwtTokenService jwtTokenService,
             IRepository<RefreshToken> refreshTokenRepository)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _jwtTokenService = jwtTokenService ?? throw new ArgumentNullException(nameof(jwtTokenService));
-            _refreshTokenRepository =
-                refreshTokenRepository ?? throw new ArgumentNullException(nameof(refreshTokenRepository));
+            _userRepository = userRepository;
+            _jwtTokenService = jwtTokenService;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public async Task<TokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)

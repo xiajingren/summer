@@ -10,6 +10,10 @@ namespace Summer.Domain.Interfaces
 
         Task UpdateAsync(User user, string userName, string password);
 
-        Task<bool> CheckPasswordAsync(User user, string password);
+        bool CheckPassword(User user, string password);
+
+        bool ValidateUserName(string userName);
+
+        bool ValidatePassword(string password);
     }
 }

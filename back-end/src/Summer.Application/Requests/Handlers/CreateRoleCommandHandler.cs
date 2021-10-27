@@ -16,8 +16,8 @@ namespace Summer.Application.Requests.Handlers
 
         public CreateRoleCommandHandler(IRoleManager roleManager, IMapper mapper)
         {
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _roleManager = roleManager;
+            _mapper = mapper;
         }
 
         public async Task<RoleResponse> Handle(CreateRoleCommand request, CancellationToken cancellationToken)

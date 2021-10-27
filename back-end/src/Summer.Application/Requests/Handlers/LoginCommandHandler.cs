@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Summer.Application.Interfaces;
@@ -22,9 +21,9 @@ namespace Summer.Application.Requests.Handlers
         public LoginCommandHandler(IUserManager userManager, IRepository<User> userRepository,
             IJwtTokenService jwtTokenService)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _jwtTokenService = jwtTokenService ?? throw new ArgumentNullException(nameof(jwtTokenService));
+            _userManager = userManager;
+            _userRepository = userRepository;
+            _jwtTokenService = jwtTokenService;
         }
 
         public async Task<TokenResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -36,7 +35,7 @@ namespace Summer.Application.Requests.Handlers
                 throw new BusinessException("用户名或密码错误");
             }
 
-            var passed = await _userManager.CheckPasswordAsync(user, request.Password);
+            var passed = _userManager.CheckPassword(user, request.Password);
             if (!passed)
             {
                 throw new BusinessException("用户名或密码错误");

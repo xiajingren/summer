@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,7 @@ namespace Summer.Infrastructure.HttpFilters
 
         public void OnException(ExceptionContext context)
         {
-            // todo: logo
+            // todo: log
 
             context.Result = context.Exception switch
             {
@@ -49,19 +50,19 @@ namespace Summer.Infrastructure.HttpFilters
 
         private ActionResult CreateResult(string path, ValidationException exception)
         {
-            // var errors = exception.Errors.Select(p => p.PropertyName)
-            //     .Distinct()
-            //     .ToDictionary(propName => propName, propName => exception.Errors
-            //         .Where(p => p.PropertyName == propName)
-            //         .Select(x => x.ErrorMessage)
-            //         .ToArray());
+            var errors = exception.Errors.Select(p => p.PropertyName)
+                .Distinct()
+                .ToDictionary(propName => propName, propName => exception.Errors
+                    .Where(p => p.PropertyName == propName)
+                    .Select(x => x.ErrorMessage)
+                    .ToArray());
 
             var problemDetails = new ProblemDetails()
             {
                 Instance = path,
                 Title = "One or more validation errors occurred.",
                 Detail = "验证错误，详情请见：ValidationErrors",
-                Extensions = { { "validationErrors", exception.Errors } }
+                Extensions = { { "validationErrors", errors } }
             };
 
             return new BadRequestObjectResult(problemDetails);

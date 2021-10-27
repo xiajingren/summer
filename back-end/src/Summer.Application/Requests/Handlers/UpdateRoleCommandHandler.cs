@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Summer.Application.Requests.Commands;
@@ -17,8 +16,8 @@ namespace Summer.Application.Requests.Handlers
 
         public UpdateRoleCommandHandler(IRoleManager roleManager, IRepository<Role> roleRepository)
         {
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
-            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
+            _roleManager = roleManager;
+            _roleRepository = roleRepository;
         }
 
         public async Task<Unit> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Summer.Application.Requests.Commands;
@@ -15,7 +14,7 @@ namespace Summer.Application.Requests.Handlers
 
         public DeleteRoleCommandHandler(IRepository<Role> roleRepository)
         {
-            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
+            _roleRepository = roleRepository;
         }
 
 

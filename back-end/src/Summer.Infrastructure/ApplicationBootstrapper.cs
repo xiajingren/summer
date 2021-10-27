@@ -16,8 +16,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Summer.Application.Behaviors;
 using Summer.Application.Interfaces;
+using Summer.Application.Options;
 using Summer.Application.UnitOfWork;
 using Summer.Domain.Interfaces;
+using Summer.Domain.Options;
 using Summer.Domain.SeedWork;
 using Summer.Domain.Services;
 using Summer.Infrastructure.Data;
@@ -25,7 +27,6 @@ using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.Seeds;
 using Summer.Infrastructure.Data.UnitOfWork;
 using Summer.Infrastructure.HttpFilters;
-using Summer.Infrastructure.Options;
 using Summer.Infrastructure.Services;
 
 namespace Summer.Infrastructure
@@ -158,6 +159,13 @@ namespace Summer.Infrastructure
             services.AddTransient<IPermissionManager, PermissionManager>();
             services.AddTransient<IPasswordHashService, PasswordHashService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.Configure<UserOptions>(options =>
+            {
+                options.PasswordRequireDigit = false;
+                options.PasswordRequireLowercase = false;
+                options.PasswordRequireUppercase = false;
+            });
         }
 
         #endregion
