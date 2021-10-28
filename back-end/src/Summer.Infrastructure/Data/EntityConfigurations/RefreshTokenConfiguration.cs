@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Summer.Domain.Entities;
+using Summer.Infrastructure.Extensions;
 
 namespace Summer.Infrastructure.Data.EntityConfigurations
 {
@@ -9,7 +10,6 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
             builder.ToTable("RefreshTokens");
-            builder.HasKey(x => x.Id);
             
             builder.Property(x => x.JwtId).HasMaxLength(64).IsRequired();
             builder.Property(x => x.Token).HasMaxLength(128).IsRequired();
@@ -22,7 +22,7 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
             builder.HasIndex(x => x.JwtId).IsUnique();
             builder.HasIndex(x => x.Token).IsUnique();
 
-            builder.Ignore(x => x.DomainEvents);
+            builder.ConfigureByConvention();
         }
     }
 }

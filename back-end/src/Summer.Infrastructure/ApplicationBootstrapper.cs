@@ -27,6 +27,7 @@ using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.Seeds;
 using Summer.Infrastructure.Data.UnitOfWork;
 using Summer.Infrastructure.HttpFilters;
+using Summer.Infrastructure.MultiTenancy;
 using Summer.Infrastructure.Services;
 
 namespace Summer.Infrastructure
@@ -183,6 +184,8 @@ namespace Summer.Infrastructure
                 options.PasswordRequireLowercase = false;
                 options.PasswordRequireUppercase = false;
             });
+            
+            services.AddTransient<ITenantProvider, TenantProvider>();
         }
 
         #endregion
@@ -228,7 +231,7 @@ namespace Summer.Infrastructure
                         Array.Empty<string>()
                     }
                 });
-
+                
                 c.DescribeAllParametersInCamelCase();
             });
         }
@@ -239,12 +242,9 @@ namespace Summer.Infrastructure
 
         private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
         {
-            var migrationsAssembly = typeof(SummerDbContext).GetTypeInfo().Assembly.GetName().Name;
-
-            services.AddDbContext<SummerDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
-                    sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly)));
-
+            services.AddDbContext<SummerDbContext>();
+            services.AddDbContext<TenantDbContext>();
+            
             services.AddTransient<IDataSeed, UserDataSeed>();
         }
 
@@ -252,8 +252,11 @@ namespace Summer.Infrastructure
         {
             using var scope = app.ApplicationServices.CreateScope();
 
-            var dbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
-            dbContext.Database.MigrateAsync().Wait();
+            // var summerDbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
+            // summerDbContext.Database.MigrateAsync().Wait();
+            //
+            // var tenantDbContext = scope.ServiceProvider.GetRequiredService<TenantDbContext>();
+            // tenantDbContext.Database.MigrateAsync().Wait();
 
             var seeds = scope.ServiceProvider.GetServices<IDataSeed>();
             foreach (var seed in seeds) seed.SeedAsync().Wait();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Summer.Domain.Entities;
+using Summer.Infrastructure.Extensions;
 
 namespace Summer.Infrastructure.Data.EntityConfigurations
 {
@@ -9,7 +10,7 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("Users");
-            builder.HasKey(x => x.Id);
+            
             builder.Property(x => x.UserName).HasMaxLength(64).IsRequired();
             builder.Property(x => x.NormalizedUserName).HasMaxLength(64).IsRequired();
             builder.Property(x => x.PasswordHash).HasMaxLength(256).IsRequired();
@@ -28,7 +29,7 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
 
             builder.HasIndex(x => x.NormalizedUserName);
             
-            builder.Ignore(x => x.DomainEvents);
+            builder.ConfigureByConvention();
         }
     }
 }
