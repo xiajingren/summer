@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,16 +19,18 @@ namespace Summer.Infrastructure.MultiTenancy
         public async Task<Tenant> GetTenantAsync()
         {
             var tenantCode = GetTenantCode();
-            return await _dbContext.Tenants.SingleOrDefaultAsync(x => x.TenantCode == tenantCode);
+            var tenant = await _dbContext.Tenants.SingleOrDefaultAsync(x => x.TenantCode == tenantCode);
+
+            return Guard.Against.Null(tenant, nameof(tenant));
         }
 
-        public string GetTenantCode()
+        private string GetTenantCode()
         {
             if (_httpContextAccessor?.HttpContext == null)
             {
                 return "Default";
             }
-            
+
             if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Tenant"))
             {
                 return _httpContextAccessor.HttpContext.Request.Headers["Tenant"].ToString();

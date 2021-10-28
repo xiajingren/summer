@@ -11,9 +11,7 @@ namespace Summer.Infrastructure.MultiTenancy
         public string TenantName { get; private set; }
 
         public string ConnectionString { get; private set; }
-
-        public bool HasSpecialDataBase => !string.IsNullOrEmpty(ConnectionString);
-
+        
         public Tenant(string tenantCode, string tenantName, string connectionString = null)
         {
             TenantCode = Guard.Against.NullOrEmpty(tenantCode, nameof(tenantCode));

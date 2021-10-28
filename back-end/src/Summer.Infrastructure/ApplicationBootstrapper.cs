@@ -24,7 +24,6 @@ using Summer.Domain.SeedWork;
 using Summer.Domain.Services;
 using Summer.Infrastructure.Data;
 using Summer.Infrastructure.Data.Repositories;
-using Summer.Infrastructure.Data.Seeds;
 using Summer.Infrastructure.Data.UnitOfWork;
 using Summer.Infrastructure.HttpFilters;
 using Summer.Infrastructure.MultiTenancy;
@@ -245,18 +244,19 @@ namespace Summer.Infrastructure
             services.AddDbContext<SummerDbContext>();
             services.AddDbContext<TenantDbContext>();
             
-            services.AddTransient<IDataSeed, UserDataSeed>();
+            services.AddTransient<IDataSeed, SummerDbSeed>();
+            services.AddTransient<IDataSeed, TenantDbSeed>();
         }
 
         private static void DbContextSeed(IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
 
-            // var summerDbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
-            // summerDbContext.Database.MigrateAsync().Wait();
-            //
-            // var tenantDbContext = scope.ServiceProvider.GetRequiredService<TenantDbContext>();
-            // tenantDbContext.Database.MigrateAsync().Wait();
+            var summerDbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
+            summerDbContext.Database.MigrateAsync().Wait();
+            
+            var tenantDbContext = scope.ServiceProvider.GetRequiredService<TenantDbContext>();
+            tenantDbContext.Database.MigrateAsync().Wait();
 
             var seeds = scope.ServiceProvider.GetServices<IDataSeed>();
             foreach (var seed in seeds) seed.SeedAsync().Wait();

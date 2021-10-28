@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Summer.Domain.Entities;
 using Summer.Domain.SeedWork;
@@ -15,26 +16,26 @@ namespace Summer.Infrastructure.Data
     public class SummerDbContext : DbContext
     {
         private readonly IMediator _mediator;
-        private readonly IConfiguration _configuration;
         private readonly Tenant _tenant;
+        private readonly string _connectionString;
 
-        public SummerDbContext(DbContextOptions<SummerDbContext> options, IMediator mediator,
-            ITenantProvider tenantProvider, IConfiguration configuration) : base(options)
+        public SummerDbContext(IMediator mediator, ITenantProvider tenantProvider, IConfiguration configuration)
         {
             _mediator = mediator;
-            _configuration = configuration;
             _tenant = tenantProvider.GetTenantAsync().Result;
+
+            _connectionString = _tenant.ConnectionString ?? configuration.GetConnectionString("Default");
+        }
+
+        public SummerDbContext(IMediator mediator, string connectionString)
+        {
+            _mediator = mediator;
+            _connectionString = connectionString;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
-            
-            optionsBuilder.UseSqlite(_tenant.HasSpecialDataBase
-                ? _tenant.ConnectionString
-                : _configuration.GetConnectionString("Default"));
-
-            Database.MigrateAsync().Wait();
+            optionsBuilder.UseSqlite(_connectionString);
         }
 
         public DbSet<User> Users { get; set; }
@@ -58,8 +59,6 @@ namespace Summer.Infrastructure.Data
             modelBuilder.Entity<BaseEntity>().HasQueryFilter(b => EF.Property<int>(b, "TenantId") == _tenant.Id);
 
             #endregion
-
-            base.OnModelCreating(modelBuilder);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
@@ -83,6 +82,39 @@ namespace Summer.Infrastructure.Data
         public override int SaveChanges()
         {
             return SaveChangesAsync().GetAwaiter().GetResult();
+        }
+    }
+
+    public class SummerDbContextDesignFactory : IDesignTimeDbContextFactory<SummerDbContext>
+    {
+        public SummerDbContext CreateDbContext(string[] args)
+        {
+            return new SummerDbContext(new NoMediator(), "DataSource=app.db; Cache=Shared");
+        }
+
+        class NoMediator : IMediator
+        {
+            public Task Publish<TNotification>(TNotification notification,
+                CancellationToken cancellationToken = default) where TNotification : INotification
+            {
+                return Task.CompletedTask;
+            }
+
+            public Task Publish(object notification, CancellationToken cancellationToken = default)
+            {
+                return Task.CompletedTask;
+            }
+
+            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<TResponse>(default);
+            }
+
+            public Task<object> Send(object request, CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult(default(object));
+            }
         }
     }
 }

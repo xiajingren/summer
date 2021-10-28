@@ -5,31 +5,23 @@ namespace Summer.Infrastructure.MultiTenancy
 {
     public class TenantDbContext : DbContext
     {
-        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
 
-        public TenantDbContext(DbContextOptions<TenantDbContext> options, IConfiguration configuration) : base(options)
+        public TenantDbContext(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _connectionString = configuration.GetConnectionString("Tenant") ??
+                                configuration.GetConnectionString("Default");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
-            
-            var connectionString = _configuration.GetConnectionString("Tenant") ??
-                                   _configuration.GetConnectionString("Default");
-
-            optionsBuilder.UseSqlite(connectionString);
-
-            Database.MigrateAsync().Wait();
+            optionsBuilder.UseSqlite(_connectionString);
         }
 
         public DbSet<Tenant> Tenants { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<Tenant>(b =>
             {
                 b.ToTable("Tenants");
@@ -40,11 +32,6 @@ namespace Summer.Infrastructure.MultiTenancy
                 b.Property(x => x.ConnectionString).HasMaxLength(256);
 
                 b.HasIndex(x => x.TenantCode).IsUnique();
-
-                b.HasData(new Tenant[]
-                {
-                    new Tenant("Default", "默认租户")
-                });
             });
         }
     }
