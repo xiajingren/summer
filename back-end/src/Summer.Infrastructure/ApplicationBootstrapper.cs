@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -252,12 +251,6 @@ namespace Summer.Infrastructure
         {
             using var scope = app.ApplicationServices.CreateScope();
 
-            // var tenantDbContext = scope.ServiceProvider.GetRequiredService<TenantDbContext>();
-            // tenantDbContext.Database.MigrateAsync().Wait();
-            //
-            // var summerDbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
-            // summerDbContext.Database.MigrateAsync().Wait();
-            
             var seeds = scope.ServiceProvider.GetServices<IDataSeed>();
             foreach (var seed in seeds) seed.SeedAsync().Wait();
         }
