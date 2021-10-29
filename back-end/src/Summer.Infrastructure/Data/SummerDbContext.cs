@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Summer.Domain.Entities;
 using Summer.Domain.SeedWork;
@@ -50,26 +53,76 @@ namespace Summer.Infrastructure.Data
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.Entity<BaseEntity>().Property<int>("TenantId").IsRequired();
-
-            // Configure entity filters
-
-            #region FilterConfiguration
-
-            modelBuilder.Entity<BaseEntity>().HasQueryFilter(b => EF.Property<int>(b, "TenantId") == _tenant.Id);
-
-            #endregion
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                FilterConfigurationMethodInfo
+                    .MakeGenericMethod(entityType.ClrType)
+                    .Invoke(this, new object[] { modelBuilder, entityType });
+            }
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            ChangeTracker.DetectChanges();
+        private static readonly MethodInfo FilterConfigurationMethodInfo
+            = typeof(SummerDbContext)
+                .GetMethod(
+                    nameof(FilterConfiguration),
+                    BindingFlags.Instance | BindingFlags.NonPublic
+                );
 
-            foreach (var item in ChangeTracker.Entries<BaseEntity>().Where(
-                e => e.State == EntityState.Added))
+        private void FilterConfiguration<T>(ModelBuilder modelBuilder, IMutableEntityType mutableEntityType)
+            where T : class
+        {
+            Expression<Func<T, bool>> expression = null;
+
+            if (typeof(BaseEntity).IsAssignableFrom(typeof(T)))
             {
-                item.CurrentValues["TenantId"] = _tenant.Id;
+                expression = e => EF.Property<int>(e, "TenantId") == _tenant.Id;
             }
+
+            if (expression == null)
+                return;
+
+            modelBuilder.Entity(mutableEntityType.ClrType).HasQueryFilter(expression);
+        }
+
+        protected virtual Expression<Func<T, bool>> CombineExpressions<T>(Expression<Func<T, bool>> expression1,
+            Expression<Func<T, bool>> expression2)
+        {
+            var parameter = Expression.Parameter(typeof(T));
+
+            var leftVisitor = new ReplaceExpressionVisitor(expression1.Parameters[0], parameter);
+            var left = leftVisitor.Visit(expression1.Body);
+
+            var rightVisitor = new ReplaceExpressionVisitor(expression2.Parameters[0], parameter);
+            var right = rightVisitor.Visit(expression2.Body);
+
+            return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(left, right), parameter);
+        }
+
+        class ReplaceExpressionVisitor : ExpressionVisitor
+        {
+            private readonly Expression _oldValue;
+            private readonly Expression _newValue;
+
+            public ReplaceExpressionVisitor(Expression oldValue, Expression newValue)
+            {
+                _oldValue = oldValue;
+                _newValue = newValue;
+            }
+
+            public override Expression Visit(Expression node)
+            {
+                if (node == _oldValue)
+                {
+                    return _newValue;
+                }
+
+                return base.Visit(node);
+            }
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+        {
+            DetectChanges();
 
             var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
@@ -82,6 +135,17 @@ namespace Summer.Infrastructure.Data
         public override int SaveChanges()
         {
             return SaveChangesAsync().GetAwaiter().GetResult();
+        }
+
+        private void DetectChanges()
+        {
+            ChangeTracker.DetectChanges();
+
+            foreach (var item in ChangeTracker.Entries<BaseEntity>().Where(
+                e => e.State == EntityState.Added))
+            {
+                item.CurrentValues["TenantId"] = _tenant.Id;
+            }
         }
     }
 

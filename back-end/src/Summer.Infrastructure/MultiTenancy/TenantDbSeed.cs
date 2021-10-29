@@ -16,15 +16,14 @@ namespace Summer.Infrastructure.MultiTenancy
         public async Task SeedAsync()
         {
             await _dbContext.Database.MigrateAsync();
-            
+
             if (await _dbContext.Tenants.AnyAsync())
             {
                 return;
             }
 
-            var defaultTenant = new Tenant("Default", "默认租户");
-
-            await _dbContext.Tenants.AddAsync(defaultTenant);
+            await _dbContext.Tenants.AddAsync(Tenant.Default);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

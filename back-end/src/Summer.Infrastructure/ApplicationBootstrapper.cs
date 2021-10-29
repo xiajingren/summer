@@ -241,23 +241,23 @@ namespace Summer.Infrastructure
 
         private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<SummerDbContext>();
             services.AddDbContext<TenantDbContext>();
+            services.AddDbContext<SummerDbContext>();
             
-            services.AddTransient<IDataSeed, SummerDbSeed>();
             services.AddTransient<IDataSeed, TenantDbSeed>();
+            services.AddTransient<IDataSeed, SummerDbSeed>();
         }
 
         private static void DbContextSeed(IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
 
-            var summerDbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
-            summerDbContext.Database.MigrateAsync().Wait();
+            // var tenantDbContext = scope.ServiceProvider.GetRequiredService<TenantDbContext>();
+            // tenantDbContext.Database.MigrateAsync().Wait();
+            //
+            // var summerDbContext = scope.ServiceProvider.GetRequiredService<SummerDbContext>();
+            // summerDbContext.Database.MigrateAsync().Wait();
             
-            var tenantDbContext = scope.ServiceProvider.GetRequiredService<TenantDbContext>();
-            tenantDbContext.Database.MigrateAsync().Wait();
-
             var seeds = scope.ServiceProvider.GetServices<IDataSeed>();
             foreach (var seed in seeds) seed.SeedAsync().Wait();
         }
