@@ -27,7 +27,7 @@ namespace Summer.Infrastructure.Data.EntityConfigurations
                 b.WithOwner();
             });
 
-            builder.HasIndex(x => x.NormalizedUserName);
+            builder.HasIndex(x => x.NormalizedUserName).IsUnique();;
             
             builder.ConfigureByConvention();
         }

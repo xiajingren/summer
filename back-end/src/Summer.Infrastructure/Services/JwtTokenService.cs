@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Summer.Application.Constants;
 using Summer.Application.Interfaces;
 using Summer.Application.Options;
 using Summer.Application.Responses;
@@ -22,40 +21,15 @@ namespace Summer.Infrastructure.Services
         private readonly JwtOptions _jwtOptions;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly IRepository<RefreshToken> _refreshTokenRepository;
+        private readonly ICurrentTenant _currentTenant;
 
         public JwtTokenService(IOptions<JwtOptions> jwtOptions, TokenValidationParameters tokenValidationParameters,
-            IRepository<RefreshToken> refreshTokenRepository)
+            IRepository<RefreshToken> refreshTokenRepository, ICurrentTenant currentTenant)
         {
             _jwtOptions = jwtOptions.Value;
             _tokenValidationParameters = tokenValidationParameters;
             _refreshTokenRepository = refreshTokenRepository;
-        }
-
-        public string GenerateToken(User user, out string jwtId)
-        {
-            var key = Encoding.UTF8.GetBytes(_jwtOptions.SecurityKey);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimConstants.Jti, Guid.NewGuid().ToString("N")),
-                    new Claim(ClaimConstants.UserId, user.Id.ToString()),
-                    new Claim(ClaimConstants.UserName, user.UserName)
-                }),
-                IssuedAt = DateTime.UtcNow,
-                NotBefore = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.Add(_jwtOptions.ExpiresIn),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = jwtTokenHandler.CreateToken(tokenDescriptor);
-            var token = jwtTokenHandler.WriteToken(securityToken);
-
-            jwtId = securityToken.Id;
-            return token;
+            _currentTenant = currentTenant;
         }
 
         public bool ValidateExpiredToken(string token, out string jwtId)
@@ -95,7 +69,8 @@ namespace Summer.Infrastructure.Services
                 {
                     new Claim(ClaimConstants.Jti, Guid.NewGuid().ToString("N")),
                     new Claim(ClaimConstants.UserId, user.Id.ToString()),
-                    new Claim(ClaimConstants.UserName, user.UserName)
+                    new Claim(ClaimConstants.UserName, user.UserName),
+                    new Claim(ClaimConstants.TenantId, _currentTenant.Id.ToString())
                 }),
                 IssuedAt = DateTime.UtcNow,
                 NotBefore = DateTime.UtcNow,

@@ -25,7 +25,7 @@ using Summer.Infrastructure.Data;
 using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.UnitOfWork;
 using Summer.Infrastructure.HttpFilters;
-using Summer.Infrastructure.MultiTenancy;
+using Summer.Infrastructure.MasterData;
 using Summer.Infrastructure.Services;
 
 namespace Summer.Infrastructure
@@ -42,7 +42,7 @@ namespace Summer.Infrastructure
 
             AddSwagger(services);
 
-            AddDbContext(services, configuration);
+            AddDbContext(services);
         }
 
         public static void ConfigureApplication(IApplicationBuilder app, IWebHostEnvironment env)
@@ -123,7 +123,7 @@ namespace Summer.Infrastructure
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
             TokenValidationParameters GenerateTokenValidationParameters() =>
-                new TokenValidationParameters
+                new()
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
@@ -176,14 +176,15 @@ namespace Summer.Infrastructure
             services.AddTransient<IPasswordHashService, PasswordHashService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddTransient<ITenantService, TenantService>();
+            services.AddTransient<ICurrentTenant, CurrentTenant>();
+            
             services.Configure<UserOptions>(options =>
             {
                 options.PasswordRequireDigit = false;
                 options.PasswordRequireLowercase = false;
                 options.PasswordRequireUppercase = false;
             });
-            
-            services.AddTransient<ITenantProvider, TenantProvider>();
         }
 
         #endregion
@@ -229,7 +230,7 @@ namespace Summer.Infrastructure
                         Array.Empty<string>()
                     }
                 });
-                
+
                 c.DescribeAllParametersInCamelCase();
             });
         }
@@ -238,12 +239,12 @@ namespace Summer.Infrastructure
 
         #region DbContext
 
-        private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
+        private static void AddDbContext(IServiceCollection services)
         {
-            services.AddDbContext<TenantDbContext>();
+            services.AddDbContext<MasterDbContext>();
             services.AddDbContext<SummerDbContext>();
-            
-            services.AddTransient<IDataSeed, TenantDbSeed>();
+
+            services.AddTransient<IDataSeed, MasterDbSeed>();
             services.AddTransient<IDataSeed, SummerDbSeed>();
         }
 

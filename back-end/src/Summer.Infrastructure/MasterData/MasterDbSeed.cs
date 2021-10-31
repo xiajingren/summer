@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Summer.Domain.SeedWork;
 
-namespace Summer.Infrastructure.MultiTenancy
+namespace Summer.Infrastructure.MasterData
 {
-    public class TenantDbSeed : IDataSeed
+    public class MasterDbSeed : IDataSeed
     {
-        private readonly TenantDbContext _dbContext;
+        private readonly MasterDbContext _dbContext;
 
-        public TenantDbSeed(TenantDbContext dbContext)
+        public MasterDbSeed(MasterDbContext dbContext)
         {
             _dbContext = dbContext;
         }

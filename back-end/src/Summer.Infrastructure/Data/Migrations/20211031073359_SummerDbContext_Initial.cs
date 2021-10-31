@@ -108,19 +108,19 @@ namespace Summer.Infrastructure.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Permissions_TargetId_PermissionType_PermissionCode",
                 table: "Permissions",
-                columns: new[] { "TargetId", "PermissionType", "PermissionCode" },
+                columns: new[] { "TargetId", "PermissionType", "PermissionCode", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_JwtId",
                 table: "RefreshTokens",
-                column: "JwtId",
+                columns: new[] { "JwtId", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_Token",
                 table: "RefreshTokens",
-                column: "Token",
+                columns: new[] { "Token", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -141,7 +141,8 @@ namespace Summer.Infrastructure.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_NormalizedUserName",
                 table: "Users",
-                column: "NormalizedUserName");
+                columns: new[] { "NormalizedUserName", "TenantId" },
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

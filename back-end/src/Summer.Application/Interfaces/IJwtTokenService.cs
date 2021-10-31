@@ -6,8 +6,6 @@ namespace Summer.Application.Interfaces
 {
     public interface IJwtTokenService
     {
-        string GenerateToken(User user, out string jwtId);
-
         bool ValidateExpiredToken(string token, out string jwtId);
 
         Task<TokenResponse> IssueTokenAsync(User user);

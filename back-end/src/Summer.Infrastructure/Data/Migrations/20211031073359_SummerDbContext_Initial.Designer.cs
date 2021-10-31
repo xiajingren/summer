@@ -9,7 +9,7 @@ using Summer.Infrastructure.Data;
 namespace Summer.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(SummerDbContext))]
-    [Migration("20211029084427_SummerDbContext_Initial")]
+    [Migration("20211031073359_SummerDbContext_Initial")]
     partial class SummerDbContext_Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,8 +40,9 @@ namespace Summer.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TargetId", "PermissionType", "PermissionCode")
-                        .IsUnique();
+                    b.HasIndex("TargetId", "PermissionType", "PermissionCode", "TenantId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Permissions_TargetId_PermissionType_PermissionCode");
 
                     b.ToTable("Permissions");
                 });
@@ -82,13 +83,15 @@ namespace Summer.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JwtId")
-                        .IsUnique();
-
-                    b.HasIndex("Token")
-                        .IsUnique();
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("JwtId", "TenantId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_RefreshTokens_JwtId");
+
+                    b.HasIndex("Token", "TenantId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_RefreshTokens_Token");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -150,7 +153,9 @@ namespace Summer.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedUserName");
+                    b.HasIndex("NormalizedUserName", "TenantId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_NormalizedUserName");
 
                     b.ToTable("Users");
                 });

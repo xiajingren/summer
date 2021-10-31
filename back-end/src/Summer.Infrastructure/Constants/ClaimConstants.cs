@@ -15,11 +15,10 @@ namespace Summer.Infrastructure.Constants
         /// </summary>
         public const string Expiry = JwtRegisteredClaimNames.Exp;
 
-
         public const string UserId = JwtRegisteredClaimNames.Sub;
-
 
         public const string UserName = ClaimTypes.Name;
 
+        public const string TenantId = "tenant";
     }
 }

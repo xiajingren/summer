@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using Summer.Domain.SeedWork;
 
 namespace Summer.Infrastructure.Data.Repositories
 {
-    public class EfRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T> where T : class, IAggregateRoot
+    public class EfRepository<T> : RepositoryBase<T>, IRepository<T> where T : class, IAggregateRoot
     {
         private readonly SummerDbContext _dbContext;
 

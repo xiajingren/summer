@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Summer.Infrastructure.MultiTenancy
+namespace Summer.Infrastructure.MasterData
 {
-    public class TenantDbContext : DbContext
+    public class MasterDbContext : DbContext
     {
         private readonly string _connectionString;
 
-        public TenantDbContext(IConfiguration configuration)
+        public MasterDbContext(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("Tenant") ??
                                 configuration.GetConnectionString("Default");
@@ -27,11 +27,13 @@ namespace Summer.Infrastructure.MultiTenancy
                 b.ToTable("Tenants");
 
                 b.HasKey(x => x.Id);
-                b.Property(x => x.TenantCode).HasMaxLength(64).IsRequired();
-                b.Property(x => x.TenantName).HasMaxLength(64).IsRequired();
+                b.Property(x => x.Code).HasMaxLength(64).IsRequired();
+                b.Property(x => x.Name).HasMaxLength(64).IsRequired();
                 b.Property(x => x.ConnectionString).HasMaxLength(256);
+                b.Property(x => x.Host).HasMaxLength(128);
 
-                b.HasIndex(x => x.TenantCode).IsUnique();
+                b.HasIndex(x => x.Code).IsUnique();
+                b.HasIndex(x => x.Host).IsUnique();
             });
         }
     }

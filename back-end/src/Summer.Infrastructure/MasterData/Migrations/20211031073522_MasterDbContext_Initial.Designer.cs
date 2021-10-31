@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Summer.Infrastructure.MultiTenancy;
+using Summer.Infrastructure.MasterData;
 
-namespace Summer.Infrastructure.MultiTenancy.Migrations
+namespace Summer.Infrastructure.MasterData.Migrations
 {
-    [DbContext(typeof(TenantDbContext))]
-    [Migration("20211029084724_TenantDbContext_Initial")]
-    partial class TenantDbContext_Initial
+    [DbContext(typeof(MasterDbContext))]
+    [Migration("20211031073522_MasterDbContext_Initial")]
+    partial class MasterDbContext_Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -17,29 +17,36 @@ namespace Summer.Infrastructure.MultiTenancy.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.10");
 
-            modelBuilder.Entity("Summer.Infrastructure.MultiTenancy.Tenant", b =>
+            modelBuilder.Entity("Summer.Infrastructure.MasterData.Tenant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ConnectionString")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TenantCode")
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TenantName")
+                    b.Property<string>("ConnectionString")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Host")
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantCode")
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("Host")
                         .IsUnique();
 
                     b.ToTable("Tenants");

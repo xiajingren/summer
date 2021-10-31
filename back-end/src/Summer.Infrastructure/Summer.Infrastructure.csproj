@@ -23,6 +23,7 @@
   <ItemGroup>
     <Folder Include="Data\EntityConfigurations\" />
     <Folder Include="Data\Migrations" />
+    <Folder Include="MasterData\Migrations" />
   </ItemGroup>
 
 </Project>
