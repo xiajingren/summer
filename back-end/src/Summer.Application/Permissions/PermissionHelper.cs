@@ -37,5 +37,7 @@ namespace Summer.Application.Permissions
                 return _permissions;
             }
         }
+
+        public static IEnumerable<string> PermissionCodes => Permissions.Select(x => x.Code);
     }
 }

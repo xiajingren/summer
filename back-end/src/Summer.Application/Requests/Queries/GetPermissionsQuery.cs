@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MediatR;
 using Summer.Application.Responses;
+using Summer.Domain.Entities;
 
 namespace Summer.Application.Requests.Queries
 {
@@ -8,13 +9,13 @@ namespace Summer.Application.Requests.Queries
     {
         public int TargetId { get; set; }
 
-        public int PermissionType { get; set; }
+        public PermissionType PermissionType { get; set; }
 
         public GetPermissionsQuery()
         {
         }
 
-        public GetPermissionsQuery(int targetId, int permissionType)
+        public GetPermissionsQuery(int targetId, PermissionType permissionType)
         {
             TargetId = targetId;
             PermissionType = permissionType;

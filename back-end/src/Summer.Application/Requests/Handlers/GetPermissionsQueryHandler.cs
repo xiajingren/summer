@@ -25,7 +25,7 @@ namespace Summer.Application.Requests.Handlers
             CancellationToken cancellationToken)
         {
             var permissions =
-                await _permissionManager.GetPermissionsAsync(request.TargetId, (PermissionType) request.PermissionType);
+                await _permissionManager.GetPermissionsAsync(request.TargetId, request.PermissionType);
 
             return _mapper.Map<IEnumerable<PermissionResponse>>(permissions);
         }
