@@ -16,6 +16,7 @@ namespace Summer.Application.MapperProfiles
                 .ForMember(x => x.Id, opts => opts.MapFrom(r => r.RoleId))
                 .ForMember(x => x.Name, opts => opts.Ignore());
             CreateMap<Permission, PermissionResponse>();
+            CreateMap<Tenant, TenantResponse>();
         }
     }
 }
