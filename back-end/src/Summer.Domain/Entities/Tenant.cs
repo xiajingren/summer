@@ -1,12 +1,10 @@
 ﻿using Ardalis.GuardClauses;
-using Summer.Application.Responses;
+using Summer.Domain.SeedWork;
 
-namespace Summer.Infrastructure.MasterData
+namespace Summer.Domain.Entities
 {
-    public class Tenant
+    public class Tenant : BaseEntity, IAggregateRoot
     {
-        public int Id { get; private set; }
-
         public string Code { get; private set; }
 
         public string Name { get; private set; }
@@ -17,6 +15,7 @@ namespace Summer.Infrastructure.MasterData
 
         private Tenant()
         {
+            // required by EF
         }
 
         public Tenant(string code, string name, string host = null, string connectionString = null)
@@ -35,10 +34,5 @@ namespace Summer.Infrastructure.MasterData
         }
 
         public static Tenant Default => new(1, "Default", "默认租户");
-
-        public TenantResponse ToResponse()
-        {
-            return new(Id, Code, Name, ConnectionString, Host);
-        }
     }
 }

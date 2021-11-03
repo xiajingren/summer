@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -11,27 +9,23 @@ using Microsoft.Extensions.Configuration;
 using Summer.Application.Interfaces;
 using Summer.Domain.Entities;
 using Summer.Domain.SeedWork;
-using Summer.Infrastructure.Extensions;
+using Summer.Infrastructure.SeedWork;
 
 namespace Summer.Infrastructure.Data
 {
-    public class SummerDbContext : DbContext
+    public class SummerDbContext : BaseDbContext
     {
-        private readonly IMediator _mediator;
         private readonly ICurrentTenant _currentTenant;
-        private readonly string _connectionString;
+        private readonly IConfiguration _configuration;
 
-        public SummerDbContext(IMediator mediator, ICurrentTenant currentTenant, IConfiguration configuration)
+        protected override string ConnectionString =>
+            _currentTenant.ConnectionString ?? _configuration.GetConnectionString("Default");
+
+        public SummerDbContext(IMediator mediator, ICurrentTenant currentTenant, IConfiguration configuration) :
+            base(mediator)
         {
-            _mediator = mediator;
             _currentTenant = currentTenant;
-
-            _connectionString = _currentTenant.ConnectionString ?? configuration.GetConnectionString("Default");
-        }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite(_connectionString);
+            _configuration = configuration;
         }
 
         public DbSet<User> Users { get; set; }
@@ -113,24 +107,7 @@ namespace Summer.Infrastructure.Data
             }
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
-        {
-            DetectChanges();
-
-            var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-            // dispatch events only if save was successful
-            await _mediator.DispatchDomainEventsAsync(this);
-
-            return result;
-        }
-
-        public override int SaveChanges()
-        {
-            return SaveChangesAsync().GetAwaiter().GetResult();
-        }
-
-        private void DetectChanges()
+        protected override void DetectChanges()
         {
             ChangeTracker.DetectChanges();
 

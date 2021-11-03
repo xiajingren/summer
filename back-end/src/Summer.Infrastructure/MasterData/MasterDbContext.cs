@@ -1,21 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Summer.Domain.Entities;
+using Summer.Infrastructure.SeedWork;
 
 namespace Summer.Infrastructure.MasterData
 {
-    public class MasterDbContext : DbContext
+    public class MasterDbContext : BaseDbContext
     {
-        private readonly string _connectionString;
+        private readonly IConfiguration _configuration;
 
-        public MasterDbContext(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("Tenant") ??
-                                configuration.GetConnectionString("Default");
-        }
+        protected override string ConnectionString =>
+            _configuration.GetConnectionString("Master") ?? _configuration.GetConnectionString("Default");
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public MasterDbContext(IMediator mediator, IConfiguration configuration) : base(mediator)
         {
-            optionsBuilder.UseSqlite(_connectionString);
+            _configuration = configuration;
         }
 
         public DbSet<Tenant> Tenants { get; set; }
@@ -24,16 +25,7 @@ namespace Summer.Infrastructure.MasterData
         {
             modelBuilder.Entity<Tenant>(b =>
             {
-                b.ToTable("Tenants");
-
-                b.HasKey(x => x.Id);
-                b.Property(x => x.Code).HasMaxLength(64).IsRequired();
-                b.Property(x => x.Name).HasMaxLength(64).IsRequired();
-                b.Property(x => x.ConnectionString).HasMaxLength(256);
-                b.Property(x => x.Host).HasMaxLength(128);
-
-                b.HasIndex(x => x.Code).IsUnique();
-                b.HasIndex(x => x.Host).IsUnique();
+                modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             });
         }
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Summer.Application.Interfaces;
+using Summer.Domain.Entities;
 using Summer.Infrastructure.MasterData;
 
 namespace Summer.Infrastructure.Services

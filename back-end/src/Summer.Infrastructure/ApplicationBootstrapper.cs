@@ -22,8 +22,8 @@ using Summer.Domain.Options;
 using Summer.Domain.SeedWork;
 using Summer.Domain.Services;
 using Summer.Infrastructure.Data;
-using Summer.Infrastructure.Data.Repositories;
 using Summer.Infrastructure.Data.UnitOfWork;
+using Summer.Infrastructure.Extensions;
 using Summer.Infrastructure.HttpFilters;
 using Summer.Infrastructure.MasterData;
 using Summer.Infrastructure.Services;
@@ -163,9 +163,6 @@ namespace Summer.Infrastructure
 
             services.AddValidatorsFromAssembly(typeof(ICurrentUser).Assembly);
 
-            services.AddTransient(typeof(IReadRepository<>), typeof(EfRepository<>));
-            services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
-
             services.AddHttpContextAccessor();
 
             services.AddTransient<IJwtTokenService, JwtTokenService>();
@@ -176,9 +173,8 @@ namespace Summer.Infrastructure
             services.AddTransient<IPasswordHashService, PasswordHashService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddTransient<ITenantService, TenantService>();
             services.AddTransient<ICurrentTenant, CurrentTenant>();
-            
+
             services.Configure<UserOptions>(options =>
             {
                 options.PasswordRequireDigit = false;
@@ -241,8 +237,8 @@ namespace Summer.Infrastructure
 
         private static void AddDbContext(IServiceCollection services)
         {
-            services.AddDbContext<MasterDbContext>();
-            services.AddDbContext<SummerDbContext>();
+            services.AddDbContextWithDefaultRepository<MasterDbContext>();
+            services.AddDbContextWithDefaultRepository<SummerDbContext>();
 
             services.AddTransient<IDataSeed, MasterDbSeed>();
             services.AddTransient<IDataSeed, SummerDbSeed>();

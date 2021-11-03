@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Summer.Domain.Entities;
 using Summer.Domain.SeedWork;
 
 namespace Summer.Infrastructure.MasterData

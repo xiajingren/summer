@@ -7,10 +7,13 @@ namespace Summer.Infrastructure.Extensions
 {
     public static class EntityTypeBuilderExtensions
     {
-        public static void ConfigureByConvention<T>(this EntityTypeBuilder<T> builder) where T : BaseEntity
+        public static void ConfigureByConvention<T>(this EntityTypeBuilder<T> builder, bool withMultiTenant = true)
+            where T : BaseEntity
         {
             builder.HasKey(x => x.Id);
             builder.Ignore(x => x.DomainEvents);
+
+            if (!withMultiTenant) return;
 
             if (typeof(IAggregateRoot).IsAssignableFrom(builder.Metadata.ClrType))
             {
