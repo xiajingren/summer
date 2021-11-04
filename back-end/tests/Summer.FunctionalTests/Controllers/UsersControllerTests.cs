@@ -18,7 +18,7 @@ namespace Summer.FunctionalTests.Controllers
         public async Task Register_ShouldBe_Ok()
         {
             // Arrange
-            var registerCommand = new RegisterCommand("tester", "123456");
+            var registerCommand = new RegisterUserCommand("tester", "123456");
 
             // Act
             var response = await Client.PostAsJsonAsync("/api/users/register", registerCommand);

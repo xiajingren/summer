@@ -68,9 +68,9 @@ namespace Summer.WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserResponse>> RegisterUser([FromBody] RegisterCommand registerCommand)
+        public async Task<ActionResult<UserResponse>> RegisterUser([FromBody] RegisterUserCommand registerUserCommand)
         {
-            var response = await _mediator.Send(registerCommand);
+            var response = await _mediator.Send(registerUserCommand);
             return Ok(response);
         }
     }

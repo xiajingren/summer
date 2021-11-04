@@ -12,20 +12,20 @@ using Summer.Domain.Specifications;
 
 namespace Summer.Application.Requests.Handlers
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserResponse>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, UserResponse>
     {
         private readonly IUserManager _userManager;
         private readonly IReadRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
 
-        public RegisterCommandHandler(IUserManager userManager, IReadRepository<Role> roleRepository, IMapper mapper)
+        public RegisterUserCommandHandler(IUserManager userManager, IReadRepository<Role> roleRepository, IMapper mapper)
         {
             _userManager = userManager;
             _roleRepository = roleRepository;
             _mapper = mapper;
         }
 
-        public async Task<UserResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<UserResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.CreateAsync(request.UserName, request.Password);
 
