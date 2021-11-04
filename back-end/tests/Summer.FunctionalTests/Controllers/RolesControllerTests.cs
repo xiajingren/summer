@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Summer.Application.Requests.Commands;
-using Summer.Application.Responses;
+using Summer.Application.Apis;
+using Summer.Application.Apis.Role;
+using Summer.Application.Apis.Role.CreateRole;
+using Summer.Application.Apis.Role.UpdateRole;
 using Xunit;
 using Xunit.Abstractions;
 

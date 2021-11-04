@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Summer.Application.Responses;
+using Summer.Application.Apis.Auth;
 using Summer.Domain.Entities;
 
 namespace Summer.Application.Interfaces

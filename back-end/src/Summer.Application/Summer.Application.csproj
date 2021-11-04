@@ -15,25 +15,4 @@
     <ProjectReference Include="..\Summer.Domain\Summer.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Apis\Permission" />
-    <Folder Include="Apis\Role\CreateRole" />
-    <Folder Include="Apis\Role\DeleteRole" />
-    <Folder Include="Apis\Role\GetAllRoles" />
-    <Folder Include="Apis\Role\GetRoleById" />
-    <Folder Include="Apis\Role\GetRoles" />
-    <Folder Include="Apis\Role\UpdateRole" />
-    <Folder Include="Apis\Tenant\CreateTenant" />
-    <Folder Include="Apis\Tenant\DeleteTenant" />
-    <Folder Include="Apis\Tenant\GetTenantById" />
-    <Folder Include="Apis\Tenant\GetTenants" />
-    <Folder Include="Apis\Tenant\UpdateTenant" />
-    <Folder Include="Apis\User\CreateUser" />
-    <Folder Include="Apis\User\DeleteUser" />
-    <Folder Include="Apis\User\GetUserById" />
-    <Folder Include="Apis\User\GetUsers" />
-    <Folder Include="Apis\User\UpdateUser" />
-    <Folder Include="Apis\User\UpdateUserPassword" />
-  </ItemGroup>
-
 </Project>

@@ -1,8 +1,10 @@
 ﻿using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Summer.Application.Requests.Commands;
-using Summer.Application.Requests.Queries;
-using Summer.Application.Responses;
+using Summer.Application.Apis.Auth;
+using Summer.Application.Apis.Auth.GetCurrentUserProfile;
+using Summer.Application.Apis.Auth.Login;
+using Summer.Application.Apis.Auth.RefreshToken;
+using Summer.Application.Apis.User.RegisterUser;
 using Xunit;
 using Xunit.Abstractions;
 

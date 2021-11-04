@@ -3,9 +3,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Summer.Application.Requests.Commands;
-using Summer.Application.Requests.Queries;
-using Summer.Application.Responses;
+using Summer.Application.Apis.Auth;
+using Summer.Application.Apis.Auth.GetCurrentUserProfile;
+using Summer.Application.Apis.Auth.Login;
+using Summer.Application.Apis.Auth.RefreshToken;
+using Summer.Application.Apis.Auth.UpdateCurrentUserPassword;
+using Summer.Application.Apis.Auth.UpdateCurrentUserProfile;
 
 namespace Summer.WebApi.Controllers
 {

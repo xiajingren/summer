@@ -2,8 +2,8 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Summer.Application.Requests.Commands;
-using Summer.Application.Responses;
+using Summer.Application.Apis.Auth;
+using Summer.Application.Apis.Auth.Login;
 using Xunit;
 using Xunit.Abstractions;
 
