@@ -1,16 +1,30 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Summer.Application.Requests.Commands;
 using Summer.Application.Responses;
+using Summer.Domain.Interfaces;
 
 namespace Summer.Application.Requests.Handlers
 {
     public class CreateTenantCommandHandler : IRequestHandler<CreateTenantCommand, TenantResponse>
     {
-        public Task<TenantResponse> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+        private readonly ITenantManager _tenantManager;
+        private readonly IMapper _mapper;
+
+        public CreateTenantCommandHandler(ITenantManager tenantManager, IMapper mapper)
         {
-            throw new System.NotImplementedException();
+            _tenantManager = tenantManager;
+            _mapper = mapper;
+        }
+
+        public async Task<TenantResponse> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+        {
+            var tenant =
+                await _tenantManager.CreateAsync(request.Code, request.Name, request.ConnectionString, request.Host);
+
+            return _mapper.Map<TenantResponse>(tenant);
         }
     }
 }

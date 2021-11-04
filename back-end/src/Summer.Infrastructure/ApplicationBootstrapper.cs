@@ -170,6 +170,7 @@ namespace Summer.Infrastructure
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IRoleManager, RoleManager>();
             services.AddTransient<IPermissionManager, PermissionManager>();
+            services.AddTransient<ITenantManager, TenantManager>();
             services.AddTransient<IPasswordHashService, PasswordHashService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

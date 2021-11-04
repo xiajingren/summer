@@ -3,7 +3,7 @@ using Summer.Domain.Entities;
 
 namespace Summer.Domain.Specifications
 {
-    public sealed class TenantByCodeSpec : Specification<Tenant>
+    public sealed class TenantByCodeSpec : Specification<Tenant>, ISingleResultSpecification
     {
         public TenantByCodeSpec(string code)
         {

@@ -3,7 +3,7 @@ using Summer.Application.Responses;
 
 namespace Summer.Application.Requests.Commands
 {
-    public class RegisterCommand : IRequest<TokenResponse>
+    public class RegisterCommand : IRequest<UserResponse>
     {
         public string UserName { get; set; }
 

@@ -5,13 +5,13 @@ namespace Summer.Domain.Entities
 {
     public class Tenant : BaseEntity, IAggregateRoot
     {
-        public string Code { get; private set; }
+        public string Code { get; internal set; }
 
-        public string Name { get; private set; }
+        public string Name { get; internal set; }
 
-        public string ConnectionString { get; private set; }
+        public string ConnectionString { get; internal set; }
 
-        public string Host { get; private set; }
+        public string Host { get; internal set; }
 
         private Tenant()
         {
@@ -26,11 +26,11 @@ namespace Summer.Domain.Entities
             ConnectionString = connectionString;
         }
 
-        private Tenant(int id, string tenantCode, string tenantName)
+        private Tenant(int id, string code, string name)
         {
             Id = id;
-            Code = tenantCode;
-            Name = tenantName;
+            Code = code;
+            Name = name;
         }
 
         public static Tenant Default => new(1, "Default", "默认租户");
