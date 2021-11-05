@@ -22,7 +22,6 @@ using Summer.Domain.Options;
 using Summer.Domain.SeedWork;
 using Summer.Domain.Services;
 using Summer.Infrastructure.Data;
-using Summer.Infrastructure.Data.UnitOfWork;
 using Summer.Infrastructure.Extensions;
 using Summer.Infrastructure.HttpFilters;
 using Summer.Infrastructure.MasterData;
@@ -172,7 +171,7 @@ namespace Summer.Infrastructure
             services.AddTransient<IPermissionManager, PermissionManager>();
             services.AddTransient<ITenantManager, TenantManager>();
             services.AddTransient<IPasswordHashService, PasswordHashService>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
             services.AddTransient<ICurrentTenant, CurrentTenant>();
 
