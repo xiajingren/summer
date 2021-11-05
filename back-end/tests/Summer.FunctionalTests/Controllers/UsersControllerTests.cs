@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Summer.Application.Apis.Auth;
 using Summer.Application.Apis.Auth.GetCurrentUserProfile;
 using Summer.Application.Apis.Auth.Login;
-using Summer.Application.Apis.Auth.RefreshToken;
-using Summer.Application.Apis.User.RegisterUser;
+using Summer.Application.Apis.Auth.Refresh;
+using Summer.Application.Apis.Users.RegisterUser;
 using Xunit;
 using Xunit.Abstractions;
 

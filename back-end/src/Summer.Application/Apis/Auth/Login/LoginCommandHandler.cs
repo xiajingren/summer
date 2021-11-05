@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Summer.Application.Interfaces;
+using Summer.Domain.Entities;
 using Summer.Domain.Exceptions;
 using Summer.Domain.Interfaces;
 using Summer.Domain.SeedWork;
@@ -12,10 +13,10 @@ namespace Summer.Application.Apis.Auth.Login
     public class LoginCommandHandler : IRequestHandler<LoginCommand, TokenResponse>
     {
         private readonly IUserManager _userManager;
-        private readonly IReadRepository<Domain.Entities.User> _userRepository;
+        private readonly IReadRepository<User> _userRepository;
         private readonly IJwtTokenService _jwtTokenService;
 
-        public LoginCommandHandler(IUserManager userManager, IReadRepository<Domain.Entities.User> userRepository,
+        public LoginCommandHandler(IUserManager userManager, IReadRepository<User> userRepository,
             IJwtTokenService jwtTokenService)
         {
             _userManager = userManager;

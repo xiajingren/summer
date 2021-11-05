@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Summer.Application.Apis.Permission;
-using Summer.Application.Apis.Permission.GetPermissionGroups;
-using Summer.Application.Apis.Permission.GetPermissions;
-using Summer.Application.Apis.Permission.UpdatePermissions;
+using Summer.Application.Apis.Permissions;
+using Summer.Application.Apis.Permissions.GetPermissionGroups;
+using Summer.Application.Apis.Permissions.GetPermissions;
+using Summer.Application.Apis.Permissions.UpdatePermissions;
 
 namespace Summer.WebApi.Controllers
 {

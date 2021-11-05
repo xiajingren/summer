@@ -2,9 +2,9 @@
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Summer.Application.Apis;
-using Summer.Application.Apis.Role;
-using Summer.Application.Apis.Role.CreateRole;
-using Summer.Application.Apis.Role.UpdateRole;
+using Summer.Application.Apis.Roles;
+using Summer.Application.Apis.Roles.CreateRole;
+using Summer.Application.Apis.Roles.UpdateRole;
 using Xunit;
 using Xunit.Abstractions;
 

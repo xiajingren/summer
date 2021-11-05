@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Summer.Application.Apis.Auth;
 using Summer.Application.Apis.Auth.GetCurrentUserProfile;
 using Summer.Application.Apis.Auth.Login;
-using Summer.Application.Apis.Auth.RefreshToken;
+using Summer.Application.Apis.Auth.Refresh;
 using Summer.Application.Apis.Auth.UpdateCurrentUserPassword;
 using Summer.Application.Apis.Auth.UpdateCurrentUserProfile;
 
@@ -30,8 +30,8 @@ namespace Summer.WebApi.Controllers
             return Ok(response);
         }
         
-        [HttpPost("refresh-token")]
-        public async Task<ActionResult<TokenResponse>> RefreshToken([FromBody] RefreshTokenCommand refreshTokenCommand)
+        [HttpPost("refresh")]
+        public async Task<ActionResult<TokenResponse>> Refresh([FromBody] RefreshTokenCommand refreshTokenCommand)
         {
             var response = await _mediator.Send(refreshTokenCommand);
             return Ok(response);

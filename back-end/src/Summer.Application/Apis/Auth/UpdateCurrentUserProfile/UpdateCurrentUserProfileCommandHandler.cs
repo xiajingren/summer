@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Summer.Application.Interfaces;
+using Summer.Domain.Entities;
 using Summer.Domain.Exceptions;
 using Summer.Domain.Interfaces;
 using Summer.Domain.SeedWork;
@@ -12,10 +13,10 @@ namespace Summer.Application.Apis.Auth.UpdateCurrentUserProfile
     {
         private readonly ICurrentUser _currentUser;
         private readonly IUserManager _userManager;
-        private readonly IRepository<Domain.Entities.User> _userRepository;
+        private readonly IRepository<User> _userRepository;
 
         public UpdateCurrentUserProfileCommandHandler(ICurrentUser currentUser, IUserManager userManager,
-            IRepository<Domain.Entities.User> userRepository)
+            IRepository<User> userRepository)
         {
             _currentUser = currentUser;
             _userManager = userManager;

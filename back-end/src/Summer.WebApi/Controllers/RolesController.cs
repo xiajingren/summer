@@ -4,13 +4,13 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Summer.Application.Apis;
-using Summer.Application.Apis.Role;
-using Summer.Application.Apis.Role.CreateRole;
-using Summer.Application.Apis.Role.DeleteRole;
-using Summer.Application.Apis.Role.GetAllRoles;
-using Summer.Application.Apis.Role.GetRoleById;
-using Summer.Application.Apis.Role.GetRoles;
-using Summer.Application.Apis.Role.UpdateRole;
+using Summer.Application.Apis.Roles;
+using Summer.Application.Apis.Roles.CreateRole;
+using Summer.Application.Apis.Roles.DeleteRole;
+using Summer.Application.Apis.Roles.GetAllRoles;
+using Summer.Application.Apis.Roles.GetRoleById;
+using Summer.Application.Apis.Roles.GetRoles;
+using Summer.Application.Apis.Roles.UpdateRole;
 
 namespace Summer.WebApi.Controllers
 {

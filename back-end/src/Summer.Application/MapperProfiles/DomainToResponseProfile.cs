@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Summer.Application.Apis.Auth.GetCurrentUserProfile;
-using Summer.Application.Apis.Permission;
-using Summer.Application.Apis.Role;
-using Summer.Application.Apis.Tenant;
-using Summer.Application.Apis.User;
+using Summer.Application.Apis.Permissions;
+using Summer.Application.Apis.Roles;
+using Summer.Application.Apis.Tenants;
+using Summer.Application.Apis.Users;
 using Summer.Application.Interfaces;
 using Summer.Domain.Entities;
 

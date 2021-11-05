@@ -3,12 +3,12 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Summer.Application.Apis;
-using Summer.Application.Apis.Tenant;
-using Summer.Application.Apis.Tenant.CreateTenant;
-using Summer.Application.Apis.Tenant.DeleteTenant;
-using Summer.Application.Apis.Tenant.GetTenantById;
-using Summer.Application.Apis.Tenant.GetTenants;
-using Summer.Application.Apis.Tenant.UpdateTenant;
+using Summer.Application.Apis.Tenants;
+using Summer.Application.Apis.Tenants.CreateTenant;
+using Summer.Application.Apis.Tenants.DeleteTenant;
+using Summer.Application.Apis.Tenants.GetTenantById;
+using Summer.Application.Apis.Tenants.GetTenants;
+using Summer.Application.Apis.Tenants.UpdateTenant;
 
 namespace Summer.WebApi.Controllers
 {

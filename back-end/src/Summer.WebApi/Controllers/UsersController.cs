@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Summer.Application.Apis;
-using Summer.Application.Apis.User;
-using Summer.Application.Apis.User.CreateUser;
-using Summer.Application.Apis.User.DeleteUser;
-using Summer.Application.Apis.User.GetUserById;
-using Summer.Application.Apis.User.GetUsers;
-using Summer.Application.Apis.User.RegisterUser;
-using Summer.Application.Apis.User.UpdateUser;
-using Summer.Application.Apis.User.UpdateUserPassword;
+using Summer.Application.Apis.Users;
+using Summer.Application.Apis.Users.CreateUser;
+using Summer.Application.Apis.Users.DeleteUser;
+using Summer.Application.Apis.Users.GetUserById;
+using Summer.Application.Apis.Users.GetUsers;
+using Summer.Application.Apis.Users.RegisterUser;
+using Summer.Application.Apis.Users.UpdateUser;
+using Summer.Application.Apis.Users.UpdateUserPassword;
 
 namespace Summer.WebApi.Controllers
 {
