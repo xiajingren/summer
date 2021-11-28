@@ -23,10 +23,7 @@ namespace Summer.Infrastructure.MasterData
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Tenant>(b =>
-            {
-                modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            });
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
